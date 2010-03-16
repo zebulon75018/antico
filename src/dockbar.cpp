@@ -8,7 +8,7 @@
 
 ////////////////////////////////////////
 
-Dockbar::Dockbar(Antico *a, QWidget *parent) : QLabel(parent)
+Dockbar::Dockbar(Antico *a, QWidget *parent) : QLabel(parent, Qt::X11BypassWindowManagerHint)
 {
     app = a;
     file_dialog = app->get_file_dialog();
