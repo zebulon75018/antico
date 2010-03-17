@@ -311,6 +311,11 @@ void Frame::withdrawn_it()
 
 void Frame::iconify_it()
 {
+    //TODO - Configuration for hide or not the dockbar icon on iconify to desktop
+    antico = new QSettings(QCoreApplication::applicationDirPath() + "/antico.cfg", QSettings::IniFormat, this);
+    antico->beginGroup("Deskbar");
+    QString no_hide_iconify = antico->value("no_hide_iconify").toString();
+
     if (frame_type != "Dialog") // no iconify on Dialog frames
     {
         desktop->add_deskicon(this);  // add Application icon (small pixmap) on Desktop
@@ -319,7 +324,10 @@ void Frame::iconify_it()
         set_state(3);
         state = "IconicState";
         qDebug() << "Frame iconify:" << winId() << "Name:" << wm_name << "Client:" << c_win << "State:" << state;
-        dockbar->remove_dockicon(this);  // remove Dockicon from Dockbar
+
+        if(no_hide_iconify != "yes") {
+            dockbar->remove_dockicon(this);  // remove Dockicon from Dockbar
+        }
     }
 }
 

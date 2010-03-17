@@ -1029,6 +1029,10 @@ void Antico::set_settings()
         antico->setValue("name", "default.stl");
         antico->setValue("path", QCoreApplication::applicationDirPath() + "/theme/default/");
         antico->endGroup(); //Style
+        /////////////////////////////////////////////////////////////////////////
+	antico->beginGroup("Deskbar");
+	antico->setValue("no_hide_iconify", "no"); //The default is hide deskbar icon on iconify window
+	antico->endGroup(); //Deskbar
         antico->sync();
     }
     if (antico->status() == QSettings::AccessError)
