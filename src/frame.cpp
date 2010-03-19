@@ -349,6 +349,9 @@ void Frame::raise_it()
     }
     XMapRaised(QX11Info::display(), winId());
     XMapRaised(QX11Info::display(), c_win);
+    //XSetInputFocus(QX11Info::display(), winId(), RevertToNone, CurrentTime);
+    XSetInputFocus(QX11Info::display(), c_win, RevertToNone, CurrentTime);
+    set_active();
     set_state(1);
     state = "NormalState";
     qDebug() << "Frame raised:" << winId() << "Name:" << wm_name << "Client:" << c_win << "State:" << state;
