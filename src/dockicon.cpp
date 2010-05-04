@@ -26,7 +26,6 @@ Dockicon::Dockicon(Frame *frame, Systray *sys_tr, QWidget *parent) : QWidget(par
     bdr_width = 1;
     setAttribute(Qt::WA_AlwaysShowToolTips);
     setToolTip(title);
-    frame_state = 1; // 1 = raised, 0 = unmapped;
 }
 
 Dockicon::~Dockicon()
@@ -71,7 +70,7 @@ void Dockicon::paintEvent(QPaintEvent *)
 
 void Dockicon::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton && frame_state == 1)
+    if (event->button() == Qt::LeftButton)
     {
         frm->raise_it();
         qDebug() << "Dockicon (mouse press):" << frm->cl_win() << "- Name:" << frm->cl_name();
@@ -83,27 +82,6 @@ void Dockicon::mousePressEvent(QMouseEvent *event)
         menu->addAction(QIcon(add_to_sys_pix), tr("Add to System Tray"));
         menu->popup(event->globalPos());
         connect(menu, SIGNAL(triggered(QAction *)), this, SLOT(run_menu(QAction *)));
-    }
-}
-
-void Dockicon::mouseDoubleClickEvent(QMouseEvent *event)
-{
-    if (event->button() == Qt::LeftButton)
-    {
-        if (frame_state == 0)
-        {
-            frame_state = 1;
-            frm->raise_it();
-            qDebug() << "Dockicon (double click):" << frm->cl_win() << "- Name:" << frm->cl_name() << "- State: raised";
-            return;
-        }
-        if (frame_state == 1)
-        {
-            frame_state = 0;
-            frm->unmap_it();
-            qDebug() << "Dockicon (double click):" << frm->cl_win() << "- Name:" << frm->cl_name() << "- State: unmapped";
-            return;
-        }
     }
 }
 
