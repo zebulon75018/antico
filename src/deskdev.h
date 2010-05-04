@@ -11,12 +11,12 @@
 #ifndef DESKDEV_H
 #define DESKDEV_H
 
-#include "defs.h"
-#include "filedialog.h"
-#include "desk.h"
+#include <QWidget>
 
 class Filedialog;
 class Desk;
+class Categorymenu;
+class QMenu;
 
 ////////////////////////////////////////
 

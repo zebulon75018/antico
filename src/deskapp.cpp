@@ -4,6 +4,13 @@
 //  Copyright : GPL                   //
 ////////////////////////////////////////
 
+#include <QSettings>
+#include <QMouseEvent>
+#include <QPainter>
+#include <QMenu>
+#include <QProcess>
+#include <QApplication>
+
 #include "deskapp.h"
 
 ////////////////////////////////////////

@@ -11,18 +11,8 @@
 #ifndef DESK_H
 #define DESK_H
 
-#include "defs.h"
-#include "deskfolder.h"
-#include "deskfile.h"
-#include "deskapp.h"
-#include "deskdev.h"
-#include "deskicon.h"
-#include "msgbox.h"
-#include "antico.h"
-#include "filedialog.h"
-#include "trash.h"
-#include "utils.h"
-#include "frame.h"
+#include <QLabel>
+#include <QHash>
 
 class Antico;
 class Deskapp;
@@ -32,6 +22,13 @@ class Deskfolder;
 class Deskicon;
 class Filedialog;
 class Frame;
+class QDBusInterface;
+class QRubberBand;
+class Appicon;
+class Trash;
+class QMenu;
+class QSettings;
+class Categorymenu;
 
 ////////////////////////////////////////
 
@@ -51,7 +48,7 @@ public:
     void create_desk_folder(const QString &, const QString &, const QRect &, const QPoint &, QWidget *);
     void add_deskicon(Frame *);
     void remove_deskicon(Frame *);
-    void remove_deskicon(Window);
+    void remove_deskicon(WId);
     void map_deskicon(Frame *);
     void unmap_deskicon(Frame *);
     void update_style();

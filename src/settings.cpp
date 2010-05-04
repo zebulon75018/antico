@@ -6,6 +6,26 @@
 
 #include "settings.h"
 
+#include <QSettings>
+#include <QTabWidget>
+#include <QSpinBox>
+#include <QMouseEvent>
+#include <QComboBox>
+#include <QLabel>
+#include <QBoxLayout>
+#include <QGridLayout>
+#include <QApplication>
+#include <QLineEdit>
+#include <QDesktopWidget>
+#include <QFontDatabase>
+#include <QStyleFactory>
+#include <QPainter>
+#include <QPushButton>
+#include <QGroupBox>
+#include <QX11Info>
+
+#include <X11/Xlib.h>
+
 ////////////////////////////////////////
 
 Settings::Settings(QWidget *parent) : QDialog(parent)

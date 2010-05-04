@@ -11,7 +11,8 @@
 #ifndef DATECLOCK_H
 #define DATECLOCK_H
 
-#include "defs.h"
+#include <QLabel>
+#include <QTime>
 
 ////////////////////////////////////////
 

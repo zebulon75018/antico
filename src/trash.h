@@ -11,10 +11,10 @@
 #ifndef TRASH_H
 #define TRASH_H
 
-#include "defs.h"
-#include "utils.h"
-#include "msgbox.h"
-#include "trashdialog.h"
+#include <QWidget>
+
+class QSettings;
+class Trashdialog;
 
 ////////////////////////////////////////
 

@@ -4,7 +4,16 @@
 //  Copyright : GPL                   //
 ////////////////////////////////////////
 
+#include <QSettings>
+#include <QMenu>
+#include <QMouseEvent>
+
 #include "launcher.h"
+#include "settings.h"
+#include "runner.h"
+#include "antico.h"
+#include "utils.h"
+#include "manager.h"
 
 ////////////////////////////////////////
 

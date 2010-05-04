@@ -14,16 +14,18 @@
 #ifndef ANTICO_H
 #define ANTICO_H
 
-#include "defs.h"
-#include "frame.h"
-#include "dockbar.h"
-#include "desk.h"
-#include "filedialog.h"
+#include <QApplication>
+#include <QStringList>
+#include <QHash>
 
 class Dockbar;
 class Frame;
 class Desk;
 class Filedialog;
+class Categorymenu;
+class QSettings;
+
+#include <X11/Xutil.h>
 
 ////////////////////////////////////////
 
@@ -37,7 +39,7 @@ protected:
 public:
     Antico(int &argc, char **argv);
     ~Antico();
-    void create_frame(Window, Dockbar *, Desk *);
+    void create_frame(WId, Dockbar *, Desk *);
     void raise_next_frame();
     void set_active_frame(Frame *);
     void send_configurenotify(Frame *);
@@ -52,10 +54,10 @@ public:
     void create_gui();
     void set_event_names();
     void send_supported_hints();
-    void check_window_type(Window);
-    void print_window_prop(Window);
-    bool check_net_sys_tray_for(Window) const;
-    void check_wm_transient_for(Window);
+    void check_window_type(WId);
+    void print_window_prop(WId);
+    bool check_net_sys_tray_for(WId) const;
+    void check_wm_transient_for(WId);
     Filedialog * get_file_dialog();
     Desk * get_desktop();
     Dockbar * get_dockbar();

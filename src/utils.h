@@ -11,7 +11,13 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include "defs.h"
+#include <QWidget>
+#include <QFileIconProvider>
+#include <QHash>
+#include <QMap>
+
+class QMenu;
+class QSettings;
 
 ///////////////////////////////////////////////////////////////////////////
 

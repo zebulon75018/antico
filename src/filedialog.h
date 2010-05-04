@@ -11,10 +11,24 @@
 #ifndef FILEDIALOG_H
 #define FILEDIALOG_H
 
-#include "defs.h"
-#include "msgbox.h"
-#include "utils.h"
-#include "header.h"
+#include <QDialog>
+#include <QDir>
+#include <QModelIndex>
+
+class QListWidget;
+class QListWidgetItem;
+class QFileSystemModel;
+class QListView;
+class QTreeView;
+class QAbstractItemView;
+class QLineEdit;
+class QMenu;
+class Categorymenu;
+class Fileicon;
+class QSettings;
+class QDialogButtonBox;
+class QLabel;
+class Categorymenu;
 
 ////////////////////////////////////////
 

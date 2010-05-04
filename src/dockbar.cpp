@@ -4,7 +4,27 @@
 // Copyright : GPL //
 ////////////////////////////////////////
 
+#include <QHBoxLayout>
+#include <QSettings>
+#include <QMenu>
+#include <QDesktopWidget>
+#include <QDebug>
+#include <QMouseEvent>
+#include <QAbstractItemView>
+#include <QFileSystemModel>
+#include <QApplication>
+
+#include "filedialog.h"
 #include "dockbar.h"
+#include "antico.h"
+#include "dateclock.h"
+#include "dockmenu.h"
+#include "dockapp.h"
+#include "dockicon.h"
+#include "systray.h"
+#include "launcher.h"
+#include "frame.h"
+#include "utils.h"
 
 ////////////////////////////////////////
 

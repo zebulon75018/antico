@@ -11,7 +11,6 @@
 #ifndef EFFECTS_H
 #define EFFECTS_H
 
-#include "defs.h"
 #include <cmath>
 
 template<int aprec, int zprec> static inline void blurinner(unsigned char *bptr, int &zR, int &zG, int &zB, int &zA, int alpha);

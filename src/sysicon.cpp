@@ -4,7 +4,14 @@
 //  Copyright : GPL                   //
 ////////////////////////////////////////
 
+#include <QSettings>
+#include <QPainter>
+#include <QMouseEvent>
+#include <QMenu>
+#include <QApplication>
+
 #include "sysicon.h"
+#include "frame.h"
 
 ////////////////////////////////////////
 

@@ -4,7 +4,11 @@
 //  Copyright : GPL                   //
 ////////////////////////////////////////
 
-#include "defs.h"
+#include <QX11Info>
+#include <QTranslator>
+#include <QDebug>
+#include <QSettings>
+
 #include "antico.h"
 
 ////////////////////////////////////////

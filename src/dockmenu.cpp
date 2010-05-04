@@ -6,6 +6,12 @@
 
 #include "dockmenu.h"
 
+#include <QSettings>
+#include <QMouseEvent>
+#include <QPainter>
+#include <QMenu>
+#include <QCoreApplication>
+
 ////////////////////////////////////////
 
 Dockmenu::Dockmenu(QMenu *menu, QWidget *parent) : QWidget(parent)

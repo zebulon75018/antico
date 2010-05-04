@@ -12,12 +12,33 @@
 #ifndef MANAGER_H
 #define MANAGER_H
 
-#include "defs.h"
-#include "filedialog.h"
-#include "colordialog.h"
-#include "utils.h"
+#include <QDialog>
+#include <QModelIndex>
 
 class Filedialog;
+class QTableWidgetItem;
+class QSpinBox;
+class QComboBox;
+class QTreeWidget;
+class QTableWidget;
+class QTabWidget;
+class QVBoxLayout;
+class QHBoxLayout;
+class QGridLayout;
+class QStackedWidget;
+class QGroupBox;
+class QSignalMapper;
+class QTreeWidgetItem;
+class QListWidgetItem;
+class QLineEdit;
+class QTreeView;
+class QListWidget;
+class QFileSystemModel;
+class QLabel;
+class ColorDialog;
+class Fileicon;
+class Appicon;
+class QSettings;
 
 ////////////////////////////////////////
 

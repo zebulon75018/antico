@@ -4,7 +4,22 @@
 //  Copyright : GPL                   //
 ////////////////////////////////////////
 
+#include <QDebug>
+#include <QDesktopWidget>
+#include <QMouseEvent>
+#include <QSettings>
+#include <QX11Info>
+#include <QGridLayout>
+#include <QApplication>
+
 #include "frame.h"
+#include "border.h"
+#include "header.h"
+#include "dockbar.h"
+#include "desk.h"
+
+#include <X11/Xatom.h>
+#include <X11/extensions/shape.h>
 
 ////////////////////////////////////////
 

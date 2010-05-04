@@ -27,8 +27,7 @@ SOURCES = src/main.cpp \
  src/deskicon.cpp \
  src/dockmenu.cpp \
  src/settings.cpp
-HEADERS = src/defs.h \
- src/antico.h \
+HEADERS = src/antico.h \
  src/frame.h \
  src/border.h \
  src/dockbar.h \

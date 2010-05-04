@@ -11,11 +11,15 @@
 #ifndef SYSTRAY_H
 #define SYSTRAY_H
 
-#include "defs.h"
-#include "sysicon.h"
+#include <QLabel>
+#include <QHash>
+
+#include <X11/Xutil.h>
 
 class Frame;
 class Sysicon;
+class QX11EmbedContainer;
+class QHBoxLayout;
 
 ////////////////////////////////////////
 
@@ -27,9 +31,9 @@ public:
     Systray(QWidget *parent=0);
     ~Systray();
     void add_sysicon(Frame *);
-    void add_embed(Window);
-    void remove_sysicon(Window);
-    void remove_embedder(Window);
+    void add_embed(WId);
+    void remove_sysicon(WId);
+    void remove_embedder(WId);
     void update_style();
  
 public slots:

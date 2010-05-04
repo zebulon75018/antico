@@ -11,7 +11,11 @@
 #ifndef MSGBOX_H
 #define MSGBOX_H
 
-#include "defs.h"
+#include <QDialog>
+
+class QDialogButtonBox;
+class QLabel;
+class QPushButton;
 
 ////////////////////////////////////////
 

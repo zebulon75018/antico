@@ -11,7 +11,7 @@
 #ifndef DESKICON_H
 #define DESKICON_H
 
-#include "frame.h"
+#include <QLabel>
 
 class Frame;
 

@@ -11,7 +11,9 @@
 #ifndef DOCKMENU_H
 #define DOCKMENU_H
 
-#include "defs.h"
+#include <QWidget>
+
+class QMenu;
 
 ////////////////////////////////////////
  

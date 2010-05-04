@@ -11,7 +11,12 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include "defs.h"
+#include <QDialog>
+
+class QTabWidget;
+class QSpinBox;
+class QComboBox;
+class QLineEdit;
 
 ////////////////////////////////////////
 

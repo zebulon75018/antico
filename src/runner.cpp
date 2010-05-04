@@ -4,7 +4,26 @@
 //  Copyright : GPL                   //
 ////////////////////////////////////////
 
+#include <QSettings>
+#include <QMouseEvent>
+#include <QCoreApplication>
+#include <QGridLayout>
+#include <QLabel>
+#include <QComboBox>
+#include <QFile>
+#include <QDir>
+#include <QProcess>
+#include <QDirModel>
+#include <QCompleter>
+#include <QPushButton>
+#include <QPen>
+#include <QDebug>
+#include <QPainter>
+#include <QSettings>
+#include <QTimer>
+
 #include "runner.h"
+#include "msgbox.h"
 
 ////////////////////////////////////////
 

@@ -4,6 +4,9 @@
 //  Copyright : GPL                   //
 ////////////////////////////////////////
 
+#include <QPainter>
+#include <QMouseEvent>
+
 #include "colorsel.h"
 
 ////////////////////////////////////////

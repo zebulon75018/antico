@@ -4,7 +4,17 @@
 //  Copyright : GPL                   //
 ////////////////////////////////////////
 
+#include <QMenu>
+#include <QProcess>
+#include <QSettings>
+#include <QPainter>
+#include <QMouseEvent>
+#include <QDebug>
+#include <QApplication>
+
 #include "deskfile.h"
+#include "filedialog.h"
+#include "utils.h"
 
 ////////////////////////////////////////
 

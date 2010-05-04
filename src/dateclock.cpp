@@ -4,6 +4,12 @@
 //  Copyright : GPL                   //
 ////////////////////////////////////////
 
+#include <QTimer>
+#include <QSettings>
+#include <QApplication>
+#include <QPainter>
+#include <QSettings>
+
 #include "dateclock.h"
 
 ////////////////////////////////////////

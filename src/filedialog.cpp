@@ -4,7 +4,36 @@
 //  Copyright : GPL                   //
 ////////////////////////////////////////
 
+#include <QAbstractItemView>
+#include <QListView>
+#include <QPushButton>
+#include <QGridLayout>
+#include <QGroupBox>
+#include <QMouseEvent>
+#include <QFileSystemModel>
+#include <QDebug>
+#include <QLineEdit>
+#include <QAction>
+#include <QSettings>
+#include <QListWidgetItem>
+#include <QTreeView>
+#include <QDialogButtonBox>
+#include <QPainter>
+#include <QMenu>
+#include <QRadioButton>
+#include <QCompleter>
+#include <QDirModel>
+#include <QProcess>
+#include <QHeaderView>
+#include <QSplitter>
+#include <QLabel>
+#include <QApplication>
+#include <QDateTime>
+
 #include "filedialog.h"
+#include "msgbox.h"
+#include "header.h"
+#include "utils.h"
 
 ////////////////////////////////////////
 

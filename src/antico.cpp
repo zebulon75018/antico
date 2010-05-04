@@ -4,7 +4,27 @@
 //  Copyright : GPL                   //
 ////////////////////////////////////////
 
+#include <QDebug>
+#include <QSettings>
+#include <QX11Info>
+#include <QDesktopWidget>
+#include <QProcess>
+#include <QDBusConnection>
+#include <QDBusInterface>
+
+#include "filedialog.h"
 #include "antico.h"
+#include "settings.h"
+#include "runner.h"
+#include "dockbar.h"
+#include "frame.h"
+#include "systray.h"
+#include "manager.h"
+#include "desk.h"
+#include "msgbox.h"
+#include "utils.h"
+
+#include <X11/extensions/shape.h>
 
 ////////////////////////////////////////
 

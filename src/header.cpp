@@ -4,6 +4,10 @@
 //  Copyright : GPL                   //
 ////////////////////////////////////////
 
+#include <QPainter>
+#include <QMouseEvent>
+#include <QApplication>
+
 #include "header.h"
 
 ////////////////////////////////////////

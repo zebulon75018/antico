@@ -12,14 +12,14 @@
 #ifndef LAUNCHER_H
 #define LAUNCHER_H
 
-#include "defs.h"
-#include "antico.h"
-#include "manager.h"
-#include "settings.h"
-#include "runner.h"
-#include "utils.h"
+#include <QLabel>
 
 class Antico;
+class Settings;
+class Categorymenu;
+class Fileicon;
+class QSettings;
+class QMenu;
 
 ////////////////////////////////////////
 

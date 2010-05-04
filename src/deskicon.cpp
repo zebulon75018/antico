@@ -4,7 +4,14 @@
 //  Copyright : GPL                   //
 ////////////////////////////////////////
 
+#include <QMouseEvent>
+#include <QAction>
+#include <QSettings>
+#include <QMenu>
+#include <QApplication>
+
 #include "deskicon.h"
+#include "frame.h"
 
 ////////////////////////////////////////
 

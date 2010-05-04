@@ -4,6 +4,15 @@
 //  Copyright : GPL                   //
 ////////////////////////////////////////
 
+#include <QGridLayout>
+#include <QDialogButtonBox>
+#include <QPushButton>
+#include <QLabel>
+#include <QPainter>
+#include <QSettings>
+#include <QCoreApplication>
+#include <QMouseEvent>
+
 #include "msgbox.h"
 
 ////////////////////////////////////////

@@ -11,7 +11,7 @@
 #ifndef BORDER_H
 #define BORDER_H
 
-#include "defs.h"
+#include <QLabel>
 
 ////////////////////////////////////////
 

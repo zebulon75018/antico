@@ -4,7 +4,15 @@
 //  Copyright : GPL                   //
 ////////////////////////////////////////
 
+#include <QSettings>
+#include <QCoreApplication>
+#include <QMouseEvent>
+#include <QPainter>
+#include <QFileSystemModel>
+#include <QDebug>
+
 #include "trash.h"
+#include "trashdialog.h"
 
 ////////////////////////////////////////
 

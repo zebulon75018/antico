@@ -4,7 +4,14 @@
 //  Copyright : GPL                   //
 ////////////////////////////////////////
 
+#include <QVBoxLayout>
+#include <QDialogButtonBox>
+#include <QPainter>
+#include <QPainter>
+#include <QMouseEvent>
+
 #include "colordialog.h"
+#include "colorsel.h"
 
 ////////////////////////////////////////
 

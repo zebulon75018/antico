@@ -4,7 +4,16 @@
 // Copyright : GPL                    //
 ////////////////////////////////////////
 
+#include <QSettings>
+#include <QPainter>
+#include <QMouseEvent>
+#include <QDebug>
+#include <QMenu>
+#include <QApplication>
+
 #include "dockicon.h"
+#include "frame.h"
+#include "systray.h"
 
 ////////////////////////////////////////
 

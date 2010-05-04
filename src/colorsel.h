@@ -11,7 +11,7 @@
 #ifndef COLORSEL_H
 #define COLORSEL_H
 
-#include "defs.h"
+#include <QWidget>
 
 ////////////////////////////////////////
 

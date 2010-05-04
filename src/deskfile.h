@@ -11,9 +11,12 @@
 #ifndef DESKFILE_H
 #define DESKFILE_H
 
-#include "defs.h"
-#include "filedialog.h"
-#include "utils.h"
+#include <QWidget>
+
+class Categorymenu;
+class QMenu;
+class QAction;
+class QSettings;
 
 ////////////////////////////////////////
 

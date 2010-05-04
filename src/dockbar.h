@@ -10,15 +10,9 @@
  
 #ifndef DOCKBAR_H
 #define DOCKBAR_H
- 
-#include "defs.h"
-#include "launcher.h"
-#include "systray.h"
-#include "dockicon.h"
-#include "dockapp.h"
-#include "dockmenu.h"
-#include "dateclock.h"
-#include "filedialog.h"
+
+#include <QLabel>
+#include <QHash>
  
 class Frame;
 class Dockapp;
@@ -27,7 +21,16 @@ class Systray;
 class Antico;
 class Launcher;
 class Filedialog;
- 
+class Dateclock;
+class Dockmenu;
+class Dockapp;
+class Dockicon;
+class Systray;
+class Launcher;
+class QSettings;
+class QMenu;
+class QHBoxLayout;
+
 ////////////////////////////////////////
  
 class Dockbar : public QLabel
@@ -44,7 +47,7 @@ public:
     void init();
     void set_geometry();
     void update_style();
-    void remove_dockicon(Window);
+    void remove_dockicon(WId);
     void update_dockicon_name(const QString &, Frame *);
     void create_dock_app(const QString &, const QString &, QWidget *parent);
     void set_dockapp();

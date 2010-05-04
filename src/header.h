@@ -11,8 +11,7 @@
 #ifndef HEADER_H
 #define HEADER_H
 
-#include "defs.h"
-#include "frame.h"
+#include <QWidget>
 
 ////////////////////////////////////////
 

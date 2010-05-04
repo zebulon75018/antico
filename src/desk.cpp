@@ -4,7 +4,30 @@
 //  Copyright : GPL                   //
 ////////////////////////////////////////
 
+#include <QSettings>
+#include <QDesktopWidget>
+#include <QRubberBand>
+#include <QMenu>
+#include <QDBusConnection>
+#include <QDBusInterface>
+#include <QMouseEvent>
+#include <QDebug>
+#include <QAbstractItemView>
+#include <QFileSystemModel>
+#include <QDBusReply>
+
 #include "desk.h"
+#include "deskfolder.h"
+#include "deskfile.h"
+#include "deskapp.h"
+#include "deskdev.h"
+#include "deskicon.h"
+#include "msgbox.h"
+#include "antico.h"
+#include "filedialog.h"
+#include "trash.h"
+#include "utils.h"
+#include "frame.h"
 
 ////////////////////////////////////////
 

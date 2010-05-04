@@ -11,8 +11,10 @@
 #ifndef DESKAPP_H
 #define DESKAPP_H
 
-#include "defs.h"
-#include "filedialog.h"
+#include <QWidget>
+
+class QSettings;
+class QMenu;
 
 ////////////////////////////////////////
 

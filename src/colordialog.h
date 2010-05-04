@@ -11,8 +11,10 @@
 #ifndef COLORDIALOG_H
 #define COLORDIALOG_H
 
-#include "defs.h"
-#include "colorsel.h"
+#include <QDialog>
+
+class QDialogButtonBox;
+class Colorsel;
 
 ////////////////////////////////////////
 

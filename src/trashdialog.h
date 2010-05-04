@@ -11,9 +11,12 @@
 #ifndef TRASHDIALOG_H
 #define TRASHDIALOG_H
 
-#include "defs.h"
-#include "utils.h"
-#include "msgbox.h"
+#include <QDialog>
+
+class QLineEdit;
+class QFileSystemModel;
+class QTreeView;
+class Fileicon;
 
 ////////////////////////////////////////
 

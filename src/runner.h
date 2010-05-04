@@ -11,8 +11,10 @@
 #ifndef RUNNER_H
 #define RUNNER_H
 
-#include "defs.h"
-#include "msgbox.h"
+#include <QDialog>
+
+class QComboBox;
+class QFile;
 
 ////////////////////////////////////////
 

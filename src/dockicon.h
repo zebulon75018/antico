@@ -10,9 +10,8 @@
  
 #ifndef DOCKICON_H
 #define DOCKICON_H
- 
-#include "frame.h"
-#include "systray.h"
+
+#include <QWidget>
  
 class Frame;
 class Systray;

@@ -4,7 +4,16 @@
 // Copyright : GPL //
 ////////////////////////////////////////
 
+#include <QHBoxLayout>
+#include <QX11Info>
+#include <QDesktopWidget>
+#include <QX11EmbedContainer>
+#include <QDebug>
+#include <QApplication>
+
 #include "systray.h"
+#include "sysicon.h"
+#include "frame.h"
 
 ////////////////////////////////////////
 /* defined in the systray spec */

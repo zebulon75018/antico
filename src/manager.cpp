@@ -4,7 +4,41 @@
 //  Copyright : GPL                   //
 ////////////////////////////////////////
 
+#include <QTableWidgetItem>
+#include <QSpinBox>
+#include <QComboBox>
+#include <QTreeWidget>
+#include <QTableWidget>
+#include <QTabWidget>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QGridLayout>
+#include <QStackedWidget>
+#include <QGroupBox>
+#include <QSignalMapper>
+#include <QTreeWidgetItem>
+#include <QListWidgetItem>
+#include <QLineEdit>
+#include <QTreeView>
+#include <QListWidget>
+#include <QFileSystemModel>
+#include <QDebug>
+#include <QSettings>
+#include <QPushButton>
+#include <QPainter>
+#include <QCompleter>
+#include <QDirModel>
+#include <QSplitter>
+#include <QDesktopWidget>
+#include <QMouseEvent>
+#include <QApplication>
+#include <QLabel>
+
+#include "filedialog.h"
 #include "manager.h"
+#include "msgbox.h"
+#include "colordialog.h"
+#include "utils.h"
 
 ////////////////////////////////////////
 

@@ -12,15 +12,15 @@
 #ifndef FRAME_H
 #define FRAME_H
 
-#include "defs.h"
-#include "border.h"
-#include "header.h"
-#include "desk.h"
-#include "dockbar.h"
+#include <QFrame>
 
+class Border;
 class Desk;
 class Dockbar;
 class Header;
+
+class QGridLayout;
+class QSettings;
 
 ////////////////////////////////////////
 
@@ -29,7 +29,7 @@ class Frame : public QFrame
     Q_OBJECT
 
 public:
-    Frame(Window, const QString &, Dockbar *, Desk *, QWidget *parent=0);
+    Frame(WId, const QString &, Dockbar *, Desk *, QWidget *parent=0);
     ~Frame();
     void init();
     void update_style();
@@ -56,7 +56,7 @@ public:
     void set_focus(long);
     void get_icon();
     void get_colormaps();
-    void set_colormaps(Colormap);
+    void set_colormaps(Qt::HANDLE);
     void read_settings(); // from "antico.cfg"
     WId cl_win()
     {
@@ -158,7 +158,7 @@ private:
     QString res_name;           // ClassHint
     QString res_class;          // ClassHint
     bool inputfield;            // WMHints
-    Colormap cmap;              // colormap
+    Qt::HANDLE cmap;              // colormap
     Desk *desktop;              // desktop
     Dockbar *dockbar;           // dockbar
     Header *tm_bdr;             // top mid window border (for window move)

@@ -4,7 +4,23 @@
 //  Copyright : GPL                   //
 ////////////////////////////////////////
 
+#include <QLineEdit>
+#include <QSettings>
+#include <QMouseEvent>
+#include <QPainter>
+#include <QCoreApplication>
+#include <QLabel>
+#include <QHBoxLayout>
+#include <QPushButton>
+#include <QTreeView>
+#include <QDebug>
+#include <QFileSystemModel>
+#include <QHeaderView>
+#include <QProcess>
+
 #include "trashdialog.h"
+#include "utils.h"
+#include "msgbox.h"
 
 ////////////////////////////////////////
 

@@ -11,8 +11,10 @@
 #ifndef DOCKAPP_H
 #define DOCKAPP_H
 
-#include "defs.h"
-#include "filedialog.h"
+#include <QLabel>
+
+class QSettings;
+class QMenu;
 
 ////////////////////////////////////////
 

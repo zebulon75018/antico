@@ -11,8 +11,7 @@
 #ifndef SYSICON_H
 #define SYSICON_H
 
-#include "defs.h"
-#include "frame.h"
+#include <QWidget>
 
 class Frame;
 
