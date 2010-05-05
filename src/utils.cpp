@@ -69,7 +69,7 @@ QString Appicon::get_app_icon(const QString &icon) // select the application ico
     }
 
     // if not defined, set default application icon
-    QSettings *antico = new QSettings(QCoreApplication::applicationDirPath() + "/antico.cfg", QSettings::IniFormat, this);
+    QSettings *antico = new QSettings(QSettings::UserScope, "antico", "antico", this);
     antico->beginGroup("Style");
     QString stl_name = antico->value("name").toString();
     QString stl_path = antico->value("path").toString();
@@ -133,7 +133,7 @@ void Categorymenu::init()
 
 void Categorymenu::read_settings()
 {
-    antico = new QSettings(QCoreApplication::applicationDirPath() + "/antico.cfg", QSettings::IniFormat, this);
+    antico = new QSettings(QSettings::UserScope, "antico", "antico", this);
     antico->beginGroup("Style");
     QString stl_name = antico->value("name").toString();
     QString stl_path = antico->value("path").toString();
@@ -444,7 +444,7 @@ Fileicon::~Fileicon()
 
 void Fileicon::read_settings()
 {
-    QSettings *antico = new QSettings(QCoreApplication::applicationDirPath() + "/antico.cfg", QSettings::IniFormat);
+    QSettings *antico = new QSettings(QSettings::UserScope, "antico", "antico");
     antico->beginGroup("Style");
     QString stl_name = antico->value("name").toString();
     QString stl_path = antico->value("path").toString();
@@ -554,4 +554,3 @@ QString Fileicon::icon_type(const QFileInfo &info) const
     }
     return system_pix; // default pix
 }
-

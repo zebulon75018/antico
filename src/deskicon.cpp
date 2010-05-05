@@ -35,7 +35,7 @@ Deskicon::~Deskicon()
 void Deskicon::read_settings()
 {
     // get style path
-    QSettings *antico = new QSettings(QCoreApplication::applicationDirPath() + "/antico.cfg", QSettings::IniFormat, this);
+    QSettings *antico = new QSettings(QSettings::UserScope, "antico", "antico", this);
     antico->beginGroup("Style");
     QString stl_name = antico->value("name").toString();
     QString stl_path = antico->value("path").toString();

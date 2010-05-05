@@ -43,7 +43,7 @@ Frame::~Frame()
 void Frame::read_settings()
 {
     // get style path
-    antico = new QSettings(QCoreApplication::applicationDirPath() + "/antico.cfg", QSettings::IniFormat, this);
+    antico = new QSettings(QSettings::UserScope, "antico", "antico", this);
     antico->beginGroup("Style");
     QString stl_name = antico->value("name").toString();
     QString stl_path = antico->value("path").toString();
@@ -327,7 +327,7 @@ void Frame::withdrawn_it()
 void Frame::iconify_it()
 {
     //TODO - Configuration for hide or not the dockbar icon on iconify to desktop
-    antico = new QSettings(QCoreApplication::applicationDirPath() + "/antico.cfg", QSettings::IniFormat, this);
+    antico = new QSettings(QSettings::UserScope, "antico", "antico", this);
     antico->beginGroup("Deskbar");
     QString no_hide_iconify = antico->value("no_hide_iconify").toString();
 

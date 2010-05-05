@@ -986,7 +986,7 @@ void Antico::show_desktop()
 void Antico::run_app_at_startup()
 {
     // default path
-    antico = new QSettings(QCoreApplication::applicationDirPath() + "/antico.cfg", QSettings::IniFormat, this);
+    antico = new QSettings(QSettings::UserScope, "antico", "antico", this);
 
     antico->beginGroup("Startup");
 
@@ -1040,14 +1040,14 @@ Categorymenu * Antico::get_category_menu()
 void Antico::set_settings()
 {
     // default path
-    antico = new QSettings(QCoreApplication::applicationDirPath() + "/antico.cfg", QSettings::IniFormat, this);
+    antico = new QSettings(QSettings::UserScope, "antico", "antico", this);
     // set default style on first installation, if no "/antico.cfg" is set
     if (antico->childGroups().isEmpty())
     {
         qDebug() << "Set default settings ...";
         antico->beginGroup("Style");
         antico->setValue("name", "default.stl");
-        antico->setValue("path", QCoreApplication::applicationDirPath() + "/theme/default/");
+        antico->setValue("path", QCoreApplication::applicationDirPath() + "/../share/antico/themes/default/");
         antico->endGroup(); //Style
         /////////////////////////////////////////////////////////////////////////
 	antico->beginGroup("Deskbar");

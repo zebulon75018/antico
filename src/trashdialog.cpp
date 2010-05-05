@@ -40,7 +40,7 @@ Trashdialog::~Trashdialog()
 void Trashdialog::read_settings()
 {
     // get style path
-    QSettings *antico = new QSettings(QCoreApplication::applicationDirPath() + "/antico.cfg", QSettings::IniFormat, this);
+    QSettings *antico = new QSettings(QSettings::UserScope, "antico", "antico", this);
     antico->beginGroup("Style");
     stl_name = antico->value("name").toString();
     stl_path = antico->value("path").toString();

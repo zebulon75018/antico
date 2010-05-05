@@ -45,7 +45,7 @@
 Manager::Manager(QWidget *parent) : QDialog(parent)
 {
     // get style path
-    antico = new QSettings(QCoreApplication::applicationDirPath() + "/antico.cfg", QSettings::IniFormat, this);
+    antico = new QSettings(QSettings::UserScope, "antico", "antico", this);
     antico->beginGroup("Style");
     stl_name = antico->value("name").toString();
     stl_path = antico->value("path").toString();
