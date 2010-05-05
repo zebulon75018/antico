@@ -32,7 +32,6 @@ wall_pix=wallpaper.png
 [Dockbar]
 dock_pix=dockbar.png
 dock_height=32
-dock_width=1280
 dock_position=0
 
 [Dockicon]

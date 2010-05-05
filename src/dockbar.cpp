@@ -135,7 +135,7 @@ void Dockbar::set_geometry()
     setPixmap(dock_pix);
     setScaledContents(true);
 
-    if (dock_width >= QApplication::desktop()->width())
+    if (dock_width >= QApplication::desktop()->width() || dock_width == 0)
         dock_width = QApplication::desktop()->width();
 
     int space_dock = (QApplication::desktop()->width()-dock_width)/2; // space left on right/left side of Dockbar
