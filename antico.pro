@@ -1,4 +1,29 @@
-SOURCES = src/main.cpp \
+QT += dbus
+
+CONFIG += warn_on debug
+DEFINES = QT_FATAL_WARNINGS
+
+release {
+  CONFIG += warn_on release
+  DEFINES = QT_NO_DEBUG_OUTPUT
+}
+
+OBJECTS_DIR += build
+MOC_DIR += build
+
+isEmpty(PREFIX):PREFIX=/usr/local
+
+TRANSLATIONS = \
+ language/it_IT.ts \
+ language/cs_CZ.ts \
+ language/ru_RU.ts \
+ language/pl_PL.ts \
+ language/de_DE.ts \
+ language/es_ES.ts \
+ language/pt_BR.ts
+
+SOURCES = \
+ src/main.cpp \
  src/antico.cpp \
  src/frame.cpp \
  src/border.cpp \
@@ -27,7 +52,9 @@ SOURCES = src/main.cpp \
  src/deskicon.cpp \
  src/dockmenu.cpp \
  src/settings.cpp
-HEADERS = src/antico.h \
+
+HEADERS = \
+ src/antico.h \
  src/frame.h \
  src/border.h \
  src/dockbar.h \
@@ -55,19 +82,7 @@ HEADERS = src/antico.h \
  src/deskicon.h \
  src/dockmenu.h \
  src/settings.h
-OBJECTS_DIR += build
-MOC_DIR += build
-QMAKE_INCDIR += /usr/include
-QMAKE_CLEAN += antico
-TEMPLATE = app
-CONFIG += warn_on release
-QT += dbus
-TRANSLATIONS = language/it_IT.ts \
- language/cs_CZ.ts \
- language/ru_RU.ts \
- language/pl_PL.ts \
- language/de_DE.ts \
- language/es_ES.ts \
- language/pt_BR.ts
-DEFINES = QT_FATAL_WARNINGS
-//DEFINES = QT_NO_DEBUG_OUTPUT
+
+target.path = $$PREFIX/bin/
+
+INSTALLS += target
