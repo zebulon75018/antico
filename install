@@ -27,4 +27,3 @@ fi
 echo -e "${white}***********************************************"
 echo -e "        ${green}Antico ${yellow}successfully installed${white}"
 echo -e "***********************************************"
-echo -e "It's Done.\n"
