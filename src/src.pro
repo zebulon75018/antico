@@ -1,11 +1,10 @@
 QT += dbus
 
-CONFIG += warn_on debug
-DEFINES = QT_FATAL_WARNINGS
+CONFIG += warn_on
+DEFINES = QT_FATAL_WARNINGS QT_NO_DEBUG_OUTPUT
 
-release {
-  CONFIG += warn_on release
-  DEFINES = QT_NO_DEBUG_OUTPUT
+devel {
+  DEFINES -= QT_NO_DEBUG_OUTPUT
 }
 
 OBJECTS_DIR += build
