@@ -8,6 +8,7 @@
 #include <QTranslator>
 #include <QDebug>
 #include <QSettings>
+#include <QLocale>
 
 #include "antico.h"
 

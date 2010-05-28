@@ -15,6 +15,7 @@
 #include <QFileIconProvider>
 #include <QHash>
 #include <QMap>
+#include <QLocale>
 
 class QMenu;
 class QSettings;
