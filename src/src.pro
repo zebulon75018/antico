@@ -16,13 +16,21 @@ isEmpty(PREFIX):PREFIX=/usr/local
 TARGET = antico
 
 TRANSLATIONS = \
- language/it_IT.ts \
- language/cs_CZ.ts \
- language/ru_RU.ts \
- language/pl_PL.ts \
- language/de_DE.ts \
- language/es_ES.ts \
- language/pt_BR.ts
+ ../language/it_IT.ts \
+ ../language/cs_CZ.ts \
+ ../language/ru_RU.ts \
+ ../language/pl_PL.ts \
+ ../language/de_DE.ts \
+ ../language/es_ES.ts \
+ ../language/pt_BR.ts
+
+translations.name = Translations ${QMAKE_FILE_BASE}
+translations.CONFIG += no_link target_predeps
+unix:translations.commands = @$$[QT_INSTALL_BINS]/lrelease ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_OUT} &> /dev/null
+translations.input = TRANSLATIONS
+translations.output = ${QMAKE_FILE_BASE}.qm
+translations.clean = ${QMAKE_FILE_BASE}.qm
+QMAKE_EXTRA_COMPILERS += translations
 
 SOURCES = \
  main.cpp \
@@ -87,4 +95,8 @@ HEADERS = \
 
 target.path = $$PREFIX/bin/
 
-INSTALLS += target
+qm.files = *.qm
+qm.path = $$PREFIX/share/antico/language
+qm.CONFIG += no_check_exist
+
+INSTALLS += target qm
