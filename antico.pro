@@ -1,4 +1,4 @@
 TEMPLATE = subdirs
-SUBDIRS += src theme xsessions
+SUBDIRS += src theme
 
 isEmpty(PREFIX):PREFIX=/usr/local

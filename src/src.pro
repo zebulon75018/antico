@@ -31,6 +31,8 @@ translations.output = ${QMAKE_FILE_BASE}.qm
 translations.clean = ${QMAKE_FILE_BASE}.qm
 QMAKE_EXTRA_COMPILERS += translations
 
+include(../xsessions/xsessions.pri)
+
 SOURCES = \
  main.cpp \
  antico.cpp \
@@ -94,8 +96,12 @@ HEADERS = \
 
 target.path = $$PREFIX/bin/
 
+xsession_files.CONFIG = no_check_exist
+xsession_files.files = *.desktop
+xsession_files.path = /usr/share/xsessions/
+
 qm.files = *.qm
 qm.path = $$PREFIX/share/antico/language
 qm.CONFIG += no_check_exist
 
-INSTALLS += target qm
+INSTALLS += target qm xsession_files
