@@ -1051,7 +1051,7 @@ void Antico::set_settings()
         antico->endGroup(); //Style
         /////////////////////////////////////////////////////////////////////////
 	antico->beginGroup("Deskbar");
-	antico->setValue("no_hide_iconify", "no"); //The default is hide deskbar icon on iconify window
+	antico->setValue("no_hide_iconify", "yes"); //The default is hide deskbar icon on iconify window
 	antico->endGroup(); //Deskbar
         antico->sync();
     }
