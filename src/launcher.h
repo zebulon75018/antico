@@ -53,7 +53,6 @@ private:
     QString settings_pix;
     QString refresh_pix;
     QString run_pix;
-    QString manager_pix;
     int dock_position;
     int dock_height;
     Antico *app;
@@ -64,7 +63,6 @@ private:
     QAction *run;
     QAction *show_desk;
     QAction *settings;
-    QAction *manager;
     QSettings *antico;
     QMenu *main_menu;
 };

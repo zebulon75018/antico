@@ -12,7 +12,6 @@
 #include "runner.h"
 #include "antico.h"
 #include "utils.h"
-#include "manager.h"
 
 ////////////////////////////////////////
 
@@ -50,7 +49,6 @@ void Launcher::read_settings()
     show_pix = stl_path + style->value("show_pix").toString();
     settings_pix = stl_path + style->value("settings_pix").toString();
     run_pix = stl_path + style->value("run_pix").toString();
-    manager_pix = stl_path + style->value("manager_pix").toString();
     style->endGroup(); // Launcher
     style->beginGroup("Dockbar");
     dock_height = style->value("dock_height").toInt();
@@ -68,7 +66,6 @@ void Launcher::init()
     restart = new QAction(tr("Restart PC"), this);
     refresh = new QAction(tr("Refresh WM"), this);
     run = new QAction(tr("Run..."), this);
-    manager = new QAction(tr("Manager"), this);
     show_desk = new QAction(tr("Show Desktop"), this);
     settings = new QAction(tr("Settings"), this);
 
@@ -77,7 +74,6 @@ void Launcher::init()
     restart->setIcon(QIcon(restart_pix));
     refresh->setIcon(QIcon(refresh_pix));
     run->setIcon(QIcon(run_pix));
-    manager->setIcon(QIcon(manager_pix));
     show_desk->setIcon(QIcon(show_pix));
     settings->setIcon(QIcon(settings_pix));
 
@@ -86,7 +82,6 @@ void Launcher::init()
     restart->setData("restart");
     refresh->setData("refresh");
     run->setData("run");
-    manager->setData("manager");
     show_desk->setData("show");
     settings->setData("settings");
         
@@ -95,7 +90,6 @@ void Launcher::init()
     restart->setShortcut(QKeySequence(Qt::ALT + Qt::Key_R));
     refresh->setShortcut(QKeySequence(Qt::ALT + Qt::Key_U));
     run->setShortcut(QKeySequence(Qt::ALT + Qt::Key_F2));
-    manager->setShortcut(QKeySequence(Qt::ALT + Qt::Key_M));
     show_desk->setShortcut(QKeySequence(Qt::ALT + Qt::Key_D));
     settings->setShortcut(QKeySequence(Qt::ALT + Qt::Key_T));
     
@@ -108,7 +102,6 @@ void Launcher::init()
     
     main_menu->addSeparator();
     main_menu->addAction(settings);
-    main_menu->addAction(manager);
     main_menu->addAction(run);
     main_menu->addAction(show_desk);
     main_menu->addAction(quit);
@@ -131,8 +124,6 @@ void Launcher::run_command(QAction *act)
         app->wm_refresh();
     if (cmd == "show")
         app->show_desktop();
-    if (cmd == "manager")
-        new Manager();
     if (cmd == "run")
         new Runner();
 }
@@ -174,7 +165,6 @@ void Launcher::update_style()
     refresh->setIcon(QIcon(refresh_pix));
     show_desk->setIcon(QIcon(show_pix));
     run->setIcon(QIcon(run_pix));
-    manager->setIcon(QIcon(manager_pix));
     settings->setIcon(QIcon(settings_pix));
     app->get_category_menu()->update_menu(); // update .desktop/user menu entry
     app->get_category_menu()->update_style(); // update category menu pixmap

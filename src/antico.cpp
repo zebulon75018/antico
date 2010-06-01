@@ -18,7 +18,6 @@
 #include "dockbar.h"
 #include "frame.h"
 #include "systray.h"
-#include "manager.h"
 #include "desk.h"
 #include "msgbox.h"
 #include "utils.h"
@@ -610,12 +609,6 @@ bool Antico::x11EventFilter(XEvent *event)
         {
             qDebug() << "Press [Alt+u] - Refresh the WM";
             wm_refresh();
-            return false;
-        }
-        if (sym == XK_m && mod == keymask1)
-        {
-            qDebug() << "Press [Alt+m] - Start Manager";
-            new Manager();
             return false;
         }
         if (sym == XK_d && mod == keymask1)

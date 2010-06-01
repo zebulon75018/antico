@@ -44,7 +44,6 @@ SOURCES = \
  desk.cpp \
  header.cpp \
  systray.cpp \
- manager.cpp \
  filedialog.cpp \
  colordialog.cpp \
  colorsel.cpp \
@@ -73,7 +72,6 @@ HEADERS = \
  desk.h \
  header.h \
  systray.h \
- manager.h \
  filedialog.h \
  colordialog.h \
  colorsel.h \
