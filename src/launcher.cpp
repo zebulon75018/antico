@@ -9,7 +9,6 @@
 #include <QMouseEvent>
 
 #include "launcher.h"
-#include "settings.h"
 #include "runner.h"
 #include "antico.h"
 #include "utils.h"
@@ -136,8 +135,6 @@ void Launcher::run_command(QAction *act)
         new Manager();
     if (cmd == "run")
         new Runner();
-    if (cmd == "settings")
-        new Settings();
 }
 
 void Launcher::mousePressEvent(QMouseEvent *event)

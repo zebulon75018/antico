@@ -61,8 +61,7 @@ SOURCES = \
  trash.cpp \
  trashdialog.cpp \
  deskicon.cpp \
- dockmenu.cpp \
- settings.cpp
+ dockmenu.cpp
 
 HEADERS = \
  antico.h \
@@ -91,8 +90,7 @@ HEADERS = \
  trash.h \
  trashdialog.h \
  deskicon.h \
- dockmenu.h \
- settings.h
+ dockmenu.h 
 
 target.path = $$PREFIX/bin/
 

@@ -14,7 +14,6 @@
 
 #include "filedialog.h"
 #include "antico.h"
-#include "settings.h"
 #include "runner.h"
 #include "dockbar.h"
 #include "frame.h"
@@ -626,12 +625,6 @@ bool Antico::x11EventFilter(XEvent *event)
             return false;
         }
 
-        if (sym == XK_t && mod == keymask1)
-        {
-            qDebug() << "Press [Alt+t] - Show Settings";
-            new Settings();
-            return false;
-        }
         return false;
         break;
 
