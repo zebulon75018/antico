@@ -47,7 +47,6 @@ void Launcher::read_settings()
     restart_pix = stl_path + style->value("restart_pix").toString();
     refresh_pix = stl_path + style->value("refresh_pix").toString();
     show_pix = stl_path + style->value("show_pix").toString();
-    settings_pix = stl_path + style->value("settings_pix").toString();
     run_pix = stl_path + style->value("run_pix").toString();
     style->endGroup(); // Launcher
     style->beginGroup("Dockbar");
@@ -67,7 +66,6 @@ void Launcher::init()
     refresh = new QAction(tr("Refresh WM"), this);
     run = new QAction(tr("Run..."), this);
     show_desk = new QAction(tr("Show Desktop"), this);
-    settings = new QAction(tr("Settings"), this);
 
     quit->setIcon(QIcon(quit_pix));
     shutdown->setIcon(QIcon(shutdown_pix));
@@ -75,7 +73,6 @@ void Launcher::init()
     refresh->setIcon(QIcon(refresh_pix));
     run->setIcon(QIcon(run_pix));
     show_desk->setIcon(QIcon(show_pix));
-    settings->setIcon(QIcon(settings_pix));
 
     quit->setData("quit");
     shutdown->setData("shutdown");
@@ -83,7 +80,6 @@ void Launcher::init()
     refresh->setData("refresh");
     run->setData("run");
     show_desk->setData("show");
-    settings->setData("settings");
         
     quit->setShortcut(QKeySequence(Qt::ALT + Qt::Key_Q));
     shutdown->setShortcut(QKeySequence(Qt::ALT + Qt::Key_S));
@@ -91,7 +87,6 @@ void Launcher::init()
     refresh->setShortcut(QKeySequence(Qt::ALT + Qt::Key_U));
     run->setShortcut(QKeySequence(Qt::ALT + Qt::Key_F2));
     show_desk->setShortcut(QKeySequence(Qt::ALT + Qt::Key_D));
-    settings->setShortcut(QKeySequence(Qt::ALT + Qt::Key_T));
     
     // add Category menu on Launcher
     QList <QMenu *> menu_list = app->get_category_menu()->get_menus();
@@ -101,7 +96,6 @@ void Launcher::init()
     }
     
     main_menu->addSeparator();
-    main_menu->addAction(settings);
     main_menu->addAction(run);
     main_menu->addAction(show_desk);
     main_menu->addAction(quit);
@@ -165,7 +159,6 @@ void Launcher::update_style()
     refresh->setIcon(QIcon(refresh_pix));
     show_desk->setIcon(QIcon(show_pix));
     run->setIcon(QIcon(run_pix));
-    settings->setIcon(QIcon(settings_pix));
     app->get_category_menu()->update_menu(); // update .desktop/user menu entry
     app->get_category_menu()->update_style(); // update category menu pixmap
 }

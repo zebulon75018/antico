@@ -15,7 +15,6 @@
 #include <QLabel>
 
 class Antico;
-class Settings;
 class Categorymenu;
 class Fileicon;
 class QSettings;
@@ -50,7 +49,6 @@ private:
     QString shutdown_pix;
     QString restart_pix;
     QString show_pix;
-    QString settings_pix;
     QString refresh_pix;
     QString run_pix;
     int dock_position;
@@ -62,7 +60,6 @@ private:
     QAction *refresh;
     QAction *run;
     QAction *show_desk;
-    QAction *settings;
     QSettings *antico;
     QMenu *main_menu;
 };
