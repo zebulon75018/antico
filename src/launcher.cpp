@@ -9,7 +9,6 @@
 #include <QMouseEvent>
 
 #include "launcher.h"
-#include "runner.h"
 #include "antico.h"
 #include "utils.h"
 
@@ -47,7 +46,6 @@ void Launcher::read_settings()
     restart_pix = stl_path + style->value("restart_pix").toString();
     refresh_pix = stl_path + style->value("refresh_pix").toString();
     show_pix = stl_path + style->value("show_pix").toString();
-    run_pix = stl_path + style->value("run_pix").toString();
     style->endGroup(); // Launcher
     style->beginGroup("Dockbar");
     dock_height = style->value("dock_height").toInt();
@@ -64,28 +62,24 @@ void Launcher::init()
     shutdown = new QAction(tr("Shutdown PC"), this);
     restart = new QAction(tr("Restart PC"), this);
     refresh = new QAction(tr("Refresh WM"), this);
-    run = new QAction(tr("Run..."), this);
     show_desk = new QAction(tr("Show Desktop"), this);
 
     quit->setIcon(QIcon(quit_pix));
     shutdown->setIcon(QIcon(shutdown_pix));
     restart->setIcon(QIcon(restart_pix));
     refresh->setIcon(QIcon(refresh_pix));
-    run->setIcon(QIcon(run_pix));
     show_desk->setIcon(QIcon(show_pix));
 
     quit->setData("quit");
     shutdown->setData("shutdown");
     restart->setData("restart");
     refresh->setData("refresh");
-    run->setData("run");
     show_desk->setData("show");
         
     quit->setShortcut(QKeySequence(Qt::ALT + Qt::Key_Q));
     shutdown->setShortcut(QKeySequence(Qt::ALT + Qt::Key_S));
     restart->setShortcut(QKeySequence(Qt::ALT + Qt::Key_R));
     refresh->setShortcut(QKeySequence(Qt::ALT + Qt::Key_U));
-    run->setShortcut(QKeySequence(Qt::ALT + Qt::Key_F2));
     show_desk->setShortcut(QKeySequence(Qt::ALT + Qt::Key_D));
     
     // add Category menu on Launcher
@@ -96,7 +90,6 @@ void Launcher::init()
     }
     
     main_menu->addSeparator();
-    main_menu->addAction(run);
     main_menu->addAction(show_desk);
     main_menu->addAction(quit);
     main_menu->addAction(shutdown);
@@ -118,8 +111,6 @@ void Launcher::run_command(QAction *act)
         app->wm_refresh();
     if (cmd == "show")
         app->show_desktop();
-    if (cmd == "run")
-        new Runner();
 }
 
 void Launcher::mousePressEvent(QMouseEvent *event)
@@ -158,7 +149,6 @@ void Launcher::update_style()
     restart->setIcon(QIcon(restart_pix));
     refresh->setIcon(QIcon(refresh_pix));
     show_desk->setIcon(QIcon(show_pix));
-    run->setIcon(QIcon(run_pix));
     app->get_category_menu()->update_menu(); // update .desktop/user menu entry
     app->get_category_menu()->update_style(); // update category menu pixmap
 }

@@ -14,7 +14,6 @@
 
 #include "filedialog.h"
 #include "antico.h"
-#include "runner.h"
 #include "dockbar.h"
 #include "frame.h"
 #include "systray.h"
@@ -579,12 +578,6 @@ bool Antico::x11EventFilter(XEvent *event)
         {
             qDebug() << "Press [Alt+Tab] - Scroll active apps";
             raise_next_frame();
-            return false;
-        }
-        if (sym == XK_F2 && mod == keymask1)
-        {
-            qDebug() << "Press [Alt+F2] - Start Runner";
-            new Runner();
             return false;
         }
         if (sym == XK_q && mod == keymask1)

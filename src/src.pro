@@ -48,7 +48,6 @@ SOURCES = \
  colordialog.cpp \
  colorsel.cpp \
  msgbox.cpp \
- runner.cpp \
  dateclock.cpp \
  sysicon.cpp \
  deskapp.cpp \
@@ -76,7 +75,6 @@ HEADERS = \
  colordialog.h \
  colorsel.h \
  msgbox.h \
- runner.h \
  dateclock.h \
  sysicon.h \
  deskapp.h \

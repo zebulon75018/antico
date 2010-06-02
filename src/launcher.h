@@ -50,7 +50,6 @@ private:
     QString restart_pix;
     QString show_pix;
     QString refresh_pix;
-    QString run_pix;
     int dock_position;
     int dock_height;
     Antico *app;
@@ -58,7 +57,6 @@ private:
     QAction *shutdown;
     QAction *restart;
     QAction *refresh;
-    QAction *run;
     QAction *show_desk;
     QSettings *antico;
     QMenu *main_menu;
