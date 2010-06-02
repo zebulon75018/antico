@@ -44,8 +44,6 @@ SOURCES = \
  desk.cpp \
  header.cpp \
  systray.cpp \
- colordialog.cpp \
- colorsel.cpp \
  msgbox.cpp \
  dateclock.cpp \
  sysicon.cpp \
@@ -68,8 +66,6 @@ HEADERS = \
  desk.h \
  header.h \
  systray.h \
- colordialog.h \
- colorsel.h \
  msgbox.h \
  dateclock.h \
  sysicon.h \
