@@ -35,6 +35,15 @@ struct InternalAtoms
 		WM_DELETE_WINDOW,
 		WM_PROTOCOLS,
 		WM_STATE,
+        WM_CHANGE_STATE,
+        WM_TAKE_FOCUS,
+        WM_HINTS,
+        WM_NAME,
+        WM_NORMAL_HINTS,
+        WM_TRANSIENT_FOR,
+        WM_COLORMAPS,
+        WM_COLORMAP_WINDOWS,
+        WM_RESOURCE_MANAGER,
 
 		UTF8_STRING,
 

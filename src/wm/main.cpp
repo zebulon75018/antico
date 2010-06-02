@@ -1,4 +1,5 @@
 #include "x11management.hpp"
+#include "atoms.hpp"
 
 #include <QX11Info>
 

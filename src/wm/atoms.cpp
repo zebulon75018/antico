@@ -1,4 +1,5 @@
 #include <QX11Info>
+#include <QDebug>
 
 #include "atoms.hpp"
 
@@ -28,6 +29,15 @@ static const char *atomNames = {
 	"WM_DELETE_WINDOW\0"
 	"WM_PROTOCOLS\0"
 	"WM_STATE\0"
+    "WM_CHANGE_STATE\0"
+    "WM_TAKE_FOCUS\0"
+    "WM_HINTS\0"
+    "WM_NAME\0"
+    "WM_NORMAL_HINTS\0"
+    "WM_TRANSIENT_FOR\0"
+    "WM_COLORMAPS\0"
+    "WM_COLORMAP_WINDOWS\0"
+    "WM_RESOURCE_MANAGER\0"
 
 	"UTF8_STRING\0"
 };
@@ -53,5 +63,5 @@ void _createAtomList()
 	Q_ASSERT(i == InternalAtoms::NAtoms);
 
 	for (i = 0; i < InternalAtoms::NAtoms; ++i)
-		atomList->atoms[i] = XInternAtom(QX11Info::display(), names[i], False);
+        atomList->atoms[i] = XInternAtom(QX11Info::display(), names[i], False);
 }

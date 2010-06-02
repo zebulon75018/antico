@@ -7,31 +7,19 @@
 
 #include "x11management.hpp"
 #include "frame.hpp"
+#include "atoms.hpp"
+#include "debug.hpp"
 
 #include <X11/extensions/shape.h>
 
-// //////////////////////////////////////
-
-/* define the qDebug() color */
-#define RED     "\e[0;31m"
-#define GREEN   "\e[0;32m"
-#define YELLOW  "\e[0;33m"
-#define MAGENTA "\e[0;35m"
-#define WHITE   "\e[0;37m"
-
-
 Antico::Antico(int &argc, char **argv): QApplication(argc, argv)
 {
-    set_event_names();
-    // for [Alt+Tab] key combination
+    _createAtomList();
+
     next_frame = 0;
-    // get the atoms (ICCCM/EWMH)
     get_atoms();
-    // set application settings on first installation
     set_settings();
-    // send ClientMessage to root for supported hints
     send_supported_hints();
-    // check if server supports nonrectangular windows
     int err;
     servershapes = XShapeQueryExtension(QX11Info::display(), &ShapeEventBase, &err);
 }
@@ -40,66 +28,8 @@ Antico::~Antico()
 {
 }
 
-void Antico::set_event_names()
-{
-    event_names.insert(0, "");
-    event_names.insert(1, "");
-    event_names.insert(2, "KeyPress");
-    event_names.insert(3, "KeyRelease");
-    event_names.insert(4, "ButtonPress");
-    event_names.insert(5, "ButtonRelease");
-    event_names.insert(6, "MotionNotify");
-    event_names.insert(7, "EnterNotify");
-    event_names.insert(8, "LeaveNotify");
-    event_names.insert(9, "FocusIn");
-    event_names.insert(10, "FocusOut");
-    event_names.insert(11, "KeymapNotify");
-    event_names.insert(12, "Expose");
-    event_names.insert(13, "GraphicsExpose");
-    event_names.insert(14, "NoExpose");
-    event_names.insert(15, "VisibilityNotify");
-    event_names.insert(16, "CreateNotify");
-    event_names.insert(17, "DestroyNotify");
-    event_names.insert(18, "UnmapNotify");
-    event_names.insert(19, "MapNotify");
-    event_names.insert(20, "MapRequest");
-    event_names.insert(21, "ReparentNotify");
-    event_names.insert(22, "ConfigureNotify");
-    event_names.insert(23, "ConfigureRequest");
-    event_names.insert(24, "GravityNotify");
-    event_names.insert(25, "ResizeRequest");
-    event_names.insert(26, "CirculateNotify");
-    event_names.insert(27, "CirculateRequest");
-    event_names.insert(28, "PropertyNotify");
-    event_names.insert(29, "SelectionClear");
-    event_names.insert(30, "SelectionRequest");
-    event_names.insert(31, "SelectionNotify");
-    event_names.insert(32, "ColormapNotify");
-    event_names.insert(33, "ClientMessage");
-    event_names.insert(34, "MappingNotify");
-}
-
 void Antico::get_atoms()
 {
-    // get WM protocols required by ICCCM
-    wm_protocols = XInternAtom(QX11Info::display(), "WM_PROTOCOLS", False);
-    wm_delete_window = XInternAtom(QX11Info::display(), "WM_DELETE_WINDOW", False);
-    wm_change_state = XInternAtom(QX11Info::display(), "WM_CHANGE_STATE", False);
-    wm_state = XInternAtom(QX11Info::display(), "WM_STATE", False);
-    wm_take_focus = XInternAtom(QX11Info::display(), "WM_TAKE_FOCUS", False);
-    wm_resource_manager = XInternAtom(QX11Info::display(), "RESOURCE_MANAGER", False);
-    wm_colormaps = XInternAtom(QX11Info::display(), "WM_COLORMAP_WINDOWS", False);
-    wm_hints = XInternAtom(QX11Info::display(), "WM_HINTS", False);
-    wm_normal_hints = XInternAtom(QX11Info::display(), "WM_NORMAL_HINTS", False);
-    wm_name = XInternAtom(QX11Info::display(), "WM_NAME", False);
-    wm_transient_for = XInternAtom(QX11Info::display(), "WM_TRANSIENT_FOR", False);
-    xdnd_aware = XInternAtom(QX11Info::display(), "XdndAware", False);
-    xdnd_position = XInternAtom(QX11Info::display(), "XdndPosition", False);
-    xdnd_enter = XInternAtom(QX11Info::display(), "XdndEnter", False);
-    xdnd_finished = XInternAtom(QX11Info::display(), "XdndFinished", False);
-    xdnd_status = XInternAtom(QX11Info::display(), "XdndStatus", False);
-
-    // extensions required by EWMH
     _net_wm_name = XInternAtom(QX11Info::display(), "_NET_WM_NAME", False);
     _net_wm_icon = XInternAtom(QX11Info::display(), "_NET_WM_ICON", False);
     _net_wm_user_time = XInternAtom(QX11Info::display(), "_NET_WM_USER_TIME", False);
@@ -116,7 +46,6 @@ void Antico::get_atoms()
 
 void Antico::send_supported_hints()
 {
-    // maximum five 32-bit values for message
     Atom _net_supported = XInternAtom(QX11Info::display(), "_NET_SUPPORTED", False);
 
     qDebug("Sending _NET_SUPPORTED");
@@ -125,17 +54,16 @@ void Antico::send_supported_hints()
     XClientMessageEvent xev3;
     XClientMessageEvent xev4;
     XClientMessageEvent xev5;
-    XClientMessageEvent xev6;
 
     xev1.type = ClientMessage;
     xev1.window = QApplication::desktop()->winId();
     xev1.message_type = _net_supported;
     xev1.format = 32;
-    xev1.data.l[0] = wm_protocols;
-    xev1.data.l[1] = wm_delete_window;
-    xev1.data.l[2] = wm_change_state;
-    xev1.data.l[3] = wm_state;
-    xev1.data.l[4] = wm_take_focus;
+    xev1.data.l[0] = ATOM(WM_PROTOCOLS);
+    xev1.data.l[1] = ATOM(WM_DELETE_WINDOW);
+    xev1.data.l[2] = ATOM(WM_CHANGE_STATE);
+    xev1.data.l[3] = ATOM(WM_STATE);
+    xev1.data.l[4] = ATOM(WM_TAKE_FOCUS);
     XSendEvent(QX11Info::display(), QApplication::desktop()->winId(), False,
                (SubstructureNotifyMask | SubstructureRedirectMask), (XEvent *)&xev1);
 
@@ -143,11 +71,11 @@ void Antico::send_supported_hints()
     xev2.window = QApplication::desktop()->winId();
     xev2.message_type = _net_supported;
     xev2.format = 32;
-    xev2.data.l[0] = wm_resource_manager;
-    xev2.data.l[1] = wm_colormaps;
-    xev2.data.l[2] = wm_hints;
-    xev2.data.l[3] = wm_normal_hints;
-    xev2.data.l[4] = wm_name;
+    xev2.data.l[0] = ATOM(WM_RESOURCE_MANAGER);
+    xev2.data.l[1] = ATOM(WM_COLORMAPS);
+    xev2.data.l[2] = ATOM(WM_HINTS);
+    xev2.data.l[3] = ATOM(WM_NORMAL_HINTS);
+    xev2.data.l[4] = ATOM(WM_NAME);
     XSendEvent(QX11Info::display(), QApplication::desktop()->winId(), False,
                (SubstructureNotifyMask | SubstructureRedirectMask), (XEvent *)&xev2);
 
@@ -155,7 +83,7 @@ void Antico::send_supported_hints()
     xev3.window = QApplication::desktop()->winId();
     xev3.message_type = _net_supported;
     xev3.format = 32;
-    xev3.data.l[0] = wm_transient_for;
+    xev3.data.l[0] = ATOM(WM_TRANSIENT_FOR);
     xev3.data.l[1] = _net_wm_name;
     xev3.data.l[2] = _net_wm_icon;
     xev3.data.l[3] = _net_supported;
@@ -182,20 +110,8 @@ void Antico::send_supported_hints()
     xev5.data.l[0] = _kde_net_wm_system_tray_window_for;
     xev5.data.l[1] = _net_wm_state;
     xev5.data.l[2] = _net_wm_window_type_dnd;
-    xev5.data.l[3] = xdnd_aware;
-    xev5.data.l[4] = xdnd_position;
     XSendEvent(QX11Info::display(), QApplication::desktop()->winId(), False,
                (SubstructureNotifyMask | SubstructureRedirectMask), (XEvent *)&xev5);
-
-    xev6.type = ClientMessage;
-    xev6.window = QApplication::desktop()->winId();
-    xev6.message_type = _net_supported;
-    xev6.format = 32;
-    xev6.data.l[0] = xdnd_enter;
-    xev6.data.l[1] = xdnd_finished;
-    xev6.data.l[2] = xdnd_status;
-    XSendEvent(QX11Info::display(), QApplication::desktop()->winId(), False,
-               (SubstructureNotifyMask | SubstructureRedirectMask), (XEvent *)&xev6);
 }
 
 bool Antico::x11EventFilter(XEvent *event)
@@ -211,12 +127,11 @@ bool Antico::x11EventFilter(XEvent *event)
     if (event->type != 6 && event->type != 12) // ignore Motion/Expose event
     {
         qDebug() << "--------------------------------------------------------------------------------------------";
-        qDebug() << GREEN "XEvent:" YELLOW << event_names.value(event->type) << WHITE " ( WId:" MAGENTA << event->xany.window << WHITE ")";
+        qDebug() << "XEvent:" << eventName(event->type) <<  " ( WId:"  << event->xany.window <<  ")";
     }
 
     switch (event->type)
     {
-    // ///////////////// REQUEST EVENTS ///////////////////
     case MapRequest:
         qDebug() << "[MapRequest]" << event->xmaprequest.window;
 
@@ -237,7 +152,7 @@ bool Antico::x11EventFilter(XEvent *event)
         else
         {
             qDebug() << "--> MapRequest for new Client:" << event->xmaprequest.window;
-            create_frame(event->xmaprequest.window); // create new Frame for Client
+            create_frame(event->xmaprequest.window);
         }
         return false;
         break;
@@ -291,7 +206,7 @@ bool Antico::x11EventFilter(XEvent *event)
             XConfigureWindow(QX11Info::display(), frm->winId(), event->xconfigurerequest.value_mask, &wc);
             send_configurenotify(frm);
         }
-        else  // never mapped window
+        else
         {
             qDebug() << "--> Request from unmap client:" << event->xconfigurerequest.window;
             wc.x = event->xconfigurerequest.x;
@@ -321,7 +236,6 @@ bool Antico::x11EventFilter(XEvent *event)
         return false;
         break;
 
-    // ///////////////// NOTIFY EVENTS ///////////////////
 
     case MapNotify:
         qDebug() << "[MapNotify]";
@@ -429,45 +343,45 @@ bool Antico::x11EventFilter(XEvent *event)
 
     case PropertyNotify:
         qDebug() << "[PropertyNotify]";
-        qDebug() << RED "Atom: " WHITE << XGetAtomName(QX11Info::display(), event->xproperty.atom) << '\n';
+        qDebug() <<  "Atom: "  << XGetAtomName(QX11Info::display(), event->xproperty.atom) << '\n';
         pev = &event->xproperty;
 
         if ((frm = mapping_clients.value(event->xproperty.window)) != NULL)
         {
             qDebug() << "Client already mapped by frame:" << frm->winId() << "- Name:" << frm->cl_name() << "- Client:" << event->xproperty.window;
 
-            if (pev->atom == wm_hints)
+            if (pev->atom == ATOM(WM_HINTS))
             {
                 qDebug() << "---> wm_hints";
                 frm->get_wm_hints();
                 return true;
             }
-            if (pev->atom == wm_normal_hints)
+            if (pev->atom == ATOM(WM_NORMAL_HINTS))
             {
                 qDebug() << "---> wm_normal_hints";
                 frm->get_wm_normal_hints();
                 return true;
             }
-            if (pev->atom == wm_name || pev->atom == _net_wm_name)
+            if (pev->atom == ATOM(WM_NAME) || pev->atom == _net_wm_name)
             {
                 qDebug() << "---> wm_name";
                 frm->get_wm_name();
                 frm->update_name();
                 return true;
             }
-            if (pev->atom == wm_state || pev->atom == _net_wm_state)
+            if (pev->atom == ATOM(WM_STATE) || pev->atom == _net_wm_state)
             {
                 qDebug() << "---> wm_state";
                 qDebug() << "Window:" << pev->window << "changing state";
                 return true;
             }
-            if (pev->atom == wm_colormaps)
+            if (pev->atom == ATOM(WM_COLORMAPS))
             {
                 qDebug() << "---> wm_colormap_windows";
                 frm->get_colormaps();
                 return true;
             }
-            if (pev->atom == wm_transient_for)
+            if (pev->atom == ATOM(WM_TRANSIENT_FOR))
             {
                 qDebug() << "---> wm_transient_for";
                 return true;
@@ -505,11 +419,10 @@ bool Antico::x11EventFilter(XEvent *event)
         return false;
         break;
 
-    // ///////////////// OTHER EVENTS ///////////////////
     case ButtonPress:
         qDebug() << "[ButtonPress]";
 
-        if ((frm = mapping_frames.value(event->xbutton.window)) != NULL) // get the frame from his winId
+        if ((frm = mapping_frames.value(event->xbutton.window)) != NULL)
         {
             qDebug() << "Button press:" <<  event->xbutton.button << "for map frame:" << event->xbutton.window;
             set_active_frame(frm);
@@ -527,7 +440,7 @@ bool Antico::x11EventFilter(XEvent *event)
         qDebug() << "[ClientMessage]";
         mev = &event->xclient;
 
-        if (mev->message_type == wm_change_state && event->xclient.format == 32 && event->xclient.data.l[0] == IconicState)
+        if (mev->message_type == ATOM(WM_CHANGE_STATE) && event->xclient.format == 32 && event->xclient.data.l[0] == IconicState)
         {
             qDebug() << "---> wm_change_state: IconicState";
 
@@ -535,12 +448,7 @@ bool Antico::x11EventFilter(XEvent *event)
                 frm->iconify_it();
             return true;
         }
-        /*  if (mev->message_type == xdnd_aware || mev->message_type == xdnd_position
-        || mev->message_type == xdnd_enter || mev->message_type == xdnd_finished
-        || mev->message_type == xdnd_status)
-           {
-              return true;
-           }*/
+
         return false;
         break;
 
@@ -579,7 +487,7 @@ bool Antico::x11EventFilter(XEvent *event)
     }
 }
 
-void Antico::create_frame(Window c_win) // create new frame around the client app
+void Antico::create_frame(Window c_win)
 {
     print_window_prop(c_win);
 
@@ -591,22 +499,21 @@ void Antico::create_frame(Window c_win) // create new frame around the client ap
         check_window_type(c_win);
     }
 
-    // ///// MAP THE NEW CLIENT ////////
     qDebug() << "Mapping window type:" << frame_type.at(0);
 
     if (frame_type.at(0) != "Splash")
     {
-        frm = new Frame(c_win, frame_type.at(0));   // select always the first type in list (preferred)
-        mapping_clients.insert(c_win, frm);                     // save the client winId/frame
-        mapping_frames.insert(frm->winId(), frm);               // save the frame winId/frame
+        frm = new Frame(c_win, frame_type.at(0));   
+        mapping_clients.insert(c_win, frm);                     
+        mapping_frames.insert(frm->winId(), frm);               
     }
     else
         XMapRaised(QX11Info::display(), c_win);
 
-    if (frame_type.at(0) != "Dialog" && frame_type.at(0) != "Splash")   // no Dockbar for Dialog/Splash frames
+    if (frame_type.at(0) != "Dialog" && frame_type.at(0) != "Splash")   
   
 
-    frame_type.clear();                                                 // clear the window type list
+    frame_type.clear();                                              
     qDebug() << "Mapping clients num:" << mapping_clients.size() << "Mapping frames num:" << mapping_frames.size();
 }
 
@@ -629,7 +536,7 @@ bool Antico::check_net_sys_tray_for(Window c_win) const
     return false;
 }
 
-void Antico::check_window_type(Window c_win) // chech the window type before mapping
+void Antico::check_window_type(Window c_win)
 {
     Atom type_ret = None;
     Atom *win_type;
@@ -665,7 +572,7 @@ void Antico::check_window_type(Window c_win) // chech the window type before map
                 frame_type << "Desktop";
                 qDebug() << "Window type: DESKTOP TYPE";
             }
-            else // if other window type
+            else
             {
                 frame_type << "Normal";
                 qDebug() << "Other Window type. Set as NORMAL TYPE";
@@ -673,7 +580,7 @@ void Antico::check_window_type(Window c_win) // chech the window type before map
         }
         return;
     }
-    // / IF PROPERTY NOT SET ///
+
     frame_type << "Normal";
     qDebug() << "Window type not set: SET AS NORMAL";
 
@@ -689,7 +596,7 @@ void Antico::check_wm_transient_for(Window c_win)
     unsigned long n = 0;
     unsigned long extra = 0;
 
-    if (XGetWindowProperty(QX11Info::display(), c_win, wm_transient_for, 0, 100, False,
+    if (XGetWindowProperty(QX11Info::display(), c_win, ATOM(WM_TRANSIENT_FOR), 0, 100, False,
                            AnyPropertyType, &type_ret, &format, &n, &extra, (unsigned char **)&data) == Success && data)
     {
         qDebug() << "Window type: WM_TRANSIENT_FOR. Set as DIALOG";
@@ -703,7 +610,7 @@ void Antico::check_wm_transient_for(Window c_win)
     XFree(data);
 }
 
-void Antico::print_window_prop(Window c_win) // print the window properties
+void Antico::print_window_prop(Window c_win)
 {
     int num_prop_ret = 0;
     Atom *list_prop = XListProperties(QX11Info::display(), c_win, &num_prop_ret);
@@ -722,7 +629,7 @@ void Antico::print_window_prop(Window c_win) // print the window properties
     qDebug() << "---------------------------------------------";
 }
 
-void Antico::raise_next_frame() // raise next frame on [Alt+Tab] key combination
+void Antico::raise_next_frame()
 {
     frm_list = mapping_clients.values();
 
@@ -730,17 +637,17 @@ void Antico::raise_next_frame() // raise next frame on [Alt+Tab] key combination
         return;
 
     if (frm_list.size() <= next_frame)
-        next_frame = 0;  // start from first element
+        next_frame = 0; 
 
     Frame *frm = frm_list.at(next_frame);
 
-    if (frm->win_state() != "IconicState" && frm->win_state() != "WithdrawnState" && !frm->is_splash())  // if not active
+    if (frm->win_state() != "IconicState" && frm->win_state() != "WithdrawnState" && !frm->is_splash()) 
 
         set_active_frame(frm_list.at(next_frame));
     next_frame++;
 }
 
-void Antico::set_active_frame(Frame *frm) // activation of selected frame and unactivation of others
+void Antico::set_active_frame(Frame *frm) 
 {
     foreach (Frame *frame, mapping_clients)
     {
@@ -777,20 +684,19 @@ void Antico::send_configurenotify(Frame *frm)
 
 void Antico::set_settings()
 {
-    // default path
     antico = new QSettings(QSettings::UserScope, "antico", "antico", this);
-    // set default style on first installation, if no "/antico.cfg" is set
+
     if (antico->childGroups().isEmpty())
     {
         qDebug() << "Set default settings ...";
         antico->beginGroup("Style");
         antico->setValue("name", "default.stl");
         antico->setValue("path", QCoreApplication::applicationDirPath() + "/../share/antico/themes/default/");
-        antico->endGroup(); // Style
-        // ///////////////////////////////////////////////////////////////////////
+        antico->endGroup();
+
         antico->beginGroup("Deskbar");
-        antico->setValue("no_hide_iconify", "yes"); // The default is hide deskbar icon on iconify window
-        antico->endGroup();                         // Deskbar
+        antico->setValue("no_hide_iconify", "yes"); 
+        antico->endGroup();
         antico->sync();
     }
 
