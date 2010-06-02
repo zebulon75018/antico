@@ -44,7 +44,6 @@ SOURCES = \
  desk.cpp \
  header.cpp \
  systray.cpp \
- msgbox.cpp \
  dateclock.cpp \
  sysicon.cpp \
  deskapp.cpp \
@@ -66,7 +65,6 @@ HEADERS = \
  desk.h \
  header.h \
  systray.h \
- msgbox.h \
  dateclock.h \
  sysicon.h \
  deskapp.h \

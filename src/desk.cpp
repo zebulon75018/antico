@@ -22,7 +22,6 @@
 #include "deskapp.h"
 #include "deskdev.h"
 #include "deskicon.h"
-#include "msgbox.h"
 #include "antico.h"
 #include "utils.h"
 #include "frame.h"
@@ -231,25 +230,6 @@ void Desk::keyPressEvent(QKeyEvent *event)
 {
     if (desk_folders_selected.size() >0 || desk_files_selected.size() >0 || desk_apps_selected.size() >0)
     {
-        if (event->key() == Qt::Key_Delete)
-        {
-            Msgbox msg;
-            msg.set_header(tr("DELETE SELECTED ICONS"));
-            msg.set_info(tr("Are you sure to delete the selected icons ?"));
-            msg.set_icon("Question");
-
-            int ret = msg.exec();
-
-            if (ret == QDialog::Accepted)
-            {
-                foreach(Deskfolder *folder, desk_folders_selected)
-                remove_deskfolder(folder); // remove selected deskfolder
-                foreach(Deskfile *file, desk_files_selected)
-                remove_deskfile(file); // remove selected deskfile
-                foreach(Deskapp *app, desk_apps_selected)
-                remove_deskapp(app); // remove selected deskapp
-            }
-        }
     }
 }
 
@@ -566,24 +546,6 @@ void Desk::mount_device(const QString &uuid, const QString &block_device, const 
 
     Deskdev *d_dev = new Deskdev(cat_menu, uuid, block_device, mnt_dir, vol_label, drive_type, this); // save the new deskdev
     desk_dev.insert(uuid, d_dev);
-
-    if (mnt_cmd)
-    {
-        Msgbox info;
-        info.set_header(tr("WARNING"));
-        info.set_info(tr("<b>Problem to mount the device</b>"));
-        info.set_icon("Warning");
-        info.exec();
-    }
-    else
-    {
-        QDBusReply<QString> mnt_point = uuid_interface.call("GetProperty", "volume.mount_point");
-        Msgbox info;
-        info.set_header(tr("Device mounted in:"));
-        info.set_info("<b>" + mnt_dir + "</b>");
-        info.set_icon("Information");
-        info.exec();
-    }
 }
 
 void Desk::device_removed(const QString &uuid)
@@ -608,23 +570,6 @@ void Desk::unmount_device(const QString &uuid)
 
     // unmount and (if CDROM) eject the device
     QDBusReply<int> unmnt_cmd = unmount_interface.call("Eject", options);
-
-    if (unmnt_cmd)
-    {
-        Msgbox info;
-        info.set_header(tr("WARNING"));
-        info.set_info(tr("<b>Problem to unmount the device</b>"));
-        info.set_icon("Warning");
-        info.exec();
-    }
-    else
-    {
-        Msgbox info;
-        info.set_header(tr("INFORMATION"));
-        info.set_info(tr("<b>Device correctly unmounted</b>"));
-        info.set_icon("Information");
-        info.exec();
-    }
 }
 
 

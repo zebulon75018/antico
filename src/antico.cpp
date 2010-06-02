@@ -18,7 +18,6 @@
 #include "frame.h"
 #include "systray.h"
 #include "desk.h"
-#include "msgbox.h"
 #include "utils.h"
 
 #include <X11/extensions/shape.h>
@@ -849,99 +848,69 @@ void Antico::wm_refresh()
 
 void Antico::wm_quit()
 {
-    Msgbox msg;
-    msg.set_header(tr("QUIT THE WM"));
-    msg.set_info(tr("Are you sure to quit the WM ?"));
-    msg.set_icon("Question");
-    int ret = msg.exec();
-
-    if (ret == QDialog::Accepted)
+    foreach(Frame *frm, mapping_clients)
     {
-        foreach(Frame *frm, mapping_clients)
-        {
-            XReparentWindow(QX11Info::display(), frm->winId(), QX11Info::appRootWindow(), 0, 0);
-            qDebug() << "Quit Frame:" << frm->winId() << "Client:" << frm->cl_win();
-            frm->destroy_it();
-        }
-        mapping_clients.clear();
-        mapping_frames.clear();
-        dock->close();
-        dsk->close();
-        XSync(QX11Info::display(), False);
-        QProcess::startDetached(QString("/bin/rm").append(" ").append(QDir::tempPath() + "/antico-runner.log"));
-        qDebug() << "Quit Antico WM ...";
-        XCloseDisplay(QX11Info::display());
-        emit lastWindowClosed();
+        XReparentWindow(QX11Info::display(), frm->winId(), QX11Info::appRootWindow(), 0, 0);
+        qDebug() << "Quit Frame:" << frm->winId() << "Client:" << frm->cl_win();
+        frm->destroy_it();
     }
+    mapping_clients.clear();
+    mapping_frames.clear();
+    dock->close();
+    dsk->close();
+    XSync(QX11Info::display(), False);
+    QProcess::startDetached(QString("/bin/rm").append(" ").append(QDir::tempPath() + "/antico-runner.log"));
+    qDebug() << "Quit Antico WM ...";
+    XCloseDisplay(QX11Info::display());
+    emit lastWindowClosed();
 }
 
 void Antico::wm_shutdown()
 {
-    Msgbox msg;
-    msg.set_header(tr("SHUTDOWN THE PC"));
-    msg.set_info(tr("Are you sure to shutdown the PC ?"));
-    msg.set_icon("Question");
-    int ret = msg.exec();
+    QDBusConnection bus = QDBusConnection::systemBus();
+    QDBusInterface hal("org.freedesktop.Hal", "/org/freedesktop/Hal/devices/computer", "org.freedesktop.Hal.Device.SystemPowerManagement", bus);
+    hal.call("Shutdown");
 
-    if (ret == QDialog::Accepted)
-    {
-        qDebug() << "Shutdown the PC ...";
-
-        QDBusConnection bus = QDBusConnection::systemBus();
-        QDBusInterface hal("org.freedesktop.Hal", "/org/freedesktop/Hal/devices/computer", "org.freedesktop.Hal.Device.SystemPowerManagement", bus);
-        hal.call("Shutdown");
-
-        foreach(Frame *frm, mapping_clients)
+    foreach(Frame *frm, mapping_clients)
         {
             XReparentWindow(QX11Info::display(), frm->winId(), QX11Info::appRootWindow(), 0, 0);
             qDebug() << "Quit Frame:" << frm->winId() << "Client:" << frm->cl_win();
             frm->destroy_it();
         }
-        mapping_clients.clear();
-        mapping_frames.clear();
-        dock->close();
-        dsk->close();
-        XSync(QX11Info::display(), False);
-        QProcess::startDetached(QString("/bin/rm").append(" ").append(QDir::tempPath() + "/antico-runner.log"));
-        qDebug() << "Quit Antico WM ...";
-        XCloseDisplay(QX11Info::display());
-        emit lastWindowClosed();
-    }
+    mapping_clients.clear();
+    mapping_frames.clear();
+    dock->close();
+    dsk->close();
+    XSync(QX11Info::display(), False);
+    QProcess::startDetached(QString("/bin/rm").append(" ").append(QDir::tempPath() + "/antico-runner.log"));
+    qDebug() << "Quit Antico WM ...";
+    XCloseDisplay(QX11Info::display());
+    emit lastWindowClosed();
 }
 
 void Antico::wm_restart()
 {
-    Msgbox msg;
-    msg.set_header(tr("RESTART THE PC"));
-    msg.set_info(tr("Are you sure to restart the PC ?"));
-    msg.set_icon("Question");
+    qDebug() << "Restart the PC ...";
 
-    int ret = msg.exec();
-
-    if (ret == QDialog::Accepted)
+    QDBusConnection bus = QDBusConnection::systemBus();
+    QDBusInterface hal("org.freedesktop.Hal", "/org/freedesktop/Hal/devices/computer", "org.freedesktop.Hal.Device.SystemPowerManagement", bus);
+    hal.call("Reboot");
+    
+    foreach(Frame *frm, mapping_clients)
     {
-        qDebug() << "Restart the PC ...";
-
-        QDBusConnection bus = QDBusConnection::systemBus();
-        QDBusInterface hal("org.freedesktop.Hal", "/org/freedesktop/Hal/devices/computer", "org.freedesktop.Hal.Device.SystemPowerManagement", bus);
-        hal.call("Reboot");
-
-        foreach(Frame *frm, mapping_clients)
-        {
-            XReparentWindow(QX11Info::display(), frm->winId(), QX11Info::appRootWindow(), 0, 0);
-            qDebug() << "Quit Frame:" << frm->winId() << "Client:" << frm->cl_win();
-            frm->destroy_it();
-        }
-        mapping_clients.clear();
-        mapping_frames.clear();
-        dock->close();
-        dsk->close();
-        XSync(QX11Info::display(), False);
-        QProcess::startDetached(QString("/bin/rm").append(" ").append(QDir::tempPath() + "/antico-runner.log"));
-        qDebug() << "Quit Antico WM ...";
-        XCloseDisplay(QX11Info::display());
-        emit lastWindowClosed();
+        XReparentWindow(QX11Info::display(), frm->winId(), QX11Info::appRootWindow(), 0, 0);
+        qDebug() << "Quit Frame:" << frm->winId() << "Client:" << frm->cl_win();
+        frm->destroy_it();
     }
+    mapping_clients.clear();
+    mapping_frames.clear();
+    dock->close();
+    dsk->close();
+    XSync(QX11Info::display(), False);
+    QProcess::startDetached(QString("/bin/rm").append(" ").append(QDir::tempPath() + "/antico-runner.log"));
+    qDebug() << "Quit Antico WM ...";
+    XCloseDisplay(QX11Info::display());
+    emit lastWindowClosed();
 }
 
 void Antico::show_desktop()
