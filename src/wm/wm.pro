@@ -8,5 +8,5 @@ DEPENDPATH += .
 INCLUDEPATH += .
 
 # Input
-HEADERS += atoms.hpp border.h frame.h header.h x11management.hpp
+HEADERS += atoms.hpp border.hpp frame.hpp header.hpp x11management.hpp
 SOURCES += atoms.cpp border.cpp frame.cpp header.cpp main.cpp x11management.cpp

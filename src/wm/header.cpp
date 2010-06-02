@@ -1,14 +1,8 @@
-// //////////////////////////////////////
-//  File      : header.cpp            //
-//  Written by: g_cigala@virgilio.it  //
-//  Copyright : GPL                   //
-// //////////////////////////////////////
-
 #include <QPainter>
 #include <QMouseEvent>
 #include <QApplication>
 
-#include "header.h"
+#include "header.hpp"
 
 // //////////////////////////////////////
 

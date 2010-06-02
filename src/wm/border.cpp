@@ -1,12 +1,6 @@
-// //////////////////////////////////////
-//  File      : border.cpp            //
-//  Written by: g_cigala@virgilio.it  //
-//  Copyright : GPL                   //
-// //////////////////////////////////////
-
 #include <QMouseEvent>
 
-#include "border.h"
+#include "border.hpp"
 
 // //////////////////////////////////////
 

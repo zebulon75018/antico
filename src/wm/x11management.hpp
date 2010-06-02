@@ -1,16 +1,3 @@
-// //////////////////////////////////////
-//  File      : antico.h              //
-//  Written by: g_cigala@virgilio.it  //
-//  Copyright : GPL                   //
-// //////////////////////////////////////
-
-// X event handler
-// create new frame
-// set window manager init settings to "antico.cfg"
-// quit window manager
-
-// //////////////////////////////////////
-
 #ifndef ANTICO_H
 #define ANTICO_H
 
@@ -18,9 +5,7 @@
 #include <QStringList>
 #include <QHash>
 
-class Dockbar;
 class Frame;
-class Desk;
 class Categorymenu;
 class QSettings;
 
@@ -38,28 +23,18 @@ protected:
 public:
     Antico(int &argc, char **argv);
     ~Antico();
-    void create_frame(WId, Dockbar *, Desk *);
+    void create_frame(WId);
     void raise_next_frame();
     void set_active_frame(Frame *);
     void send_configurenotify(Frame *);
-    void wm_quit();
-    void wm_shutdown();
-    void wm_restart();
-    void wm_refresh();
-    void show_desktop();
     void set_settings();
-    void run_app_at_startup();
     void get_atoms();
-    void create_gui();
     void set_event_names();
     void send_supported_hints();
     void check_window_type(WId);
     void print_window_prop(WId);
     bool check_net_sys_tray_for(WId) const;
     void check_wm_transient_for(WId);
-    Desk *get_desktop();
-    Dockbar *get_dockbar();
-    Categorymenu *get_category_menu();
 
 private:
     QHash<int, QString> event_names;        // event names
@@ -103,9 +78,6 @@ private:
     Atom _kde_net_wm_system_tray_window_for;
     // ////////////
     QSettings *antico;
-    Dockbar *dock;
-    Desk *dsk;
     Frame *frm;
-    Categorymenu *cat_menu;
 };
 #endif

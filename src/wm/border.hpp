@@ -1,13 +1,3 @@
-// //////////////////////////////////////
-//  File      : border.h              //
-//  Written by: g_cigala@virgilio.it  //
-//  Copyright : GPL                   //
-// //////////////////////////////////////
-
-// create the frame border
-
-// //////////////////////////////////////
-
 #ifndef BORDER_H
 #define BORDER_H
 

@@ -1,22 +1,9 @@
-// //////////////////////////////////////
-//  File      : frame.h               //
-//  Written by: g_cigala@virgilio.it  //
-//  Copyright : GPL                   //
-// //////////////////////////////////////
-
-// create window frame around X11 apps
-// manage all the move/resize event
-
-// //////////////////////////////////////
-
 #ifndef FRAME_H
 #define FRAME_H
 
 #include <QFrame>
 
 class Border;
-class Desk;
-class Dockbar;
 class Header;
 
 class QGridLayout;
@@ -29,7 +16,7 @@ class Frame: public QFrame
     Q_OBJECT
 
 public:
-    Frame(WId, const QString &, Dockbar *, Desk *, QWidget *parent = 0);
+    Frame(WId, const QString &, QWidget *parent = 0);
     ~Frame();
     void init();
     void update_style();
@@ -158,8 +145,6 @@ private:
     QString res_class;              // ClassHint
     bool inputfield;                // WMHints
     Qt::HANDLE cmap;                // colormap
-    Desk *desktop;                  // desktop
-    Dockbar *dockbar;               // dockbar
     Header *tm_bdr;                 // top mid window border (for window move)
     Border *tl_bdr;                 // top left window border (icon)
     Border *tr_bdr;                 // top right window border (icon)

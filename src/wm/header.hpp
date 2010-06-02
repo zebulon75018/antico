@@ -1,13 +1,3 @@
-// //////////////////////////////////////
-//  File      : header.h              //
-//  Written by: g_cigala@virgilio.it  //
-//  Copyright : GPL                   //
-// //////////////////////////////////////
-
-// the header of the window frame (top mid border)
-
-// //////////////////////////////////////
-
 #ifndef HEADER_H
 #define HEADER_H
 

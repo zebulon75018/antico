@@ -1,24 +1,12 @@
-// //////////////////////////////////////
-//  File      : antico.cpp            //
-//  Written by: g_cigala@virgilio.it  //
-//  Copyright : GPL                   //
-// //////////////////////////////////////
-
 #include <QDebug>
 #include <QSettings>
 #include <QX11Info>
 #include <QDesktopWidget>
 #include <QProcess>
-#include <QDBusConnection>
-#include <QDBusInterface>
 #include <QDir>
 
-#include "antico.h"
-#include "dockbar.h"
-#include "frame.h"
-#include "systray.h"
-#include "desk.h"
-#include "utils.h"
+#include "x11management.hpp"
+#include "frame.hpp"
 
 #include <X11/extensions/shape.h>
 
@@ -50,8 +38,6 @@ Antico::Antico(int &argc, char **argv): QApplication(argc, argv)
 
 Antico::~Antico()
 {
-    delete cat_menu;
-    delete antico;
 }
 
 void Antico::set_event_names()
@@ -251,7 +237,7 @@ bool Antico::x11EventFilter(XEvent *event)
         else
         {
             qDebug() << "--> MapRequest for new Client:" << event->xmaprequest.window;
-            create_frame(event->xmaprequest.window, dock, dsk); // create new Frame for Client
+            create_frame(event->xmaprequest.window); // create new Frame for Client
         }
         return false;
         break;
@@ -384,15 +370,12 @@ bool Antico::x11EventFilter(XEvent *event)
             qDebug() << "--> Destroy frame:" << frm->winId() << "- Name:" << frm->cl_name() << "- Client:" << event->xdestroywindow.window;
             mapping_clients.remove(event->xdestroywindow.window);
             mapping_frames.remove(frm->winId());
-            dsk->remove_deskicon(frm->winId()); // remove eventually Deskicon still mapped
-            dock->remove_dockicon(frm);         // remove eventually Dockicon still mapped
             delete frm;
             return true;
         }
         if (event->xdestroywindow.event != event->xdestroywindow.window)
         {
-            dock->system_tray()->remove_sysicon(event->xdestroywindow.window);  // check in the System Tray eventually Sysicon still mapped
-            dock->system_tray()->remove_embedder(event->xdestroywindow.window); // remove eventually QX11EmbedContainer
+
             return true;
         }
         qDebug() << "Mapping clients num:" << mapping_clients.size() << "Mapping frames num:" << mapping_frames.size();
@@ -573,36 +556,6 @@ bool Antico::x11EventFilter(XEvent *event)
             raise_next_frame();
             return false;
         }
-        if (sym == XK_q && mod == keymask1)
-        {
-            qDebug() << "Press [Alt+q] - Quit the WM";
-            wm_quit();
-            return false;
-        }
-        if (sym == XK_s && mod == keymask1)
-        {
-            qDebug() << "Press [Alt+s] - Shutdown the PC";
-            wm_shutdown();
-            return false;
-        }
-        if (sym == XK_r && mod == keymask1)
-        {
-            qDebug() << "Press [Alt+r] - Restart the PC";
-            wm_restart();
-            return false;
-        }
-        if (sym == XK_u && mod == keymask1)
-        {
-            qDebug() << "Press [Alt+u] - Refresh the WM";
-            wm_refresh();
-            return false;
-        }
-        if (sym == XK_d && mod == keymask1)
-        {
-            qDebug() << "Press [Alt+d] - Show Desktop";
-            show_desktop();
-            return false;
-        }
 
         return false;
         break;
@@ -626,7 +579,7 @@ bool Antico::x11EventFilter(XEvent *event)
     }
 }
 
-void Antico::create_frame(Window c_win, Dockbar *dock, Desk *desk) // create new frame around the client app
+void Antico::create_frame(Window c_win) // create new frame around the client app
 {
     print_window_prop(c_win);
 
@@ -643,7 +596,7 @@ void Antico::create_frame(Window c_win, Dockbar *dock, Desk *desk) // create new
 
     if (frame_type.at(0) != "Splash")
     {
-        frm = new Frame(c_win, frame_type.at(0), dock, desk);   // select always the first type in list (preferred)
+        frm = new Frame(c_win, frame_type.at(0));   // select always the first type in list (preferred)
         mapping_clients.insert(c_win, frm);                     // save the client winId/frame
         mapping_frames.insert(frm->winId(), frm);               // save the frame winId/frame
     }
@@ -651,7 +604,7 @@ void Antico::create_frame(Window c_win, Dockbar *dock, Desk *desk) // create new
         XMapRaised(QX11Info::display(), c_win);
 
     if (frame_type.at(0) != "Dialog" && frame_type.at(0) != "Splash")   // no Dockbar for Dialog/Splash frames
-        dock->add_dockicon(frm);                                        // add frame to dockbar
+  
 
     frame_type.clear();                                                 // clear the window type list
     qDebug() << "Mapping clients num:" << mapping_clients.size() << "Mapping frames num:" << mapping_frames.size();
@@ -669,7 +622,6 @@ bool Antico::check_net_sys_tray_for(Window c_win) const
                            AnyPropertyType, &type_ret, &format, &n, &extra, (unsigned char **)&data) == Success && data)
     {
         qDebug() << "_KDE_NET_WM_SYSTEM_TRAY_WINDOW_FOR: WINDOW ADD TO SYSTEM TRAY";
-        dock->system_tray()->add_embed(c_win); // add to Systray
         XFree(data);
         return true;
     }
@@ -821,151 +773,6 @@ void Antico::send_configurenotify(Frame *frm)
     ce.border_width = 0;
     ce.override_redirect = 0;
     XSendEvent(QX11Info::display(), ce.window, False, StructureNotifyMask, (XEvent *)&ce);
-}
-
-void Antico::wm_refresh()
-{
-    qDebug() << "Refreshing Antico WM ...";
-
-    dsk->update_style();                    // update desktop, all deskicons and all deskapps
-    dock->update_style();                   // update dockbar and all dockicons
-
-    foreach (Frame *frm, mapping_clients)   // update all map apps
-
-        frm->update_style();
-
-    XSync(QX11Info::display(), FALSE);
-    flush();
-}
-
-void Antico::wm_quit()
-{
-    foreach (Frame *frm, mapping_clients)
-    {
-        XReparentWindow(QX11Info::display(), frm->winId(), QX11Info::appRootWindow(), 0, 0);
-        qDebug() << "Quit Frame:" << frm->winId() << "Client:" << frm->cl_win();
-        frm->destroy_it();
-    }
-    mapping_clients.clear();
-    mapping_frames.clear();
-    dock->close();
-    dsk->close();
-    XSync(QX11Info::display(), False);
-    QProcess::startDetached(QString("/bin/rm").append(" ").append(QDir::tempPath() + "/antico-runner.log"));
-    qDebug() << "Quit Antico WM ...";
-    XCloseDisplay(QX11Info::display());
-    emit lastWindowClosed();
-}
-
-void Antico::wm_shutdown()
-{
-    QDBusConnection bus = QDBusConnection::systemBus();
-    QDBusInterface hal("org.freedesktop.Hal", "/org/freedesktop/Hal/devices/computer", "org.freedesktop.Hal.Device.SystemPowerManagement", bus);
-
-    hal.call("Shutdown");
-
-    foreach (Frame *frm, mapping_clients)
-    {
-        XReparentWindow(QX11Info::display(), frm->winId(), QX11Info::appRootWindow(), 0, 0);
-        qDebug() << "Quit Frame:" << frm->winId() << "Client:" << frm->cl_win();
-        frm->destroy_it();
-    }
-    mapping_clients.clear();
-    mapping_frames.clear();
-    dock->close();
-    dsk->close();
-    XSync(QX11Info::display(), False);
-    QProcess::startDetached(QString("/bin/rm").append(" ").append(QDir::tempPath() + "/antico-runner.log"));
-    qDebug() << "Quit Antico WM ...";
-    XCloseDisplay(QX11Info::display());
-    emit lastWindowClosed();
-}
-
-void Antico::wm_restart()
-{
-    qDebug() << "Restart the PC ...";
-
-    QDBusConnection bus = QDBusConnection::systemBus();
-    QDBusInterface hal("org.freedesktop.Hal", "/org/freedesktop/Hal/devices/computer", "org.freedesktop.Hal.Device.SystemPowerManagement", bus);
-    hal.call("Reboot");
-
-    foreach (Frame *frm, mapping_clients)
-    {
-        XReparentWindow(QX11Info::display(), frm->winId(), QX11Info::appRootWindow(), 0, 0);
-        qDebug() << "Quit Frame:" << frm->winId() << "Client:" << frm->cl_win();
-        frm->destroy_it();
-    }
-    mapping_clients.clear();
-    mapping_frames.clear();
-    dock->close();
-    dsk->close();
-    XSync(QX11Info::display(), False);
-    QProcess::startDetached(QString("/bin/rm").append(" ").append(QDir::tempPath() + "/antico-runner.log"));
-    qDebug() << "Quit Antico WM ...";
-    XCloseDisplay(QX11Info::display());
-    emit lastWindowClosed();
-}
-
-void Antico::show_desktop()
-{
-    qDebug() << "Show Desktop. Iconize all the apps ...";
-
-    foreach (Frame *frm, mapping_clients)
-        if (frm->win_state().compare("IconicState") != 0 && frm->win_state().compare("WithdrawnState") != 0 && !frm->is_splash())   // if not yet iconize/inactive
-        {
-            frm->raise_it();                                                                                                        // set in front
-            frm->iconify_it();                                                                                                      // catch the pixmap
-        }
-    XSync(QX11Info::display(), FALSE);
-    flush();
-}
-
-void Antico::run_app_at_startup()
-{
-    // default path
-    antico = new QSettings(QSettings::UserScope, "antico", "antico", this);
-
-    antico->beginGroup("Startup");
-
-    for (int i = 0; i < antico->childGroups().size(); i++)
-    {
-        QStringList args;
-        QString app_name = antico->childGroups().value(i);
-        antico->beginGroup(app_name); // App group
-        QString name = antico->value("name").toString();
-        QString path = antico->value("path").toString();
-        args << antico->value("args").toString();
-        QProcess::startDetached(path + name, args); // run the application + args
-        antico->endGroup();                         // Name
-    }
-    antico->endGroup();                             // Startup
-}
-
-void Antico::create_gui()
-{
-    cat_menu = new Categorymenu();
-    cat_menu->update_menu();
-    // create desk
-    dsk = new Desk(this);
-    // create dockbar
-    dock = new Dockbar(this);
-    // run application from startup list
-    run_app_at_startup();
-}
-
-Desk *Antico::get_desktop()
-{
-    return dsk;
-}
-
-Dockbar *Antico::get_dockbar()
-{
-    return dock;
-}
-
-Categorymenu *Antico::get_category_menu()
-{
-    return cat_menu;
 }
 
 void Antico::set_settings()
