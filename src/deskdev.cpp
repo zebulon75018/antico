@@ -12,7 +12,6 @@
 #include <QApplication>
 
 #include "deskdev.h"
-#include "filedialog.h"
 #include "desk.h"
 #include "utils.h"
 
@@ -133,13 +132,6 @@ void Deskdev::mouseReleaseEvent(QMouseEvent *event)
 
 void Deskdev::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton)
-    {
-        Filedialog *file_dialog = new Filedialog(cat_menu);
-        file_dialog->set_type(tr("Device contents:"), "Close");
-        file_dialog->set_path(mount_path);
-        file_dialog->exec();
-    }
 }
 
 void Deskdev::enterEvent(QEvent *event)

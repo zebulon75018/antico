@@ -14,7 +14,6 @@
 
 #include "deskfolder.h"
 #include "utils.h"
-#include "filedialog.h"
 
 ////////////////////////////////////////
 
@@ -165,26 +164,6 @@ void Deskfolder::mouseDoubleClickEvent(QMouseEvent *event)
             QStringList param;
             param << path;
             QProcess::startDetached(exec, param); //open the file with the preferred application
-        }
-        else // open with Filedialog
-        {
-            Filedialog *file_dialog = new Filedialog(cat_menu);
-            file_dialog->set_type(tr("Folder contents:"), "Close");
-            file_dialog->setGeometry(geom);
-            file_dialog->set_path(dir_path);
-
-            if (file_dialog->exec() == QDialog::Rejected) // on close button
-            {
-                // save deskicon geometry
-                antico->beginGroup("Desktop");
-                antico->beginGroup("Folder");
-                antico->beginGroup(dir_name);
-                antico->setValue("geometry", file_dialog->geometry());
-                antico->endGroup(); //name
-                antico->endGroup(); //Folder
-                antico->endGroup(); //Desktop
-                geom = file_dialog->geometry(); // update geometry
-            }
         }
     }
 }

@@ -21,7 +21,6 @@
 class Dockbar;
 class Frame;
 class Desk;
-class Filedialog;
 class Categorymenu;
 class QSettings;
 
@@ -58,7 +57,6 @@ public:
     void print_window_prop(WId);
     bool check_net_sys_tray_for(WId) const;
     void check_wm_transient_for(WId);
-    Filedialog * get_file_dialog();
     Desk * get_desktop();
     Dockbar * get_dockbar();
     Categorymenu * get_category_menu();
@@ -109,6 +107,5 @@ private:
     Desk *dsk;
     Frame *frm;
     Categorymenu *cat_menu;
-    Filedialog *file_dialog;
 };
 #endif

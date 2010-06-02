@@ -20,7 +20,6 @@ class Deskdev;
 class Deskfile;
 class Deskfolder;
 class Deskicon;
-class Filedialog;
 class Frame;
 class QDBusInterface;
 class QRubberBand;
@@ -92,7 +91,6 @@ private:
     QRubberBand *rubber_band;
     QSettings *antico;
     Antico *app;
-    Filedialog *file_dialog;
     Categorymenu *cat_menu;
     Deskfolder *d_folder;
     Deskfile *d_file;

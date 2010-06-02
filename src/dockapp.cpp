@@ -11,7 +11,6 @@
 #include <QApplication>
 
 #include "dockapp.h"
-#include "filedialog.h"
 
 ////////////////////////////////////////
 

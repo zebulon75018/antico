@@ -24,7 +24,6 @@
 #include "deskicon.h"
 #include "msgbox.h"
 #include "antico.h"
-#include "filedialog.h"
 #include "trash.h"
 #include "utils.h"
 #include "frame.h"
@@ -34,7 +33,6 @@
 Desk::Desk(Antico *a, QWidget *parent) : QLabel(parent)
 {
     app = a;
-    file_dialog = app->get_file_dialog();
     cat_menu = app->get_category_menu();
     read_settings();
     set_geometry();
@@ -49,7 +47,6 @@ Desk::~Desk()
 {
     delete antico;
     delete app;
-    delete file_dialog;
     delete cat_menu;
 }
 

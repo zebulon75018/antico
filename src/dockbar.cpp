@@ -14,7 +14,6 @@
 #include <QFileSystemModel>
 #include <QApplication>
 
-#include "filedialog.h"
 #include "dockbar.h"
 #include "antico.h"
 #include "dateclock.h"
@@ -31,7 +30,6 @@
 Dockbar::Dockbar(Antico *a, QWidget *parent) : QLabel(parent, Qt::X11BypassWindowManagerHint)
 {
     app = a;
-    file_dialog = app->get_file_dialog();
     dock_layout = new QHBoxLayout(this);
     setLayout(dock_layout);
     dock_layout->setContentsMargins(0, 0, 0, 0);
@@ -99,7 +97,6 @@ Dockbar::~Dockbar()
     delete d_icon;
     delete clk;
     delete app;
-    delete file_dialog;
 }
 
 void Dockbar::read_settings()

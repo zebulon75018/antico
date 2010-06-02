@@ -20,7 +20,6 @@ class Dockicon;
 class Systray;
 class Antico;
 class Launcher;
-class Filedialog;
 class Dateclock;
 class Dockmenu;
 class Dockapp;
@@ -92,7 +91,6 @@ private:
     Systray *sys;
     Dateclock *clk;
     Antico *app;
-    Filedialog *file_dialog;
  
 };
 #endif

@@ -11,8 +11,8 @@
 #include <QProcess>
 #include <QDBusConnection>
 #include <QDBusInterface>
+#include <QDir>
 
-#include "filedialog.h"
 #include "antico.h"
 #include "dockbar.h"
 #include "frame.h"
@@ -52,7 +52,6 @@ Antico::Antico(int &argc, char **argv) : QApplication(argc, argv)
 Antico::~Antico()
 {
     delete cat_menu;
-    delete file_dialog;
     delete antico;
 }
 
@@ -836,7 +835,6 @@ void Antico::wm_refresh()
 {
     qDebug() << "Refreshing Antico WM ...";
 
-    file_dialog->update_style();
     dsk->update_style(); //update desktop, all deskicons and all deskapps
     dock->update_style(); //update dockbar and all dockicons
 
@@ -987,18 +985,12 @@ void Antico::create_gui()
 {
     cat_menu = new Categorymenu();
     cat_menu->update_menu();
-    file_dialog = new Filedialog(cat_menu);
     //create desk
     dsk = new Desk(this);
     // create dockbar
     dock = new Dockbar(this);
     // run application from startup list
     run_app_at_startup();
-}
-
-Filedialog * Antico::get_file_dialog()
-{
-    return file_dialog;
 }
 
 Desk * Antico::get_desktop()

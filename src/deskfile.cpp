@@ -13,7 +13,6 @@
 #include <QApplication>
 
 #include "deskfile.h"
-#include "filedialog.h"
 #include "utils.h"
 
 ////////////////////////////////////////
