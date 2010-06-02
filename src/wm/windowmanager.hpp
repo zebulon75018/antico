@@ -4,12 +4,41 @@
 #include <QApplication>
 #include <QStringList>
 #include <QHash>
+#include <QX11Info>
+#include <QMap>
 
 class Frame;
 class Categorymenu;
 class QSettings;
 
 #include <X11/Xutil.h>
+
+class Client;
+
+class WindowManager: public QObject
+{
+    Q_OBJECT
+
+public:
+    WindowManager(QObject *parent = 0);
+
+    void init();
+    bool x11EventFilter(void *message, long *result);
+
+    static WindowManager *self();
+
+private:
+    Display *display() const;
+    Time serverTime() const;
+
+    bool handleMapRequest(Qt::HANDLE window);
+
+    void manageClient(Qt::HANDLE window);
+
+private:
+    Qt::HANDLE m_wmWindow;
+    QMap<Qt::HANDLE, Client *> m_clients;
+};
 
 class Antico: public QApplication
 {

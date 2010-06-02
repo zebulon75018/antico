@@ -1,22 +1,25 @@
-#include "x11management.hpp"
+#include <QDebug>
+#include "windowmanager.hpp"
 #include "atoms.hpp"
 
 #include <QX11Info>
 
 #include <X11/Xlib.h>
 
+static bool _x11EventFilter(void *message, long *result)
+{
+    return WindowManager::self()->x11EventFilter(message, result);
+}
+
 int main(int argc, char **argv)
 {
-    Antico a(argc, argv);
+    QApplication app(argc, argv);
 
-    XSelectInput(QX11Info::display(), QX11Info::appRootWindow(),
-                 KeyPressMask | KeyReleaseMask | ButtonPressMask | ButtonReleaseMask |
-                 KeymapStateMask | ButtonMotionMask | PointerMotionMask | EnterWindowMask |
-                 LeaveWindowMask | FocusChangeMask | VisibilityChangeMask |
-                 ExposureMask | StructureNotifyMask | SubstructureRedirectMask | SubstructureNotifyMask);
+    app.setEventFilter(_x11EventFilter);
 
-    XClearWindow(QX11Info::display(), QX11Info::appRootWindow());
-    XSync(QX11Info::display(), False);
+    _createAtomList();
 
-    return a.exec();
+    WindowManager::self()->init();
+
+    return app.exec();
 }

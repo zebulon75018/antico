@@ -44,7 +44,11 @@ struct InternalAtoms
         WM_COLORMAPS,
         WM_COLORMAP_WINDOWS,
         WM_RESOURCE_MANAGER,
+        WM_CLASS,
 
+        XA_RESOURCE_MANAGER,
+
+        STRING,
 		UTF8_STRING,
 
 		NAtoms

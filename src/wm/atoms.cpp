@@ -39,6 +39,10 @@ static const char *atomNames = {
     "WM_COLORMAP_WINDOWS\0"
     "WM_RESOURCE_MANAGER\0"
 
+    "XA_RESOURCE_MANAGER\0"
+    "XA_CLASS\0"
+
+    "STRING\0"
 	"UTF8_STRING\0"
 };
 
