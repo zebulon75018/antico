@@ -55,8 +55,6 @@ SOURCES = \
  deskfile.cpp \
  deskfolder.cpp \
  dockapp.cpp \
- trash.cpp \
- trashdialog.cpp \
  deskicon.cpp \
  dockmenu.cpp
 
@@ -81,8 +79,6 @@ HEADERS = \
  deskfile.h \
  deskfolder.h \
  dockapp.h \
- trash.h \
- trashdialog.h \
  deskicon.h \
  dockmenu.h 
 

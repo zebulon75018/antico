@@ -24,7 +24,6 @@
 #include "deskicon.h"
 #include "msgbox.h"
 #include "antico.h"
-#include "trash.h"
 #include "utils.h"
 #include "frame.h"
 
@@ -146,13 +145,6 @@ void Desk::set_desk_icons()
     }
     antico->endGroup(); //App
     antico->endGroup(); //Desktop
-
-    // read Trash and restore on desktop
-    antico->beginGroup("Trash");
-    QPoint pos = antico->value("pos").value<QPoint>();
-    antico->endGroup(); //Trash
-    trsh = new Trash(this);
-    trsh->move(pos);
 }
 
 void Desk::init()
@@ -494,8 +486,6 @@ void Desk::update_style()
     // update deskdev
     foreach(Deskdev *dev, desk_dev)
     dev->update_style();
-    // update trash
-    trsh->update_style();
 }
 
 void Desk::device_added(const QString &uuid)

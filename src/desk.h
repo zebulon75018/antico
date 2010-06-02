@@ -24,7 +24,6 @@ class Frame;
 class QDBusInterface;
 class QRubberBand;
 class Appicon;
-class Trash;
 class QMenu;
 class QSettings;
 class Categorymenu;
@@ -97,7 +96,6 @@ private:
     Deskapp *d_app;
     Deskicon *d_icon;
     Appicon *app_icon;
-    Trash *trsh;
 };
 
 
