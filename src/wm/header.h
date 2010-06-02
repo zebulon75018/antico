@@ -1,26 +1,26 @@
-////////////////////////////////////////
+// //////////////////////////////////////
 //  File      : header.h              //
 //  Written by: g_cigala@virgilio.it  //
 //  Copyright : GPL                   //
-////////////////////////////////////////
+// //////////////////////////////////////
 
 // the header of the window frame (top mid border)
 
-////////////////////////////////////////
+// //////////////////////////////////////
 
 #ifndef HEADER_H
 #define HEADER_H
 
 #include <QWidget>
 
-////////////////////////////////////////
+// //////////////////////////////////////
 
-class Header : public QWidget
+class Header: public QWidget
 {
     Q_OBJECT
 
 public:
-    Header(const QPixmap &, const QString &, QWidget *parent=0);
+    Header(const QPixmap &, const QString &, QWidget *parent = 0);
     ~Header();
     void set_pixmap(const QPixmap &, const QPixmap &, const QColor &);
     void set_active();

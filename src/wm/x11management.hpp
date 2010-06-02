@@ -1,15 +1,15 @@
-////////////////////////////////////////
+// //////////////////////////////////////
 //  File      : antico.h              //
 //  Written by: g_cigala@virgilio.it  //
 //  Copyright : GPL                   //
-////////////////////////////////////////
+// //////////////////////////////////////
 
 // X event handler
 // create new frame
 // set window manager init settings to "antico.cfg"
 // quit window manager
 
-////////////////////////////////////////
+// //////////////////////////////////////
 
 #ifndef ANTICO_H
 #define ANTICO_H
@@ -26,9 +26,9 @@ class QSettings;
 
 #include <X11/Xutil.h>
 
-////////////////////////////////////////
+// //////////////////////////////////////
 
-class Antico : public QApplication
+class Antico: public QApplication
 {
     Q_OBJECT
 
@@ -57,18 +57,18 @@ public:
     void print_window_prop(WId);
     bool check_net_sys_tray_for(WId) const;
     void check_wm_transient_for(WId);
-    Desk * get_desktop();
-    Dockbar * get_dockbar();
-    Categorymenu * get_category_menu();
-   
+    Desk *get_desktop();
+    Dockbar *get_dockbar();
+    Categorymenu *get_category_menu();
+
 private:
-    QHash<int, QString> event_names; // event names
-    QHash<int, Frame *> mapping_clients; // mapping client and frame (key=client_win_id value=frame)
-    QHash<int, Frame *> mapping_frames; // mapping frame with their winId (key=frame_win_id value=frame)
+    QHash<int, QString> event_names;        // event names
+    QHash<int, Frame *> mapping_clients;    // mapping client and frame (key=client_win_id value=frame)
+    QHash<int, Frame *> mapping_frames;     // mapping frame with their winId (key=frame_win_id value=frame)
     QList<Frame *> frm_list;
     int next_frame;
     QStringList frame_type;
-    int servershapes; // server supports shapes
+    int servershapes;   // server supports shapes
     int ShapeEventBase; // event base for shape extension
     // get WM protocols required by ICCCM
     Atom wm_protocols;
@@ -101,7 +101,7 @@ private:
     Atom _net_wm_window_type_splash;
     Atom _net_wm_window_type_dnd;
     Atom _kde_net_wm_system_tray_window_for;
-    //////////////
+    // ////////////
     QSettings *antico;
     Dockbar *dock;
     Desk *dsk;

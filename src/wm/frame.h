@@ -1,13 +1,13 @@
-////////////////////////////////////////
+// //////////////////////////////////////
 //  File      : frame.h               //
 //  Written by: g_cigala@virgilio.it  //
 //  Copyright : GPL                   //
-////////////////////////////////////////
+// //////////////////////////////////////
 
 // create window frame around X11 apps
 // manage all the move/resize event
 
-////////////////////////////////////////
+// //////////////////////////////////////
 
 #ifndef FRAME_H
 #define FRAME_H
@@ -22,14 +22,14 @@ class Header;
 class QGridLayout;
 class QSettings;
 
-////////////////////////////////////////
+// //////////////////////////////////////
 
-class Frame : public QFrame
+class Frame: public QFrame
 {
     Q_OBJECT
 
 public:
-    Frame(WId, const QString &, Dockbar *, Desk *, QWidget *parent=0);
+    Frame(WId, const QString &, Dockbar *, Desk *, QWidget *parent = 0);
     ~Frame();
     void init();
     void update_style();
@@ -60,31 +60,31 @@ public:
     void read_settings(); // from "antico.cfg"
     WId cl_win()
     {
-        return(c_win);
+        return c_win;
     }
     int cl_x()
     {
-        return(x()+lateral_bdr_width);
+        return x() + lateral_bdr_width;
     }
     int cl_y()
     {
-        return(y()+top_bdr_height);
+        return y() + top_bdr_height;
     }
     int cl_h()
     {
-        return(height()-diff_border_h);
+        return height() - diff_border_h;
     }
     int cl_w()
     {
-        return(width()-diff_border_w);
+        return width() - diff_border_w;
     }
     QString cl_name()
     {
-        return(wm_name);
+        return wm_name;
     }
     QPixmap cl_icon()
     {
-        return(wicon);
+        return wicon;
     }
     QString win_state()
     {
@@ -114,62 +114,61 @@ public slots:
     void dragEnterEvent(QDragEnterEvent *);
     void dragMoveEvent(QDragMoveEvent *);
     void dropEvent(QDropEvent *);
-    
+
 private:
-   
-    WId c_win;                  // client window
-    QString frame_type;         // frame type (Normal, Splash, Dialog, Desktop..)
-    QString app_icon;           // default header icon used if no icon is find
-    QPoint mousepos;            // mouse position at button press
-    int m_px, m_py, m_pw, m_ph; // normal parent geometry in maximize state
-    int n_px, n_py, n_pw, n_ph; // normal parent geometry in normal mode
-    int frame_w, frame_h;       // frame geometry
-    int frame_x, frame_y;       // frame geometry
-    int client_x, client_y;     // client geometry
-    int client_w, client_h;     // client geometry
-    int lateral_bdr_width;      // parent lateral border width
-    int top_bdr_height;         // parent top border height
-    int bottom_bdr_height;      // parent top border height
-    int win_gravity;            // client gravity
-    QString header_active_pix;  // frame header pixmap
-    QString header_inactive_pix;// frame header pixmap
-    QString minmax_pix;         // frame minmax pixmap
-    QString close_pix;          // frame close pixmap
-    QString arrow_pix;          // frame cursor
-    QString move_pix;           // frame cursor
-    QString left_pix;           // frame cursor
-    QString right_pix;          // frame cursor
-    QString bottom_pix;         // frame cursor
-    QString bottom_left_pix;    // frame cursor
-    QString bottom_right_pix;   // frame cursor
-    QColor title_color;         // frame title color
-    int diff_border_h;          // height space between parent frame (qt) and client frame
-    int diff_border_w;          // width space between parent frame (qt) and client frame
-    int dock_height;            // dockbar height
-    int dock_position;          // dockbar position (top, bottom)
-    bool maximized;             // maximize window
-    bool splash;                // splash window
-    bool shaped;                // nonrectangular window
-    QString state;              // window state (Normal, Iconic, Withdrawn)
-    bool prot_delete;           // client has delete WM protocol
-    bool prot_take_focus;       // client has take focus WM protocol
-    QPixmap wicon;              // window icon
-    QString wm_name;            // WM_NAME property or res_name
-    QString res_name;           // ClassHint
-    QString res_class;          // ClassHint
-    bool inputfield;            // WMHints
-    Qt::HANDLE cmap;              // colormap
-    Desk *desktop;              // desktop
-    Dockbar *dockbar;           // dockbar
-    Header *tm_bdr;             // top mid window border (for window move)
-    Border *tl_bdr;             // top left window border (icon)
-    Border *tr_bdr;             // top right window border (icon)
-    Border *bm_bdr;             // bottom mid window border
-    Border *bl_bdr;             // bottom left window border
-    Border *br_bdr;             // bottom right window border
-    Border *l_bdr;              // left window border
-    Border *r_bdr;              // right window border
-    Border *c_bdr;              // center window border (client apps)
+    WId c_win;                      // client window
+    QString frame_type;             // frame type (Normal, Splash, Dialog, Desktop..)
+    QString app_icon;               // default header icon used if no icon is find
+    QPoint mousepos;                // mouse position at button press
+    int m_px, m_py, m_pw, m_ph;     // normal parent geometry in maximize state
+    int n_px, n_py, n_pw, n_ph;     // normal parent geometry in normal mode
+    int frame_w, frame_h;           // frame geometry
+    int frame_x, frame_y;           // frame geometry
+    int client_x, client_y;         // client geometry
+    int client_w, client_h;         // client geometry
+    int lateral_bdr_width;          // parent lateral border width
+    int top_bdr_height;             // parent top border height
+    int bottom_bdr_height;          // parent top border height
+    int win_gravity;                // client gravity
+    QString header_active_pix;      // frame header pixmap
+    QString header_inactive_pix; // frame header pixmap
+    QString minmax_pix;             // frame minmax pixmap
+    QString close_pix;              // frame close pixmap
+    QString arrow_pix;              // frame cursor
+    QString move_pix;               // frame cursor
+    QString left_pix;               // frame cursor
+    QString right_pix;              // frame cursor
+    QString bottom_pix;             // frame cursor
+    QString bottom_left_pix;        // frame cursor
+    QString bottom_right_pix;       // frame cursor
+    QColor title_color;             // frame title color
+    int diff_border_h;              // height space between parent frame (qt) and client frame
+    int diff_border_w;              // width space between parent frame (qt) and client frame
+    int dock_height;                // dockbar height
+    int dock_position;              // dockbar position (top, bottom)
+    bool maximized;                 // maximize window
+    bool splash;                    // splash window
+    bool shaped;                    // nonrectangular window
+    QString state;                  // window state (Normal, Iconic, Withdrawn)
+    bool prot_delete;               // client has delete WM protocol
+    bool prot_take_focus;           // client has take focus WM protocol
+    QPixmap wicon;                  // window icon
+    QString wm_name;                // WM_NAME property or res_name
+    QString res_name;               // ClassHint
+    QString res_class;              // ClassHint
+    bool inputfield;                // WMHints
+    Qt::HANDLE cmap;                // colormap
+    Desk *desktop;                  // desktop
+    Dockbar *dockbar;               // dockbar
+    Header *tm_bdr;                 // top mid window border (for window move)
+    Border *tl_bdr;                 // top left window border (icon)
+    Border *tr_bdr;                 // top right window border (icon)
+    Border *bm_bdr;                 // bottom mid window border
+    Border *bl_bdr;                 // bottom left window border
+    Border *br_bdr;                 // bottom right window border
+    Border *l_bdr;                  // left window border
+    Border *r_bdr;                  // right window border
+    Border *c_bdr;                  // center window border (client apps)
     QGridLayout *layout;
     QSettings *antico;
 };

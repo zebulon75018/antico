@@ -1,8 +1,8 @@
-////////////////////////////////////////
+// //////////////////////////////////////
 //  File      : frame.cpp             //
 //  Written by: g_cigala@virgilio.it  //
 //  Copyright : GPL                   //
-////////////////////////////////////////
+// //////////////////////////////////////
 
 #include <QDebug>
 #include <QDesktopWidget>
@@ -21,9 +21,9 @@
 #include <X11/Xatom.h>
 #include <X11/extensions/shape.h>
 
-////////////////////////////////////////
+// //////////////////////////////////////
 
-Frame::Frame(Window w, const QString &type, Dockbar *dock, Desk *desk, QWidget *parent) : QFrame(parent)
+Frame::Frame(Window w, const QString &type, Dockbar *dock, Desk *desk, QWidget *parent): QFrame(parent)
 {
     dockbar = dock;
     desktop = desk;
@@ -31,14 +31,15 @@ Frame::Frame(Window w, const QString &type, Dockbar *dock, Desk *desk, QWidget *
     c_win = w;
     read_settings();
     init();
-    setFrameStyle(QFrame::Panel|QFrame::Raised);
+    setFrameStyle(QFrame::Panel | QFrame::Raised);
     setAttribute(Qt::WA_AlwaysShowToolTips);
     setAcceptDrops(true);
     set_active(); // set header active
 }
 
 Frame::~Frame()
-{}
+{
+}
 
 void Frame::read_settings()
 {
@@ -47,10 +48,10 @@ void Frame::read_settings()
     antico->beginGroup("Style");
     QString stl_name = antico->value("name").toString();
     QString stl_path = antico->value("path").toString();
-    antico->endGroup(); //Style
+    antico->endGroup(); // Style
     // get style values
     QSettings *style = new QSettings(stl_path + stl_name, QSettings::IniFormat, this);
-    ////// Frame //////
+    // //// Frame //////
     style->beginGroup("Frame");
     style->beginGroup("Border");
     lateral_bdr_width = style->value("lateral_bdr_width").toInt();
@@ -63,14 +64,14 @@ void Frame::read_settings()
     title_color = style->value("title_color").value<QColor>();
     minmax_pix = stl_path + style->value("minmax_pix").toString();
     close_pix = stl_path + style->value("close_pix").toString();
-    style->endGroup(); //Header
-    style->endGroup(); //Frame
-    ////// Dockbar //////
+    style->endGroup();  // Header
+    style->endGroup();  // Frame
+    // //// Dockbar //////
     style->beginGroup("Dockbar");
     dock_height = style->value("dock_height").toInt();
     dock_position = style->value("dock_position").toInt();
-    style->endGroup(); //Dockbar
-    ////// Launcher //////
+    style->endGroup(); // Dockbar
+    // //// Launcher //////
     style->beginGroup("Launcher");
     app_icon = stl_path + style->value("application_pix").toString();
     style->endGroup(); // Launcher
@@ -88,7 +89,7 @@ void Frame::init()
                  VisibilityChangeMask | ExposureMask | StructureNotifyMask | SubstructureRedirectMask | SubstructureNotifyMask);
 
     XSetWindowAttributes at;
-    at.event_mask = ColormapChangeMask|PropertyChangeMask;
+    at.event_mask = ColormapChangeMask | PropertyChangeMask;
     XChangeWindowAttributes(QX11Info::display(), c_win, CWEventMask, &at);
 
     XGrabServer(QX11Info::display());
@@ -114,8 +115,8 @@ void Frame::init()
     if (shaped)
         reshape();
 
-    XSetWindowBorderWidth(QX11Info::display(), c_win, 0);  //client
-    XSetWindowBorderWidth(QX11Info::display(), winId(), 0);  //frame
+    XSetWindowBorderWidth(QX11Info::display(), c_win, 0);       // client
+    XSetWindowBorderWidth(QX11Info::display(), winId(), 0);     // frame
 
     // *** THE MOST IMPORTANT FUNCTION *** // reparent client with frame
     XReparentWindow(QX11Info::display(), c_win, winId(), lateral_bdr_width, top_bdr_height);
@@ -125,17 +126,15 @@ void Frame::init()
 
     XAddToSaveSet(QX11Info::display(), c_win);
     // move and resize client
-    XMoveResizeWindow(QX11Info::display(), c_win, lateral_bdr_width, top_bdr_height+3, client_w, client_h);
+    XMoveResizeWindow(QX11Info::display(), c_win, lateral_bdr_width, top_bdr_height + 3, client_w, client_h);
 
-    //if the frame is too large, maximize it
-    if (frame_w >= QApplication::desktop()->width()-20 || frame_h >= QApplication::desktop()->height()-40)
-    {
+    // if the frame is too large, maximize it
+    if (frame_w >= QApplication::desktop()->width() - 20 || frame_h >= QApplication::desktop()->height() - 40)
         maximize_it();
-    }
     else // normal size
     {
         // move the frame in desktop center and resize
-        move((QApplication::desktop()->width()/2)-(frame_w/2), (QApplication::desktop()->height()/2)-(frame_h/2));
+        move((QApplication::desktop()->width() / 2) - (frame_w / 2), (QApplication::desktop()->height() / 2) - (frame_h / 2));
         resize(frame_w, frame_h);
     }
     qDebug() << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
@@ -180,6 +179,7 @@ void Frame::init()
 void Frame::get_client_geometry()
 {
     XWindowAttributes attr;
+
     XGetWindowAttributes(QX11Info::display(), c_win, &attr);
     client_x = attr.x;
     client_y = attr.y;
@@ -196,8 +196,8 @@ void Frame::set_frame_geometry()
     if (frame_type == "Splash")
     {
         // set spacing between client and frame window
-        diff_border_h = 0; // height space
-        diff_border_w = 0; // width space
+        diff_border_h = 0;  // height space
+        diff_border_w = 0;  // width space
         // set frame width and height
         frame_x = client_x;
         frame_y = client_y;
@@ -209,8 +209,8 @@ void Frame::set_frame_geometry()
     else
     {
         // set spacing between client and frame window
-        diff_border_h = top_bdr_height+bottom_bdr_height+3; // height space
-        diff_border_w = 2*lateral_bdr_width; // width space
+        diff_border_h = top_bdr_height + bottom_bdr_height + 3; // height space
+        diff_border_w = 2 * lateral_bdr_width;                  // width space
         // set frame width and height
         frame_x = client_x;
         frame_y = client_y;
@@ -222,9 +222,8 @@ void Frame::set_frame_geometry()
 void Frame::set_window_modality()
 {
     if (frame_type == "Dialog") // modal for Dialog frames
-    {
+
         setWindowModality(Qt::WindowModal);
-    }
 }
 
 void Frame::get_wm_hints()
@@ -287,6 +286,7 @@ void Frame::get_wm_normal_hints() // Poor implementation of many applications ..
 void Frame::set_state(int state) // 0 = Withdrawn, 1 = Normal, 3 = Iconic
 {
     ulong data[2];
+
     data[0] = (ulong)state;
     data[1] = (ulong)None;
     Atom wm_state = XInternAtom(QX11Info::display(), "WM_STATE", FALSE);
@@ -315,8 +315,8 @@ void Frame::withdrawn_it()
 {
     if (frame_type != "Dialog")
     {
-        dockbar->remove_dockicon(this); // remove Dockicon from Dockbar
-        desktop->remove_deskicon(this);  // remove Application icon from Desktop
+        dockbar->remove_dockicon(this);         // remove Dockicon from Dockbar
+        desktop->remove_deskicon(this);         // remove Application icon from Desktop
     }
     XUnmapWindow(QX11Info::display(), winId()); // only the frame, the client is already unmapped...
     set_state(0);
@@ -326,23 +326,22 @@ void Frame::withdrawn_it()
 
 void Frame::iconify_it()
 {
-    //TODO - Configuration for hide or not the dockbar icon on iconify to desktop
+    // TODO - Configuration for hide or not the dockbar icon on iconify to desktop
     antico = new QSettings(QSettings::UserScope, "antico", "antico", this);
     antico->beginGroup("Deskbar");
     QString no_hide_iconify = antico->value("no_hide_iconify").toString();
 
-    if (frame_type != "Dialog") // no iconify on Dialog frames
+    if (frame_type != "Dialog")         // no iconify on Dialog frames
     {
-        desktop->add_deskicon(this);  // add Application icon (small pixmap) on Desktop
+        desktop->add_deskicon(this);    // add Application icon (small pixmap) on Desktop
         XUnmapWindow(QX11Info::display(), winId());
         XUnmapWindow(QX11Info::display(), c_win);
         set_state(3);
         state = "IconicState";
         qDebug() << "Frame iconify:" << winId() << "Name:" << wm_name << "Client:" << c_win << "State:" << state;
 
-        if(no_hide_iconify != "yes") {
+        if (no_hide_iconify != "yes")
             dockbar->remove_dockicon(this);  // remove Dockicon from Dockbar
-        }
     }
 }
 
@@ -359,12 +358,12 @@ void Frame::raise_it()
 {
     if (frame_type != "Dialog")
     {
-        dockbar->add_dockicon(this);  // add frame to Dockbar
-        desktop->remove_deskicon(this);  // remove Application icon from Desktop
+        dockbar->add_dockicon(this);        // add frame to Dockbar
+        desktop->remove_deskicon(this);     // remove Application icon from Desktop
     }
     XMapRaised(QX11Info::display(), winId());
     XMapRaised(QX11Info::display(), c_win);
-    //XSetInputFocus(QX11Info::display(), winId(), RevertToNone, CurrentTime);
+    // XSetInputFocus(QX11Info::display(), winId(), RevertToNone, CurrentTime);
     XSetInputFocus(QX11Info::display(), c_win, RevertToNone, CurrentTime);
     set_active();
     set_state(1);
@@ -408,9 +407,9 @@ void Frame::get_wm_name()  // get WM_NAME
     char *name;
     Atom type;
     int format;
-    unsigned long nitems=0;
-    unsigned long extra=0;
-    unsigned char *data=NULL;
+    unsigned long nitems = 0;
+    unsigned long extra = 0;
+    unsigned char *data = NULL;
     Atom _net_wm_name = XInternAtom(QX11Info::display(), "_NET_WM_NAME", False);
     Atom wm_locale_name = XInternAtom(QX11Info::display(), "WM_LOCALE_NAME", False);
 
@@ -451,14 +450,15 @@ void Frame::get_wm_name()  // get WM_NAME
 
 void Frame::update_name()
 {
-    tm_bdr->update_name(wm_name); // update header name
-    dockbar->update_dockicon_name(wm_name, this); // update Dockicon name
+    tm_bdr->update_name(wm_name);                   // update header name
+    dockbar->update_dockicon_name(wm_name, this);   // update Dockicon name
 }
 
 void Frame::get_wm_protocols()
 {
     Atom *protocols;
-    int nprot,i;
+    int nprot, i;
+
     prot_delete = false;
     prot_take_focus = false;
 
@@ -467,16 +467,12 @@ void Frame::get_wm_protocols()
 
     if (XGetWMProtocols(QX11Info::display(), c_win, &protocols, &nprot))
     {
-        for (i=0; i < nprot; i++)
+        for (i = 0; i < nprot; i++)
         {
             if (protocols[i] == wm_delete_window)
-            {
                 prot_delete = true;
-            }
             else if (protocols[i] == wm_take_focus)
-            {
                 prot_take_focus = true;
-            }
         }
         XFree(protocols);
     }
@@ -484,7 +480,7 @@ void Frame::get_wm_protocols()
 
 void Frame::resize_request(int cw, int ch)  // client requested resize
 {
-    resize(cw+diff_border_w, ch+diff_border_h);
+    resize(cw + diff_border_w, ch + diff_border_h);
     XResizeWindow(QX11Info::display(), c_win, cw, ch);
 }
 
@@ -502,6 +498,7 @@ void Frame::send_wm_protocols(long data0, long data1)  // send protocol message 
 {
     XEvent event;
     Atom wm_protocols = XInternAtom(QX11Info::display(), "WM_PROTOCOLS", False);
+
     memset(&event, 0, sizeof(event));
     event.xclient.type = ClientMessage;
     event.xclient.window = c_win;
@@ -538,7 +535,7 @@ void Frame::get_icon()
         qDebug() << "Icon height:" << height;
         XFree(data);
     }
-    if (XGetWindowProperty(QX11Info::display(), c_win, _net_wm_icon, 2, width*height, False,
+    if (XGetWindowProperty(QX11Info::display(), c_win, _net_wm_icon, 2, width * height, False,
                            XA_CARDINAL, &type_ret, &format, &n, &extra, (unsigned char **)&data) == Success && data)
     {
         QImage img(data, width, height, QImage::Format_ARGB32);
@@ -555,6 +552,7 @@ void Frame::get_icon()
 void Frame::get_colormaps()
 {
     XWindowAttributes attr;
+
     XGetWindowAttributes(QX11Info::display(), c_win, &attr);
     cmap = attr.colormap;
 }
@@ -579,11 +577,11 @@ void Frame::update_style()
     br_bdr->setFixedSize(top_bdr_height, bottom_bdr_height);
     get_client_geometry();
     set_frame_geometry();
-    XMoveResizeWindow(QX11Info::display(), c_win, lateral_bdr_width, top_bdr_height+3, client_w, client_h); // update client
-    resize(frame_w, frame_h); //update frame
+    XMoveResizeWindow(QX11Info::display(), c_win, lateral_bdr_width, top_bdr_height + 3, client_w, client_h);   // update client
+    resize(frame_w, frame_h);                                                                                   // update frame
 }
 
-////////// WINDOW BORDER CREATION //////////////
+// //////// WINDOW BORDER CREATION //////////////
 
 void Frame::create_borders()
 {
@@ -641,9 +639,8 @@ void Frame::create_borders()
     layout->addWidget(r_bdr, 1, 2);
 
     if (frame_type == "Dialog") // no Max/Min on Dialog frames
-    {
+
         tl_bdr->setEnabled(false);
-    }
 
     // top left (icon)
     connect(tl_bdr, SIGNAL(mouse_left_press()), this, SLOT(iconify_it()));
@@ -672,22 +669,22 @@ void Frame::create_borders()
     connect(r_bdr, SIGNAL(mouse_move(QMouseEvent *)), this, SLOT(move_right(QMouseEvent *)));
 }
 
-////////// TITLE BAR (HEADER) MOVEMENT //////////////
+// //////// TITLE BAR (HEADER) MOVEMENT //////////////
 
 void Frame::press_top_mid(QMouseEvent *event)
 {
-    mousepos = event->pos()+tm_bdr->pos();  // offset
+    mousepos = event->pos() + tm_bdr->pos();  // offset
 }
 
 void Frame::move_top_mid(QMouseEvent *event)
 {
-    QPoint p(event->globalPos()-mousepos);
+    QPoint p(event->globalPos() - mousepos);
 
-    if(desktop->geometry().contains(p, true))
+    if (desktop->geometry().contains(p, true))
         move(p.x(), p.y());
 }
 
-////////// BOTTOM LEFT RESIZE //////////////
+// //////// BOTTOM LEFT RESIZE //////////////
 void Frame::press_bottom_left(QMouseEvent *event)
 {
     mousepos = event->globalPos();
@@ -695,18 +692,19 @@ void Frame::press_bottom_left(QMouseEvent *event)
 
 void Frame::move_bottom_left(QMouseEvent *event)
 {
-    QPoint dpos = event->globalPos()-mousepos;
-    int resw = width()-dpos.x();
-    int resh = height()+dpos.y();
-    int resx = x()-resw+width();
-    //move and resize parent
+    QPoint dpos = event->globalPos() - mousepos;
+    int resw = width() - dpos.x();
+    int resh = height() + dpos.y();
+    int resx = x() - resw + width();
+
+    // move and resize parent
     move(resx, y());
     resize(resw, resh);
-    XResizeWindow(QX11Info::display(), c_win, resw-diff_border_w, resh-diff_border_h); //client
+    XResizeWindow(QX11Info::display(), c_win, resw - diff_border_w, resh - diff_border_h); // client
     mousepos = event->globalPos();
 }
 
-////////// BOTTOM RIGHT RESIZE //////////////
+// //////// BOTTOM RIGHT RESIZE //////////////
 
 void Frame::press_bottom_right(QMouseEvent *event)
 {
@@ -715,17 +713,18 @@ void Frame::press_bottom_right(QMouseEvent *event)
 
 void Frame::move_bottom_right(QMouseEvent *event)
 {
-    QPoint dpos = event->globalPos()-mousepos;
-    int resw = width()+dpos.x();
-    int resh = height()+dpos.y();
-    //move and resize parent
+    QPoint dpos = event->globalPos() - mousepos;
+    int resw = width() + dpos.x();
+    int resh = height() + dpos.y();
+
+    // move and resize parent
     move(x(), y());
     resize(resw, resh);
-    XResizeWindow(QX11Info::display(), c_win, resw-diff_border_w, resh-diff_border_h); //client
+    XResizeWindow(QX11Info::display(), c_win, resw - diff_border_w, resh - diff_border_h); // client
     mousepos = event->globalPos();
 }
 
-////////// BOTTOM MID RESIZE //////////////
+// //////// BOTTOM MID RESIZE //////////////
 
 void Frame::press_bottom_mid(QMouseEvent *event)
 {
@@ -734,17 +733,18 @@ void Frame::press_bottom_mid(QMouseEvent *event)
 
 void Frame::move_bottom_mid(QMouseEvent *event)
 {
-    QPoint dpos = event->globalPos()-mousepos;
-    int resh = height()+dpos.y();
+    QPoint dpos = event->globalPos() - mousepos;
+    int resh = height() + dpos.y();
     int resw = width();
-    //move and resize parent
+
+    // move and resize parent
     move(x(), y());
     resize(resw, resh);
-    XResizeWindow(QX11Info::display(), c_win, resw-diff_border_w, resh-diff_border_h);
+    XResizeWindow(QX11Info::display(), c_win, resw - diff_border_w, resh - diff_border_h);
     mousepos = event->globalPos();
 }
 
-////////// RIGHT RESIZE //////////////
+// //////// RIGHT RESIZE //////////////
 
 void Frame::press_right(QMouseEvent *event)
 {
@@ -753,17 +753,18 @@ void Frame::press_right(QMouseEvent *event)
 
 void Frame::move_right(QMouseEvent *event)
 {
-    QPoint dpos = event->globalPos()-mousepos;
-    int resw = width()+dpos.x();
+    QPoint dpos = event->globalPos() - mousepos;
+    int resw = width() + dpos.x();
     int resh = height();
-    //move and resize parent
+
+    // move and resize parent
     move(x(), y());
     resize(resw, resh);
-    XResizeWindow(QX11Info::display(), c_win, resw-diff_border_w, resh-diff_border_h); //client
+    XResizeWindow(QX11Info::display(), c_win, resw - diff_border_w, resh - diff_border_h); // client
     mousepos = event->globalPos();
 }
 
-////////// LEFT RESIZE //////////////
+// //////// LEFT RESIZE //////////////
 
 void Frame::press_left(QMouseEvent *event)
 {
@@ -772,18 +773,19 @@ void Frame::press_left(QMouseEvent *event)
 
 void Frame::move_left(QMouseEvent *event)
 {
-    QPoint dpos = event->globalPos()-mousepos;
-    int resw = width()-dpos.x();
+    QPoint dpos = event->globalPos() - mousepos;
+    int resw = width() - dpos.x();
     int resh = height();
-    int resx = x()-resw+width();
-    //move and resize parent
+    int resx = x() - resw + width();
+
+    // move and resize parent
     move(resx, y());
     resize(resw, resh);
-    XResizeWindow(QX11Info::display(), c_win, resw-diff_border_w, resh-diff_border_h); //client
+    XResizeWindow(QX11Info::display(), c_win, resw - diff_border_w, resh - diff_border_h); // client
     mousepos = event->globalPos();
 }
 
-////////// DESTROY WINDOW //////////////
+// //////// DESTROY WINDOW //////////////
 void Frame::destroy_it()
 {
     if (prot_delete)
@@ -800,10 +802,10 @@ void Frame::destroy_it()
     }
 }
 
-////////// MAXIMIZE WINDOW //////////////
+// //////// MAXIMIZE WINDOW //////////////
 void Frame::maximize_it()
 {
-    if (! maximized)
+    if (!maximized)
     {
         // save parent dimension
         n_px = x();
@@ -812,15 +814,15 @@ void Frame::maximize_it()
         n_ph = height();
         // maximize parent with vertex and screen dimension-dockbar height
         m_pw = QApplication::desktop()->width();
-        m_ph = QApplication::desktop()->height()-dock_height;
+        m_ph = QApplication::desktop()->height() - dock_height;
         if (dock_position == 0) // bottom
             move(QApplication::desktop()->x(), QApplication::desktop()->y());
-        else // top
-            move(QApplication::desktop()->x(), QApplication::desktop()->y()+dock_height);
+        else                    // top
+            move(QApplication::desktop()->x(), QApplication::desktop()->y() + dock_height);
         resize(m_pw, m_ph);
         raise();
         // maximize client
-        XResizeWindow(QX11Info::display(), c_win, width()-diff_border_w, height()-diff_border_h);
+        XResizeWindow(QX11Info::display(), c_win, width() - diff_border_w, height() - diff_border_h);
         maximized = true;
     }
     else
@@ -830,7 +832,7 @@ void Frame::maximize_it()
         resize(n_pw, n_ph);
         raise();
         // set last client dimension
-        XResizeWindow(QX11Info::display(), c_win, width()-diff_border_w, height()-diff_border_h);
+        XResizeWindow(QX11Info::display(), c_win, width() - diff_border_w, height() - diff_border_h);
         maximized = false;
     }
 }

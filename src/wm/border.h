@@ -1,26 +1,26 @@
-////////////////////////////////////////
+// //////////////////////////////////////
 //  File      : border.h              //
 //  Written by: g_cigala@virgilio.it  //
 //  Copyright : GPL                   //
-////////////////////////////////////////
+// //////////////////////////////////////
 
 // create the frame border
 
-////////////////////////////////////////
+// //////////////////////////////////////
 
 #ifndef BORDER_H
 #define BORDER_H
 
 #include <QLabel>
 
-////////////////////////////////////////
+// //////////////////////////////////////
 
-class Border : public QLabel
+class Border: public QLabel
 {
     Q_OBJECT
 
 public:
-    Border(QWidget *parent=0);
+    Border(QWidget *parent = 0);
     ~Border();
 
 signals:
@@ -35,7 +35,6 @@ protected:
     void mouseMoveEvent(QMouseEvent *);
 
 private:
-
 };
 
 #endif
