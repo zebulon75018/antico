@@ -8,5 +8,5 @@ DEPENDPATH += .
 INCLUDEPATH += .
 
 # Input
-HEADERS += atoms.hpp border.hpp frame.hpp header.hpp windowmanager.hpp debug.hpp client.hpp decoratedframe.hpp
-SOURCES += atoms.cpp border.cpp frame.cpp header.cpp main.cpp windowmanager.cpp debug.cpp client.cpp decoratedframe.cpp
+HEADERS += atoms.hpp windowmanager.hpp debug.hpp client.hpp decoratedframe.hpp
+SOURCES += atoms.cpp main.cpp windowmanager.cpp debug.cpp client.cpp decoratedframe.cpp
