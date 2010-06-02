@@ -125,9 +125,6 @@ void Dockbar::read_settings()
 
 void Dockbar::init()
 {
-    menu = new QMenu(this);
-    menu->addAction(QIcon(app_link_pix), tr("New link to application"));
-    connect(menu, SIGNAL(triggered(QAction *)), this, SLOT(run_menu(QAction *)));
 }
 
 void Dockbar::set_geometry()
@@ -226,23 +223,6 @@ void Dockbar::update_dockicon_size()
 
 void Dockbar::run_menu(QAction *act)
 {
-    if (act->text().compare(tr("New link to application")) == 0)
-    {
-        file_dialog->set_type(tr("New link to application:"), "OK_Close");
-
-        if (file_dialog->exec() == QDialog::Accepted)
-        {
-            QString path = file_dialog->get_selected_path();
-            QString name = file_dialog->get_selected_name();
-            QPoint pos = menu->pos();
-            QFileInfo pathinfo(path+name);
-
-            if (! name.isEmpty() && pathinfo.isExecutable())
-            {
-                create_dock_app(name, path, this);
-            }
-        }
-    }
 }
 
 void Dockbar::set_dockapp()
@@ -288,10 +268,6 @@ void Dockbar::set_dockmenu()
 
 void Dockbar::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::RightButton)
-    {
-        menu->exec(event->globalPos());
-    }
 }
 
 void Dockbar::dragEnterEvent(QDragEnterEvent *event)

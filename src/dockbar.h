@@ -80,7 +80,6 @@ private:
     QString arrow_pix;
     QString app_link_pix;
     QSettings *antico;
-    QMenu *menu;
     QHBoxLayout *dock_layout;
     QHBoxLayout *icon_layout;
     QHBoxLayout *app_layout;
