@@ -34,4 +34,13 @@ Client::Client(Qt::HANDLE window, QObject *parent):
     XChangeWindowAttributes(display(), window, CWEventMask, &attrib);
 
     XAddToSaveSet(display(), window);
+
+    // TODO
+
+    m_decoratedFrame->show();
+
+    XMapWindow(display(), window);
+    XSync(display(), False);
+
+    XUngrabServer(display());
 }
