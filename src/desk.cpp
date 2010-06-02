@@ -161,11 +161,7 @@ void Desk::set_desk_icons()
 void Desk::init()
 {
     rubber_band = new QRubberBand(QRubberBand::Rectangle, this); // to deskfolder/file/app selection
-    menu = new QMenu(this);
-    menu->addAction(QIcon(folder_link_pix), tr("New link to folder"));
-    menu->addAction(QIcon(file_link_pix), tr("New link to file"));
-    menu->addAction(QIcon(app_link_pix), tr("New link to application"));
-    connect(menu, SIGNAL(triggered(QAction *)), this, SLOT(run_menu(QAction *)));
+;
     // to mount/unmount external device
     dbus_interface = new QDBusInterface("org.freedesktop.Hal", "/org/freedesktop/Hal/Manager", "org.freedesktop.Hal.Manager", QDBusConnection::systemBus(), this);
     dbus_interface->connection().connect("org.freedesktop.Hal", "/org/freedesktop/Hal/Manager", "org.freedesktop.Hal.Manager", "DeviceAdded", this, SLOT(device_added(const QString &)));
@@ -174,10 +170,6 @@ void Desk::init()
 
 void Desk::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::RightButton)
-    {
-        menu->exec(event->pos());
-    }
     if (event->button() == Qt::LeftButton)
     {
         foreach(Deskfolder *folder, desk_folders_selected) // unselected previous selected deskfolders
@@ -349,61 +341,6 @@ void Desk::dropEvent(QDropEvent *event) // add file or directory on desktop by d
 
 void Desk::run_menu(QAction *act)
 {
-    if (act->text().compare(tr("New link to folder")) == 0)
-    {
-        file_dialog->set_type(tr("New link to folder:"), "OK_Close");
-
-        if (file_dialog->exec() == QDialog::Accepted)
-        {
-            QString path = file_dialog->get_selected_path();
-            QString name = file_dialog->get_selected_name();
-            QString icon = file_dialog->get_selected_icon();
-            QRect geometry = file_dialog->geometry(); // get the dimension of Filedialog
-            QPoint pos = menu->pos();
-
-            if (! name.isEmpty() && ! path.endsWith("/")) // is a directory
-            {
-                create_desk_folder(name, path, geometry, pos, this);
-            }
-        }
-    }
-    if (act->text().compare(tr("New link to file")) == 0)
-    {
-        file_dialog->set_type(tr("New link to file:"), "OK_Close");
-
-        if (file_dialog->exec() == QDialog::Accepted)
-        {
-            QString path = file_dialog->get_selected_path();
-            QString name = file_dialog->get_selected_name();
-            QString icon = file_dialog->get_selected_icon();
-            QPoint pos = menu->pos();
-            QFileInfo pathinfo(path+name);
-
-            if (! name.isEmpty() && pathinfo.isFile() && ! pathinfo.isExecutable())
-            {
-                create_desk_file(name, path, icon, pos, this);
-            }
-        }
-    }
-    if (act->text().compare(tr("New link to application")) == 0)
-    {
-        file_dialog->set_type(tr("New link to application:"), "OK_Close");
-
-        if (file_dialog->exec() == QDialog::Accepted)
-        {
-            QString path = file_dialog->get_selected_path();
-            QString name = file_dialog->get_selected_name();
-            QPoint pos = menu->pos();
-            QFileInfo pathinfo(path+name);
-
-            if (! name.isEmpty() && pathinfo.isExecutable())
-            {
-                Appicon app_icon; // get application icon
-                QString icon = app_icon.get_app_icon(name);
-                create_desk_app(name, path, icon, pos, this);
-            }
-        }
-    }
 }
 
 void Desk::create_desk_folder(const QString &name, const QString &path, const QRect &geometry, const QPoint &pos, QWidget *parent)

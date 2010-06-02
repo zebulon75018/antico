@@ -90,7 +90,6 @@ private:
     QPoint rubber_press;
     QDBusInterface *dbus_interface;
     QRubberBand *rubber_band;
-    QMenu *menu;
     QSettings *antico;
     Antico *app;
     Filedialog *file_dialog;
