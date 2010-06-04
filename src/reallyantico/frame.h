@@ -13,6 +13,7 @@
 #define FRAME_H
 
 #include <QFrame>
+#include <QX11Info>
 
 class Border;
 class Desk;
@@ -29,7 +30,7 @@ class Frame : public QFrame
     Q_OBJECT
 
 public:
-    Frame(WId, const QString &, Dockbar *, Desk *, QWidget *parent=0);
+    Frame(Qt::HANDLE, const QString &, Dockbar *, Desk *, QWidget *parent=0);
     ~Frame();
     void init();
     void update_style();
@@ -117,7 +118,7 @@ public slots:
     
 private:
    
-    WId c_win;                  // client window
+    Qt::HANDLE c_win;                  // client window
     QString frame_type;         // frame type (Normal, Splash, Dialog, Desktop..)
     QString app_icon;           // default header icon used if no icon is find
     QPoint mousepos;            // mouse position at button press

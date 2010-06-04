@@ -55,7 +55,8 @@ SOURCES = \
  deskicon.cpp \
  dockmenu.cpp \
  debug.cpp \
- atoms.cpp
+ atoms.cpp \
+ client.cpp
 
 HEADERS = \
  antico.h \
@@ -78,7 +79,8 @@ HEADERS = \
  deskicon.h \
  dockmenu.h \
  debug.hpp \
- atoms.hpp
+ atoms.hpp \
+ client.hpp
 
 target.path = $$PREFIX/bin/
 

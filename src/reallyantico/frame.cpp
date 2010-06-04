@@ -23,7 +23,7 @@
 
 ////////////////////////////////////////
 
-Frame::Frame(Window w, const QString &type, Dockbar *dock, Desk *desk, QWidget *parent) : QFrame(parent)
+Frame::Frame(Qt::HANDLE w, const QString &type, Dockbar *dock, Desk *desk, QWidget *parent) : QFrame(parent)
 {
     dockbar = dock;
     desktop = desk;
@@ -79,7 +79,7 @@ void Frame::read_settings()
 void Frame::init()
 {
     maximized = false;
-    set_state(1);
+    set_state(0);
     state = "WithdrawnState";
     shaped = false;
 
