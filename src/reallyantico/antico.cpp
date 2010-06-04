@@ -25,13 +25,6 @@
 
 ////////////////////////////////////////
 
-/* define the qDebug() color */
-#define RED     "\e[0;31m"
-#define GREEN   "\e[0;32m"
-#define YELLOW  "\e[0;33m"
-#define MAGENTA "\e[0;35m"
-#define WHITE   "\e[0;37m"
-
 Q_GLOBAL_STATIC(Antico, instance)
 
 Antico *Antico::self()
@@ -195,7 +188,7 @@ bool Antico::x11EventFilter(void *message, long *result)
     if (event->type != 6 && event->type != 12) // ignore Motion/Expose event
     {
         qDebug() << "--------------------------------------------------------------------------------------------";
-        qDebug() << GREEN "XEvent:" YELLOW << eventName(event->type) << WHITE " ( WId:" MAGENTA << event->xany.window << WHITE")";
+        qDebug() << "XEvent:" << eventName(event->type) << " ( WId:" << event->xany.window << ")";
     }
 
     switch (event->type)
@@ -422,7 +415,7 @@ bool Antico::x11EventFilter(void *message, long *result)
 
     case PropertyNotify:
         qDebug() << "[PropertyNotify]";
-        qDebug() << RED "Atom: " WHITE << XGetAtomName(QX11Info::display(), event->xproperty.atom) << '\n';
+        qDebug() << "Atom: " << XGetAtomName(QX11Info::display(), event->xproperty.atom) << '\n';
         pev = &event->xproperty;
 
         if ((frm = mapping_clients.value(event->xproperty.window)) != NULL)
