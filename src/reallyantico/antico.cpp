@@ -35,8 +35,6 @@
 Antico::Antico(int &argc, char **argv) : QApplication(argc, argv)
 {
     set_event_names();
-    // for [Alt+Tab] key combination
-    next_frame = 0;
     // get the atoms (ICCCM/EWMH)
     get_atoms();
     // set application settings on first installation
@@ -572,12 +570,6 @@ bool Antico::x11EventFilter(XEvent *event)
         sym = (int)XLookupKeysym(&event->xkey, 0);
         mod = event->xkey.state & keymask1 ;
 
-        if (sym == XK_Tab && mod == keymask1)
-        {
-            qDebug() << "Press [Alt+Tab] - Scroll active apps";
-            raise_next_frame();
-            return false;
-        }
         if (sym == XK_q && mod == keymask1)
         {
             qDebug() << "Press [Alt+q] - Quit the WM";
@@ -774,25 +766,6 @@ void Antico::print_window_prop(Window c_win) // print the window properties
     }
 
     qDebug() << "---------------------------------------------";
-}
-
-void Antico::raise_next_frame() // raise next frame on [Alt+Tab] key combination
-{
-    frm_list = mapping_clients.values();
-
-    if (frm_list.size() == 0)
-        return;
-
-    if (frm_list.size() <= next_frame)
-        next_frame = 0; // start from first element
-
-    Frame *frm = frm_list.at(next_frame);
-
-    if (frm->win_state() != "IconicState" && frm->win_state() != "WithdrawnState" && ! frm->is_splash()) // if not active
-    {
-        set_active_frame(frm_list.at(next_frame));
-    }
-    next_frame++;
 }
 
 void Antico::set_active_frame(Frame *frm) // activation of selected frame and unactivation of others

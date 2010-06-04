@@ -66,7 +66,6 @@ private:
     QHash<int, Frame *> mapping_clients; // mapping client and frame (key=client_win_id value=frame)
     QHash<int, Frame *> mapping_frames; // mapping frame with their winId (key=frame_win_id value=frame)
     QList<Frame *> frm_list;
-    int next_frame;
     QStringList frame_type;
     int servershapes; // server supports shapes
     int ShapeEventBase; // event base for shape extension
