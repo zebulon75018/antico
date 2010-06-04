@@ -14,10 +14,17 @@
 
 ////////////////////////////////////////
 
+bool _x11EventFilter(void *message, long *result)
+{
+    return Antico::self()->x11EventFilter(message, result);
+}
 
 int main(int argc, char **argv)
 {
-    Antico a(argc, argv);
+    QApplication a(argc, argv);
+
+    Antico::self()->init();
+
     XSelectInput(QX11Info::display(), QX11Info::appRootWindow(QX11Info::appScreen()), KeyPressMask | KeyReleaseMask | ButtonPressMask | ButtonReleaseMask |
                  KeymapStateMask | ButtonMotionMask | PointerMotionMask | EnterWindowMask | LeaveWindowMask | FocusChangeMask | VisibilityChangeMask |
                  ExposureMask | StructureNotifyMask | SubstructureRedirectMask | SubstructureNotifyMask);
@@ -31,7 +38,9 @@ int main(int argc, char **argv)
     a.installTranslator(&translator);
     
     qDebug() << "GUI creation...";
-    a.create_gui();
+    Antico::self()->create_gui();
+
+    a.setEventFilter(_x11EventFilter);
 
     return a.exec();
 }

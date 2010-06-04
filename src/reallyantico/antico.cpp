@@ -32,8 +32,18 @@
 #define MAGENTA "\e[0;35m"
 #define WHITE   "\e[0;37m"
 
+Q_GLOBAL_STATIC(Antico, instance)
 
-Antico::Antico(int &argc, char **argv) : QApplication(argc, argv)
+Antico *Antico::self()
+{
+    return instance();
+}
+
+Antico::Antico(): QObject()
+{
+}
+
+void Antico::init()
 {
     // get the atoms (ICCCM/EWMH)
     get_atoms();
@@ -170,8 +180,10 @@ void Antico::send_supported_hints()
                (SubstructureNotifyMask | SubstructureRedirectMask), (XEvent *)&xev6);
 }
 
-bool Antico::x11EventFilter(XEvent *event)
+bool Antico::x11EventFilter(void *message, long *result)
 {
+    XEvent *event = reinterpret_cast<XEvent *>(message);
+
     Frame *frm;
     XWindowAttributes wa;
     XPropertyEvent *pev;

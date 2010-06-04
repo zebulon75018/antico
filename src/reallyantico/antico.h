@@ -28,16 +28,16 @@ class QSettings;
 
 ////////////////////////////////////////
 
-class Antico : public QApplication
+class Antico : public QObject
 {
     Q_OBJECT
 
-protected:
-    virtual bool x11EventFilter(XEvent *);
-
 public:
-    Antico(int &argc, char **argv);
+    static Antico *self();
+
+    Antico();
     ~Antico();
+    void init();
     void create_frame(WId, Dockbar *, Desk *);
     void raise_next_frame();
     void set_active_frame(Frame *);
@@ -54,6 +54,7 @@ public:
     Desk * get_desktop();
     Dockbar * get_dockbar();
     Categorymenu * get_category_menu();
+    bool x11EventFilter(void *message, long *result);
    
 private:
     QHash<int, Frame *> mapping_clients; // mapping client and frame (key=client_win_id value=frame)
