@@ -11,6 +11,7 @@
 #include <QLocale>
 
 #include "antico.h"
+#include "atoms.hpp"
 
 ////////////////////////////////////////
 
@@ -22,6 +23,8 @@ bool _x11EventFilter(void *message, long *result)
 int main(int argc, char **argv)
 {
     QApplication a(argc, argv);
+
+    _createAtomList();
 
     Antico::self()->init();
 

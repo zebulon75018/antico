@@ -20,6 +20,7 @@
 #include "desk.h"
 #include "utils.h"
 #include "debug.hpp"
+#include "atoms.hpp"
 
 #include <X11/extensions/shape.h>
 
@@ -58,16 +59,6 @@ Antico::~Antico()
 void Antico::get_atoms()
 {
     // get WM protocols required by ICCCM
-    wm_protocols = XInternAtom(QX11Info::display(), "WM_PROTOCOLS", False);
-    wm_delete_window = XInternAtom(QX11Info::display(), "WM_DELETE_WINDOW", False);
-    wm_change_state = XInternAtom(QX11Info::display(), "WM_CHANGE_STATE", False);
-    wm_state = XInternAtom(QX11Info::display(), "WM_STATE", False);
-    wm_take_focus = XInternAtom(QX11Info::display(), "WM_TAKE_FOCUS", False);
-    wm_resource_manager = XInternAtom(QX11Info::display(), "RESOURCE_MANAGER", False);
-    wm_colormaps = XInternAtom(QX11Info::display(), "WM_COLORMAP_WINDOWS", False);
-    wm_hints = XInternAtom(QX11Info::display(), "WM_HINTS", False);
-    wm_normal_hints = XInternAtom(QX11Info::display(), "WM_NORMAL_HINTS", False);
-    wm_name = XInternAtom(QX11Info::display(), "WM_NAME", False);
     wm_transient_for = XInternAtom(QX11Info::display(), "WM_TRANSIENT_FOR", False);
     xdnd_aware = XInternAtom(QX11Info::display(), "XdndAware", False);
     xdnd_position = XInternAtom(QX11Info::display(), "XdndPosition", False);
@@ -106,11 +97,11 @@ void Antico::send_supported_hints()
     xev1.window = QApplication::desktop()->winId();
     xev1.message_type = _net_supported;
     xev1.format = 32;
-    xev1.data.l[0] = wm_protocols;
-    xev1.data.l[1] = wm_delete_window;
-    xev1.data.l[2] = wm_change_state;
-    xev1.data.l[3] = wm_state;
-    xev1.data.l[4] = wm_take_focus;
+    xev1.data.l[0] = ATOM(WM_PROTOCOLS);
+    xev1.data.l[1] = ATOM(WM_DELETE_WINDOW);
+    xev1.data.l[2] = ATOM(WM_CHANGE_STATE);
+    xev1.data.l[3] = ATOM(WM_STATE);
+    xev1.data.l[4] = ATOM(WM_TAKE_FOCUS);
     XSendEvent(QX11Info::display(), QApplication::desktop()->winId(), False,
                (SubstructureNotifyMask | SubstructureRedirectMask), (XEvent *)&xev1);
 
@@ -118,11 +109,11 @@ void Antico::send_supported_hints()
     xev2.window = QApplication::desktop()->winId();
     xev2.message_type = _net_supported;
     xev2.format = 32;
-    xev2.data.l[0] = wm_resource_manager;
-    xev2.data.l[1] = wm_colormaps;
-    xev2.data.l[2] = wm_hints;
-    xev2.data.l[3] = wm_normal_hints;
-    xev2.data.l[4] = wm_name;
+    xev2.data.l[0] = ATOM(WM_RESOURCE_MANAGER);
+    xev2.data.l[1] = ATOM(WM_COLORMAPS);
+    xev2.data.l[2] = ATOM(WM_HINTS);
+    xev2.data.l[3] = ATOM(WM_NORMAL_HINTS);
+    xev2.data.l[4] = ATOM(WM_NAME);
     XSendEvent(QX11Info::display(), QApplication::desktop()->winId(), False,
                (SubstructureNotifyMask | SubstructureRedirectMask), (XEvent *)&xev2);
 
@@ -422,32 +413,32 @@ bool Antico::x11EventFilter(void *message, long *result)
         {
             qDebug() << "Client already mapped by frame:" << frm->winId() << "- Name:" << frm->cl_name() << "- Client:" << event->xproperty.window;
 
-            if (pev->atom == wm_hints)
+            if (pev->atom == ATOM(WM_HINTS))
             {
                 qDebug() << "---> wm_hints";
                 frm->get_wm_hints();
                 return true;
             }
-            if (pev->atom == wm_normal_hints)
+            if (pev->atom == ATOM(WM_NORMAL_HINTS))
             {
                 qDebug() << "---> wm_normal_hints";
                 frm->get_wm_normal_hints();
                 return true;
             }
-            if (pev->atom == wm_name || pev->atom == _net_wm_name)
+            if (pev->atom == ATOM(WM_NAME) || pev->atom == _net_wm_name)
             {
                 qDebug() << "---> wm_name";
                 frm->get_wm_name();
                 frm->update_name();
                 return true;
             }
-            if (pev->atom == wm_state || pev->atom == _net_wm_state)
+            if (pev->atom == ATOM(WM_STATE) || pev->atom == _net_wm_state)
             {
                 qDebug() << "---> wm_state";
                 qDebug() << "Window:" << pev->window << "changing state";
                 return true;
             }
-            if (pev->atom == wm_colormaps)
+            if (pev->atom == ATOM(WM_COLORMAPS))
             {
                 qDebug() << "---> wm_colormap_windows";
                 frm->get_colormaps();
@@ -513,7 +504,7 @@ bool Antico::x11EventFilter(void *message, long *result)
         qDebug() << "[ClientMessage]";
         mev = &event->xclient;
 
-        if (mev->message_type == wm_change_state && event->xclient.format == 32 && event->xclient.data.l[0] == IconicState)
+        if (mev->message_type == ATOM(WM_CHANGE_STATE) && event->xclient.format == 32 && event->xclient.data.l[0] == IconicState)
         {
             qDebug() << "---> wm_change_state: IconicState";
 

@@ -64,16 +64,6 @@ private:
     int servershapes; // server supports shapes
     int ShapeEventBase; // event base for shape extension
     // get WM protocols required by ICCCM
-    Atom wm_protocols;
-    Atom wm_delete_window;
-    Atom wm_change_state;
-    Atom wm_state;
-    Atom wm_take_focus;
-    Atom wm_resource_manager;
-    Atom wm_colormaps;
-    Atom wm_hints;
-    Atom wm_normal_hints;
-    Atom wm_name;
     Atom wm_transient_for;
     // XDND Protocol
     Atom xdnd_aware;
