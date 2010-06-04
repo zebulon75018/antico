@@ -929,27 +929,6 @@ void Antico::show_desktop()
     flush();
 }
 
-void Antico::run_app_at_startup()
-{
-    // default path
-    antico = new QSettings(QSettings::UserScope, "antico", "antico", this);
-
-    antico->beginGroup("Startup");
-
-    for (int i = 0; i < antico->childGroups().size(); i++)
-    {
-        QStringList args;
-        QString app_name = antico->childGroups().value(i);
-        antico->beginGroup(app_name); // App group
-        QString name = antico->value("name").toString();
-        QString path = antico->value("path").toString();
-        args << antico->value("args").toString();
-        QProcess::startDetached(path + name, args); // run the application + args
-        antico->endGroup(); // Name
-    }
-    antico->endGroup(); // Startup
-}
-
 void Antico::create_gui()
 {
     cat_menu = new Categorymenu();
@@ -958,8 +937,6 @@ void Antico::create_gui()
     dsk = new Desk(this);
     // create dockbar
     dock = new Dockbar(this);
-    // run application from startup list
-    run_app_at_startup();
 }
 
 Desk * Antico::get_desktop()
