@@ -531,13 +531,6 @@ bool Antico::x11EventFilter(XEvent *event)
         sym = (int)XLookupKeysym(&event->xkey, 0);
         mod = event->xkey.state & keymask1 ;
 
-        if (sym == XK_u && mod == keymask1)
-        {
-            qDebug() << "Press [Alt+u] - Refresh the WM";
-            wm_refresh();
-            return false;
-        }
-
         return false;
         break;
 
@@ -738,22 +731,6 @@ void Antico::send_configurenotify(Frame *frm)
     ce.border_width = 0;
     ce.override_redirect = 0;
     XSendEvent(QX11Info::display(), ce.window, False, StructureNotifyMask, (XEvent *)&ce);
-}
-
-void Antico::wm_refresh()
-{
-    qDebug() << "Refreshing Antico WM ...";
-
-    dsk->update_style(); //update desktop, all deskicons and all deskapps
-    dock->update_style(); //update dockbar and all dockicons
-
-    foreach(Frame *frm, mapping_clients) //update all map apps
-    {
-        frm->update_style();
-    }
-
-    XSync(QX11Info::display(), FALSE);
-    flush();
 }
 
 void Antico::create_gui()
