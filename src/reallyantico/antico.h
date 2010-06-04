@@ -44,7 +44,6 @@ public:
     void send_configurenotify(Frame *);
     void wm_shutdown();
     void wm_refresh();
-    void show_desktop();
     void set_settings();
     void run_app_at_startup();
     void get_atoms();

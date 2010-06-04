@@ -543,12 +543,6 @@ bool Antico::x11EventFilter(XEvent *event)
             wm_refresh();
             return false;
         }
-        if (sym == XK_d && mod == keymask1)
-        {
-            qDebug() << "Press [Alt+d] - Show Desktop";
-            show_desktop();
-            return false;
-        }
 
         return false;
         break;
@@ -789,22 +783,6 @@ void Antico::wm_shutdown()
     qDebug() << "Quit Antico WM ...";
     XCloseDisplay(QX11Info::display());
     emit lastWindowClosed();
-}
-
-void Antico::show_desktop()
-{
-    qDebug() << "Show Desktop. Iconize all the apps ...";
-
-    foreach(Frame *frm, mapping_clients)
-    {
-        if (frm->win_state().compare("IconicState") != 0 && frm->win_state().compare("WithdrawnState") != 0 && !frm->is_splash()) // if not yet iconize/inactive
-        {
-            frm->raise_it(); // set in front
-            frm->iconify_it(); // catch the pixmap
-        }
-    }
-    XSync(QX11Info::display(), FALSE);
-    flush();
 }
 
 void Antico::create_gui()
