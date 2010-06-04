@@ -42,7 +42,6 @@ void Launcher::read_settings()
     style->beginGroup("Launcher");
     launcher_pix = stl_path + style->value("launcher_pix").toString();
     shutdown_pix = stl_path + style->value("shutdown_pix").toString();
-    restart_pix = stl_path + style->value("restart_pix").toString();
     refresh_pix = stl_path + style->value("refresh_pix").toString();
     show_pix = stl_path + style->value("show_pix").toString();
     style->endGroup(); // Launcher
@@ -58,22 +57,18 @@ void Launcher::init()
     connect(main_menu, SIGNAL(triggered(QAction *)), this, SLOT(run_command(QAction *))); // Quit, Run, Refresh, Manager
 
     shutdown = new QAction(tr("Shutdown PC"), this);
-    restart = new QAction(tr("Restart PC"), this);
     refresh = new QAction(tr("Refresh WM"), this);
     show_desk = new QAction(tr("Show Desktop"), this);
 
     shutdown->setIcon(QIcon(shutdown_pix));
-    restart->setIcon(QIcon(restart_pix));
     refresh->setIcon(QIcon(refresh_pix));
     show_desk->setIcon(QIcon(show_pix));
 
     shutdown->setData("shutdown");
-    restart->setData("restart");
     refresh->setData("refresh");
     show_desk->setData("show");
         
     shutdown->setShortcut(QKeySequence(Qt::ALT + Qt::Key_S));
-    restart->setShortcut(QKeySequence(Qt::ALT + Qt::Key_R));
     refresh->setShortcut(QKeySequence(Qt::ALT + Qt::Key_U));
     show_desk->setShortcut(QKeySequence(Qt::ALT + Qt::Key_D));
     
@@ -87,7 +82,6 @@ void Launcher::init()
     main_menu->addSeparator();
     main_menu->addAction(show_desk);
     main_menu->addAction(shutdown);
-    main_menu->addAction(restart);
     main_menu->addAction(refresh);
 }
 
@@ -97,8 +91,6 @@ void Launcher::run_command(QAction *act)
 
     if (cmd == "shutdown")
         app->wm_shutdown();
-    if (cmd == "restart")
-        app->wm_restart();
     if (cmd == "refresh")
         app->wm_refresh();
     if (cmd == "show")
@@ -137,7 +129,6 @@ void Launcher::update_style()
     read_settings();
     setPixmap(QPixmap(launcher_pix).scaled(dock_height-5, dock_height-5, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
     shutdown->setIcon(QIcon(shutdown_pix));
-    restart->setIcon(QIcon(restart_pix));
     refresh->setIcon(QIcon(refresh_pix));
     show_desk->setIcon(QIcon(show_pix));
     app->get_category_menu()->update_menu(); // update .desktop/user menu entry

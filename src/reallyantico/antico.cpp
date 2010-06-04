@@ -537,12 +537,6 @@ bool Antico::x11EventFilter(XEvent *event)
             wm_shutdown();
             return false;
         }
-        if (sym == XK_r && mod == keymask1)
-        {
-            qDebug() << "Press [Alt+r] - Restart the PC";
-            wm_restart();
-            return false;
-        }
         if (sym == XK_u && mod == keymask1)
         {
             qDebug() << "Press [Alt+u] - Refresh the WM";
@@ -786,31 +780,6 @@ void Antico::wm_shutdown()
             qDebug() << "Quit Frame:" << frm->winId() << "Client:" << frm->cl_win();
             frm->destroy_it();
         }
-    mapping_clients.clear();
-    mapping_frames.clear();
-    dock->close();
-    dsk->close();
-    XSync(QX11Info::display(), False);
-    QProcess::startDetached(QString("/bin/rm").append(" ").append(QDir::tempPath() + "/antico-runner.log"));
-    qDebug() << "Quit Antico WM ...";
-    XCloseDisplay(QX11Info::display());
-    emit lastWindowClosed();
-}
-
-void Antico::wm_restart()
-{
-    qDebug() << "Restart the PC ...";
-
-    QDBusConnection bus = QDBusConnection::systemBus();
-    QDBusInterface hal("org.freedesktop.Hal", "/org/freedesktop/Hal/devices/computer", "org.freedesktop.Hal.Device.SystemPowerManagement", bus);
-    hal.call("Reboot");
-    
-    foreach(Frame *frm, mapping_clients)
-    {
-        XReparentWindow(QX11Info::display(), frm->winId(), QX11Info::appRootWindow(), 0, 0);
-        qDebug() << "Quit Frame:" << frm->winId() << "Client:" << frm->cl_win();
-        frm->destroy_it();
-    }
     mapping_clients.clear();
     mapping_frames.clear();
     dock->close();
