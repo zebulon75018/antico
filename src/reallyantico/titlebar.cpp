@@ -1,18 +1,10 @@
-////////////////////////////////////////
-//  File      : header.cpp            //
-//  Written by: g_cigala@virgilio.it  //
-//  Copyright : GPL                   //
-////////////////////////////////////////
-
 #include <QPainter>
 #include <QMouseEvent>
 #include <QApplication>
 
-#include "header.h"
+#include "titlebar.hpp"
 
-////////////////////////////////////////
-
-Header::Header(const QPixmap &icn, const QString &nm, QWidget *parent) : QWidget(parent)
+TitleBar::TitleBar(const QPixmap &icn, const QString &nm, QWidget *parent) : QWidget(parent)
 {
     setContentsMargins(0, 0, 0, 0);
     icon =  icn;
@@ -20,11 +12,11 @@ Header::Header(const QPixmap &icn, const QString &nm, QWidget *parent) : QWidget
     setToolTip(app_name);
 }
 
-Header::~Header()
+TitleBar::~TitleBar()
 {
 }
 
-void Header::paintEvent(QPaintEvent *)
+void TitleBar::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
@@ -36,7 +28,7 @@ void Header::paintEvent(QPaintEvent *)
     painter.drawPixmap(QRect(5, 2, height()-4, height()-4), icon, QRect(0, 0, icon.width(), icon.height()));//icon
 }
 
-void Header::set_pixmap(const QPixmap &active, const QPixmap &inactive, const QColor &clr)
+void TitleBar::set_pixmap(const QPixmap &active, const QPixmap &inactive, const QColor &clr)
 {
     active_back = active;
     inactive_back = inactive;
@@ -49,27 +41,27 @@ void Header::set_pixmap(const QPixmap &active, const QPixmap &inactive, const QC
     update();
 }
 
-void Header::set_active()
+void TitleBar::set_active()
 {
     back = active_back;
     active_state = true;
     update();
 }
 
-void Header::update_name(const QString &nm)
+void TitleBar::update_name(const QString &nm)
 {
     app_name = nm;
     update();
 }
 
-void Header::set_inactive()
+void TitleBar::set_inactive()
 {
     back = inactive_back;
     active_state = false;
     update();
 }
 
-void Header::mousePressEvent(QMouseEvent *event)
+void TitleBar::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::RightButton)
     {
@@ -86,7 +78,7 @@ void Header::mousePressEvent(QMouseEvent *event)
     }
 }
 
-void Header::mouseMoveEvent(QMouseEvent *event)
+void TitleBar::mouseMoveEvent(QMouseEvent *event)
 {
     if (event->buttons() == Qt::LeftButton) // to block right button mouse move
     {
@@ -94,13 +86,13 @@ void Header::mouseMoveEvent(QMouseEvent *event)
     }
 }
 
-void Header::mouseReleaseEvent(QMouseEvent *event)
+void TitleBar::mouseReleaseEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
     emit mouse_release(event);
 }
 
-void Header::mouseDoubleClickEvent(QMouseEvent *event)
+void TitleBar::mouseDoubleClickEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
     emit mouse_double_click();

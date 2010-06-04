@@ -42,7 +42,7 @@ SOURCES = \
  launcher.cpp \
  dockicon.cpp \
  desk.cpp \
- header.cpp \
+ titlebar.cpp \
  systray.cpp \
  dateclock.cpp \
  sysicon.cpp \
@@ -65,7 +65,7 @@ HEADERS = \
  launcher.h \
  dockicon.h \
  desk.h \
- header.h \
+ titlebar.hpp \
  systray.h \
  dateclock.h \
  sysicon.h \

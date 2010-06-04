@@ -14,7 +14,7 @@
 
 #include "frame.h"
 #include "border.h"
-#include "header.h"
+#include "titlebar.hpp"
 #include "dockbar.h"
 #include "desk.h"
 
@@ -612,7 +612,7 @@ void Frame::create_borders()
     tr_bdr->setAlignment(Qt::AlignCenter);
     layout->addWidget(tr_bdr, 0, 2);
     // top mid header border (header frame)
-    tm_bdr = new Header(cl_icon(), cl_name(), this);
+    tm_bdr = new TitleBar(cl_icon(), cl_name(), this);
     tm_bdr->set_pixmap(QPixmap(header_active_pix), QPixmap(header_inactive_pix), title_color);
     tm_bdr->setFixedHeight(top_bdr_height);
     layout->addWidget(tm_bdr, 0, 1);

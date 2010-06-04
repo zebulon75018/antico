@@ -17,7 +17,7 @@
 class Border;
 class Desk;
 class Dockbar;
-class Header;
+class TitleBar;
 
 class QGridLayout;
 class QSettings;
@@ -161,7 +161,7 @@ private:
     Qt::HANDLE cmap;              // colormap
     Desk *desktop;              // desktop
     Dockbar *dockbar;           // dockbar
-    Header *tm_bdr;             // top mid window border (for window move)
+    TitleBar *tm_bdr;             // top mid window border (for window move)
     Border *tl_bdr;             // top left window border (icon)
     Border *tr_bdr;             // top right window border (icon)
     Border *bm_bdr;             // bottom mid window border
