@@ -19,6 +19,7 @@
 #include "systray.h"
 #include "desk.h"
 #include "utils.h"
+#include "debug.hpp"
 
 #include <X11/extensions/shape.h>
 
@@ -34,7 +35,6 @@
 
 Antico::Antico(int &argc, char **argv) : QApplication(argc, argv)
 {
-    set_event_names();
     // get the atoms (ICCCM/EWMH)
     get_atoms();
     // set application settings on first installation
@@ -50,45 +50,6 @@ Antico::~Antico()
 {
     delete cat_menu;
     delete antico;
-}
-
-void Antico::set_event_names()
-{
-    event_names.insert(0, "");
-    event_names.insert(1, "");
-    event_names.insert(2, "KeyPress");
-    event_names.insert(3, "KeyRelease");
-    event_names.insert(4, "ButtonPress");
-    event_names.insert(5, "ButtonRelease");
-    event_names.insert(6, "MotionNotify");
-    event_names.insert(7, "EnterNotify");
-    event_names.insert(8, "LeaveNotify");
-    event_names.insert(9, "FocusIn");
-    event_names.insert(10, "FocusOut");
-    event_names.insert(11, "KeymapNotify");
-    event_names.insert(12, "Expose");
-    event_names.insert(13, "GraphicsExpose");
-    event_names.insert(14, "NoExpose");
-    event_names.insert(15, "VisibilityNotify");
-    event_names.insert(16, "CreateNotify");
-    event_names.insert(17, "DestroyNotify");
-    event_names.insert(18, "UnmapNotify");
-    event_names.insert(19, "MapNotify");
-    event_names.insert(20, "MapRequest");
-    event_names.insert(21, "ReparentNotify");
-    event_names.insert(22, "ConfigureNotify");
-    event_names.insert(23, "ConfigureRequest");
-    event_names.insert(24, "GravityNotify");
-    event_names.insert(25, "ResizeRequest");
-    event_names.insert(26, "CirculateNotify");
-    event_names.insert(27, "CirculateRequest");
-    event_names.insert(28, "PropertyNotify");
-    event_names.insert(29, "SelectionClear");
-    event_names.insert(30, "SelectionRequest");
-    event_names.insert(31, "SelectionNotify");
-    event_names.insert(32, "ColormapNotify");
-    event_names.insert(33, "ClientMessage");
-    event_names.insert(34, "MappingNotify");
 }
 
 void Antico::get_atoms()
@@ -222,7 +183,7 @@ bool Antico::x11EventFilter(XEvent *event)
     if (event->type != 6 && event->type != 12) // ignore Motion/Expose event
     {
         qDebug() << "--------------------------------------------------------------------------------------------";
-        qDebug() << GREEN "XEvent:" YELLOW << event_names.value(event->type) << WHITE " ( WId:" MAGENTA << event->xany.window << WHITE")";
+        qDebug() << GREEN "XEvent:" YELLOW << eventName(event->type) << WHITE " ( WId:" MAGENTA << event->xany.window << WHITE")";
     }
 
     switch (event->type)

@@ -51,7 +51,6 @@ public:
     void run_app_at_startup();
     void get_atoms();
     void create_gui();
-    void set_event_names();
     void send_supported_hints();
     void check_window_type(WId);
     void print_window_prop(WId);
@@ -62,7 +61,6 @@ public:
     Categorymenu * get_category_menu();
    
 private:
-    QHash<int, QString> event_names; // event names
     QHash<int, Frame *> mapping_clients; // mapping client and frame (key=client_win_id value=frame)
     QHash<int, Frame *> mapping_frames; // mapping frame with their winId (key=frame_win_id value=frame)
     QList<Frame *> frm_list;
