@@ -41,7 +41,6 @@ void Launcher::read_settings()
     QSettings *style = new QSettings(stl_path + stl_name, QSettings::IniFormat, this);
     style->beginGroup("Launcher");
     launcher_pix = stl_path + style->value("launcher_pix").toString();
-    quit_pix = stl_path + style->value("quit_pix").toString();
     shutdown_pix = stl_path + style->value("shutdown_pix").toString();
     restart_pix = stl_path + style->value("restart_pix").toString();
     refresh_pix = stl_path + style->value("refresh_pix").toString();
@@ -58,25 +57,21 @@ void Launcher::init()
     main_menu = new QMenu(this);
     connect(main_menu, SIGNAL(triggered(QAction *)), this, SLOT(run_command(QAction *))); // Quit, Run, Refresh, Manager
 
-    quit = new QAction(tr("Quit WM"), this);
     shutdown = new QAction(tr("Shutdown PC"), this);
     restart = new QAction(tr("Restart PC"), this);
     refresh = new QAction(tr("Refresh WM"), this);
     show_desk = new QAction(tr("Show Desktop"), this);
 
-    quit->setIcon(QIcon(quit_pix));
     shutdown->setIcon(QIcon(shutdown_pix));
     restart->setIcon(QIcon(restart_pix));
     refresh->setIcon(QIcon(refresh_pix));
     show_desk->setIcon(QIcon(show_pix));
 
-    quit->setData("quit");
     shutdown->setData("shutdown");
     restart->setData("restart");
     refresh->setData("refresh");
     show_desk->setData("show");
         
-    quit->setShortcut(QKeySequence(Qt::ALT + Qt::Key_Q));
     shutdown->setShortcut(QKeySequence(Qt::ALT + Qt::Key_S));
     restart->setShortcut(QKeySequence(Qt::ALT + Qt::Key_R));
     refresh->setShortcut(QKeySequence(Qt::ALT + Qt::Key_U));
@@ -91,7 +86,6 @@ void Launcher::init()
     
     main_menu->addSeparator();
     main_menu->addAction(show_desk);
-    main_menu->addAction(quit);
     main_menu->addAction(shutdown);
     main_menu->addAction(restart);
     main_menu->addAction(refresh);
@@ -101,8 +95,6 @@ void Launcher::run_command(QAction *act)
 {
     QString cmd = act->data().toString();
 
-    if (cmd == "quit")
-        app->wm_quit();
     if (cmd == "shutdown")
         app->wm_shutdown();
     if (cmd == "restart")
@@ -144,7 +136,6 @@ void Launcher::update_style()
 {
     read_settings();
     setPixmap(QPixmap(launcher_pix).scaled(dock_height-5, dock_height-5, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-    quit->setIcon(QIcon(quit_pix));
     shutdown->setIcon(QIcon(shutdown_pix));
     restart->setIcon(QIcon(restart_pix));
     refresh->setIcon(QIcon(refresh_pix));
