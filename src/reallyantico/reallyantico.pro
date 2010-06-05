@@ -46,13 +46,8 @@ SOURCES = \
  systray.cpp \
  dateclock.cpp \
  sysicon.cpp \
- deskapp.cpp \
  utils.cpp \
- deskdev.cpp \
- deskfile.cpp \
- deskfolder.cpp \
  dockapp.cpp \
- deskicon.cpp \
  dockmenu.cpp \
  debug.cpp \
  atoms.cpp \
@@ -70,13 +65,8 @@ HEADERS = \
  systray.h \
  dateclock.h \
  sysicon.h \
- deskapp.h \
  utils.h \
- deskdev.h \
- deskfile.h \
- deskfolder.h \
  dockapp.h \
- deskicon.h \
  dockmenu.h \
  debug.hpp \
  atoms.hpp \

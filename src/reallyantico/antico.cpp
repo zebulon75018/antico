@@ -338,7 +338,6 @@ bool Antico::x11EventFilter(void *message, long *result)
             qDebug() << "--> Destroy frame:" << frm->winId() << "- Name:" << frm->cl_name() << "- Client:" << event->xdestroywindow.window;
             mapping_clients.remove(event->xdestroywindow.window);
             mapping_frames.remove(frm->winId());
-            dsk->remove_deskicon(frm->winId()); // remove eventually Deskicon still mapped
             dock->remove_dockicon(frm); // remove eventually Dockicon still mapped
             delete frm;
             return true;

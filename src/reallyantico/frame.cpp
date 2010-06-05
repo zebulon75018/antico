@@ -316,7 +316,6 @@ void Frame::withdrawn_it()
     if (frame_type != "Dialog")
     {
         dockbar->remove_dockicon(this); // remove Dockicon from Dockbar
-        desktop->remove_deskicon(this);  // remove Application icon from Desktop
     }
     XUnmapWindow(QX11Info::display(), winId()); // only the frame, the client is already unmapped...
     set_state(0);
@@ -333,7 +332,6 @@ void Frame::iconify_it()
 
     if (frame_type != "Dialog") // no iconify on Dialog frames
     {
-        desktop->add_deskicon(this);  // add Application icon (small pixmap) on Desktop
         XUnmapWindow(QX11Info::display(), winId());
         XUnmapWindow(QX11Info::display(), c_win);
         set_state(3);
@@ -360,7 +358,6 @@ void Frame::raise_it()
     if (frame_type != "Dialog")
     {
         dockbar->add_dockicon(this);  // add frame to Dockbar
-        desktop->remove_deskicon(this);  // remove Application icon from Desktop
     }
     XMapRaised(QX11Info::display(), winId());
     XMapRaised(QX11Info::display(), c_win);

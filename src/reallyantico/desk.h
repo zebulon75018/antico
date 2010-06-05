@@ -37,39 +37,9 @@ class Desk : public QLabel
 public:
     Desk(Antico *, QWidget *parent=0);
     ~Desk();
-    void init();
     void read_settings();
     void set_geometry();
-    void set_desk_icons();
-    void create_desk_app(const QString &, const QString &, const QString &, const QPoint &, QWidget *);
-    void create_desk_file(const QString &, const QString &, const QString &, const QPoint &, QWidget *);
-    void create_desk_folder(const QString &, const QString &, const QRect &, const QPoint &, QWidget *);
-    void add_deskicon(Frame *);
-    void remove_deskicon(Frame *);
-    void remove_deskicon(WId);
-    void map_deskicon(Frame *);
-    void unmap_deskicon(Frame *);
     void update_style();
-    void mount_device(const QString &, const QString &, const QString &, const QString &, const QString &);
-    void unmount_device(const QString &);
-  
-public slots:
-    void run_menu(QAction *);
-    void remove_deskfolder(Deskfolder *);
-    void remove_deskfile(Deskfile *);
-    void remove_deskapp(Deskapp *);
-    void remove_deskicon(Deskicon *);
-    void device_added( const QString &);
-    void device_removed(const QString &);
-
-protected:
-    void mousePressEvent(QMouseEvent *);
-    void mouseMoveEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
-    void keyPressEvent(QKeyEvent *);
-    void dragEnterEvent(QDragEnterEvent *);
-    void dragMoveEvent(QDragMoveEvent *);
-    void dropEvent(QDropEvent *);
 
 private:
     int dock_height;
