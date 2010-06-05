@@ -39,129 +39,49 @@ Antico::Antico(): QObject()
 
 void Antico::init()
 {
-    // get the atoms (ICCCM/EWMH)
-    get_atoms();
-    // set application settings on first installation
-    set_settings();
-    // send ClientMessage to root for supported hints
-    send_supported_hints();
-    // check if server supports nonrectangular windows
-    int err;
-    servershapes = XShapeQueryExtension(QX11Info::display(), &ShapeEventBase, &err);
-}
+   XEvent event;
 
-Antico::~Antico()
-{
-    delete cat_menu;
-    delete antico;
-}
+   XSetWindowAttributes attrib;
+   attrib.override_redirect = True;
+   attrib.event_mask = PropertyChangeMask;
 
-void Antico::get_atoms()
-{
-    // get WM protocols required by ICCCM
-    wm_transient_for = XInternAtom(QX11Info::display(), "WM_TRANSIENT_FOR", False);
-    xdnd_aware = XInternAtom(QX11Info::display(), "XdndAware", False);
-    xdnd_position = XInternAtom(QX11Info::display(), "XdndPosition", False);
-    xdnd_enter = XInternAtom(QX11Info::display(), "XdndEnter", False);
-    xdnd_finished = XInternAtom(QX11Info::display(), "XdndFinished", False);
-    xdnd_status = XInternAtom(QX11Info::display(), "XdndStatus", False);
+   Atom atom = XInternAtom(QX11Info::display(),
+			   QString("WM_S%1").arg(QX11Info::appScreen()).toLatin1(),
+			   False);
 
-    // extensions required by EWMH
-    _net_wm_name = XInternAtom(QX11Info::display(), "_NET_WM_NAME", False);
-    _net_wm_icon = XInternAtom(QX11Info::display(), "_NET_WM_ICON", False);
-    _net_wm_user_time = XInternAtom(QX11Info::display(), "_NET_WM_USER_TIME", False);
-    _net_wm_state = XInternAtom(QX11Info::display(), "_NET_WM_STATE", False);
-    _net_supported = XInternAtom(QX11Info::display(), "_NET_SUPPORTED", False);
-    _net_wm_window_type = XInternAtom(QX11Info::display(), "_NET_WM_WINDOW_TYPE", False);
-    _net_wm_window_type_normal = XInternAtom(QX11Info::display(), "_NET_WM_WINDOW_TYPE_NORMAL", False);
-    _net_wm_window_type_desktop = XInternAtom(QX11Info::display(), "_NET_WM_WINDOW_TYPE_DESKTOP", False);
-    _net_wm_window_type_dialog = XInternAtom(QX11Info::display(), "_NET_WM_WINDOW_TYPE_DIALOG", False);
-    _net_wm_window_type_splash = XInternAtom(QX11Info::display(), "_NET_WM_WINDOW_TYPE_SPLASH", False);
-    _net_wm_window_type_dnd = XInternAtom(QX11Info::display(), "_NET_WM_WINDOW_TYPE_DND", False);
-    _kde_net_wm_system_tray_window_for = XInternAtom(QX11Info::display(), "_KDE_NET_WM_SYSTEM_TRAY_WINDOW_FOR", False);
-}
+   Window window = XCreateWindow(QX11Info::display(), QX11Info::appRootWindow(),
+				 -100, -100, 1, 1, 0,
+				 CopyFromParent, InputOnly, CopyFromParent,
+				 CWEventMask | CWOverrideRedirect,
+				 &attrib);
 
-void Antico::send_supported_hints()
-{
-    // maximum five 32-bit values for message
-    Atom _net_supported = XInternAtom(QX11Info::display(), "_NET_SUPPORTED", False);
-    qDebug("Sending _NET_SUPPORTED");
-    XClientMessageEvent xev1;
-    XClientMessageEvent xev2;
-    XClientMessageEvent xev3;
-    XClientMessageEvent xev4;
-    XClientMessageEvent xev5;
-    XClientMessageEvent xev6;
+   XMapWindow(QX11Info::display(), window);
+   XLowerWindow(QX11Info::display(), window);
 
-    xev1.type = ClientMessage;
-    xev1.window = QApplication::desktop()->winId();
-    xev1.message_type = _net_supported;
-    xev1.format = 32;
-    xev1.data.l[0] = ATOM(WM_PROTOCOLS);
-    xev1.data.l[1] = ATOM(WM_DELETE_WINDOW);
-    xev1.data.l[2] = ATOM(WM_CHANGE_STATE);
-    xev1.data.l[3] = ATOM(WM_STATE);
-    xev1.data.l[4] = ATOM(WM_TAKE_FOCUS);
-    XSendEvent(QX11Info::display(), QApplication::desktop()->winId(), False,
-               (SubstructureNotifyMask | SubstructureRedirectMask), (XEvent *)&xev1);
+   XSelectInput(QX11Info::display(), window, PropertyChangeMask);
+   XStoreName(QX11Info::display(), window, "Antico");
+   XWindowEvent(QX11Info::display(), window, PropertyChangeMask, &event);
+   XSelectInput(QX11Info::display(), window, StructureNotifyMask);
+   
+   XSetSelectionOwner(QX11Info::display(), atom, window, event.xproperty.time);
 
-    xev2.type = ClientMessage;
-    xev2.window = QApplication::desktop()->winId();
-    xev2.message_type = _net_supported;
-    xev2.format = 32;
-    xev2.data.l[0] = ATOM(WM_RESOURCE_MANAGER);
-    xev2.data.l[1] = ATOM(WM_COLORMAPS);
-    xev2.data.l[2] = ATOM(WM_HINTS);
-    xev2.data.l[3] = ATOM(WM_NORMAL_HINTS);
-    xev2.data.l[4] = ATOM(WM_NAME);
-    XSendEvent(QX11Info::display(), QApplication::desktop()->winId(), False,
-               (SubstructureNotifyMask | SubstructureRedirectMask), (XEvent *)&xev2);
+   event.type = ClientMessage;
+   event.xclient.format = 32;
+   event.xclient.window = QX11Info::appRootWindow();
+   event.xclient.message_type = ATOM(XA_RESOURCE_MANAGER);
+   event.xclient.data.l[0] = event.xproperty.time;
+   event.xclient.data.l[1] = atom;
+   event.xclient.data.l[2] = window;
+   event.xclient.data.l[3] = event.xclient.data.l[4] = 0;
+   XSendEvent(QX11Info::display(), QX11Info::appRootWindow(), False, StructureNotifyMask, &event);
 
-    xev3.type = ClientMessage;
-    xev3.window = QApplication::desktop()->winId();
-    xev3.message_type = _net_supported;
-    xev3.format = 32;
-    xev3.data.l[0] = wm_transient_for;
-    xev3.data.l[1] = _net_wm_name;
-    xev3.data.l[2] = _net_wm_icon;
-    xev3.data.l[3] = _net_supported;
-    xev3.data.l[4] = _net_wm_user_time;
-    XSendEvent(QX11Info::display(), QApplication::desktop()->winId(), False,
-               (SubstructureNotifyMask | SubstructureRedirectMask), (XEvent *)&xev3);
+   XSelectInput(QX11Info::display(), QX11Info::appRootWindow(), SubstructureRedirectMask);
+   XSync(QX11Info::display(), False);
 
-    xev4.type = ClientMessage;
-    xev4.window = QApplication::desktop()->winId();
-    xev4.message_type = _net_supported;
-    xev4.format = 32;
-    xev4.data.l[0] = _net_wm_window_type;
-    xev4.data.l[1] = _net_wm_window_type_normal;
-    xev4.data.l[2] = _net_wm_window_type_desktop;
-    xev4.data.l[3] = _net_wm_window_type_dialog;
-    xev4.data.l[4] = _net_wm_window_type_splash;
-    XSendEvent(QX11Info::display(), QApplication::desktop()->winId(), False,
-               (SubstructureNotifyMask | SubstructureRedirectMask), (XEvent *)&xev4);
+   set_settings(); // TODO
 
-    xev5.type = ClientMessage;
-    xev5.window = QApplication::desktop()->winId();
-    xev5.message_type = _net_supported;
-    xev5.format = 32;
-    xev5.data.l[0] = _kde_net_wm_system_tray_window_for;
-    xev5.data.l[1] = _net_wm_state;
-    xev5.data.l[2] = _net_wm_window_type_dnd;
-    xev5.data.l[3] = xdnd_aware;
-    xev5.data.l[4] = xdnd_position;
-    XSendEvent(QX11Info::display(), QApplication::desktop()->winId(), False,
-               (SubstructureNotifyMask | SubstructureRedirectMask), (XEvent *)&xev5);
-
-    xev6.type = ClientMessage;
-    xev6.window = QApplication::desktop()->winId();
-    xev6.message_type = _net_supported;
-    xev6.format = 32;
-    xev6.data.l[0] = xdnd_enter;
-    xev6.data.l[1] = xdnd_finished;
-    xev6.data.l[2] = xdnd_status;
-    XSendEvent(QX11Info::display(), QApplication::desktop()->winId(), False,
-               (SubstructureNotifyMask | SubstructureRedirectMask), (XEvent *)&xev6);
+   int err;
+   servershapes = XShapeQueryExtension(QX11Info::QX11Info::display(), &ShapeEventBase, &err);
 }
 
 bool Antico::x11EventFilter(void *message, long *result)
@@ -188,7 +108,7 @@ bool Antico::x11EventFilter(void *message, long *result)
     case MapRequest:
         qDebug() << "[MapRequest]" << event->xmaprequest.window;
 
-        if (!XGetWindowAttributes(QX11Info::display(), event->xmaprequest.window, &wa))
+        if (!XGetWindowAttributes(QX11Info::QX11Info::display(), event->xmaprequest.window, &wa))
             return true;
 
         if (wa.override_redirect)
@@ -256,7 +176,7 @@ bool Antico::x11EventFilter(void *message, long *result)
             wc.border_width = 0;
             wc.sibling = event->xconfigurerequest.above;
             wc.stack_mode = event->xconfigurerequest.detail;
-            XConfigureWindow(QX11Info::display(), frm->winId(), event->xconfigurerequest.value_mask, &wc);
+            XConfigureWindow(QX11Info::QX11Info::display(), frm->winId(), event->xconfigurerequest.value_mask, &wc);
             send_configurenotify(frm);
         }
         else  // never mapped window
@@ -267,7 +187,7 @@ bool Antico::x11EventFilter(void *message, long *result)
             wc.width = event->xconfigurerequest.width;
             wc.height = event->xconfigurerequest.height;
             event->xconfigurerequest.value_mask &= (CWX|CWY|CWWidth|CWHeight);
-            XConfigureWindow(QX11Info::display(), event->xconfigurerequest.window, event->xconfigurerequest.value_mask, &wc);
+            XConfigureWindow(QX11Info::QX11Info::display(), event->xconfigurerequest.window, event->xconfigurerequest.value_mask, &wc);
         }
         return false;
         break;
@@ -284,7 +204,7 @@ bool Antico::x11EventFilter(void *message, long *result)
             }
         }
         else
-            XLowerWindow(QX11Info::display(), event->xcirculaterequest.window);
+            XLowerWindow(QX11Info::QX11Info::display(), event->xcirculaterequest.window);
 
         return false;
         break;
@@ -338,14 +258,11 @@ bool Antico::x11EventFilter(void *message, long *result)
             qDebug() << "--> Destroy frame:" << frm->winId() << "- Name:" << frm->cl_name() << "- Client:" << event->xdestroywindow.window;
             mapping_clients.remove(event->xdestroywindow.window);
             mapping_frames.remove(frm->winId());
-            dock->remove_dockicon(frm); // remove eventually Dockicon still mapped
             delete frm;
             return true;
         }
         if (event->xdestroywindow.event != event->xdestroywindow.window)
         {
-            dock->system_tray()->remove_sysicon(event->xdestroywindow.window); // check in the System Tray eventually Sysicon still mapped
-            dock->system_tray()->remove_embedder(event->xdestroywindow.window); // remove eventually QX11EmbedContainer
             return true;
         }
         qDebug() << "Mapping clients num:" << mapping_clients.size() << "Mapping frames num:" << mapping_frames.size();
@@ -405,7 +322,7 @@ bool Antico::x11EventFilter(void *message, long *result)
 
     case PropertyNotify:
         qDebug() << "[PropertyNotify]";
-        qDebug() << "Atom: " << XGetAtomName(QX11Info::display(), event->xproperty.atom) << '\n';
+        qDebug() << "Atom: " << XGetAtomName(QX11Info::QX11Info::display(), event->xproperty.atom) << '\n';
         pev = &event->xproperty;
 
         if ((frm = mapping_clients.value(event->xproperty.window)) != NULL)
@@ -424,14 +341,14 @@ bool Antico::x11EventFilter(void *message, long *result)
                 frm->get_wm_normal_hints();
                 return true;
             }
-            if (pev->atom == ATOM(WM_NAME) || pev->atom == _net_wm_name)
+            if (pev->atom == ATOM(WM_NAME) || pev->atom == ATOM(_NET_WM_NAME))
             {
                 qDebug() << "---> wm_name";
                 frm->get_wm_name();
                 frm->update_name();
                 return true;
             }
-            if (pev->atom == ATOM(WM_STATE) || pev->atom == _net_wm_state)
+            if (pev->atom == ATOM(WM_STATE) || pev->atom == ATOM(_NET_WM_STATE))
             {
                 qDebug() << "---> wm_state";
                 qDebug() << "Window:" << pev->window << "changing state";
@@ -443,12 +360,12 @@ bool Antico::x11EventFilter(void *message, long *result)
                 frm->get_colormaps();
                 return true;
             }
-            if (pev->atom == wm_transient_for)
+            if (pev->atom == ATOM(WM_TRANSIENT_FOR))
             {
                 qDebug() << "---> wm_transient_for";
                 return true;
             }
-            if (pev->atom == _net_wm_user_time)
+            if (pev->atom == ATOM(_NET_WM_USER_TIME))
             {
                 qDebug() << "---> _net_wm_user_time";
                 frm->set_focus(CurrentTime);
@@ -489,12 +406,12 @@ bool Antico::x11EventFilter(void *message, long *result)
         {
             qDebug() << "Button press:" <<  event->xbutton.button << "for map frame:" << event->xbutton.window;
             set_active_frame(frm);
-            XSetInputFocus(QX11Info::display(), event->xbutton.window, RevertToNone, CurrentTime);
+            XSetInputFocus(QX11Info::QX11Info::display(), event->xbutton.window, RevertToNone, CurrentTime);
         }
         else
         {
             qDebug() << "Button press:" <<  event->xbutton.button << "for client:" << event->xbutton.window;
-            XSetInputFocus(QX11Info::display(), event->xbutton.window, RevertToNone, CurrentTime);
+            XSetInputFocus(QX11Info::QX11Info::display(), event->xbutton.window, RevertToNone, CurrentTime);
         }
         return false;
         break;
@@ -511,12 +428,7 @@ bool Antico::x11EventFilter(void *message, long *result)
                 frm->iconify_it();
             return true;
         }
-      /*  if (mev->message_type == xdnd_aware || mev->message_type == xdnd_position
-            || mev->message_type == xdnd_enter || mev->message_type == xdnd_finished
-            || mev->message_type == xdnd_status)
-        {
-            return true;
-        }*/
+
         return false;
         break;
 
@@ -552,13 +464,8 @@ void Antico::create_frame(Window c_win, Dockbar *dock, Desk *desk) // create new
 {
     print_window_prop(c_win);
 
-    if (check_net_sys_tray_for(c_win))
-        return;
-    else
-    {
-        check_wm_transient_for(c_win);
-        check_window_type(c_win);
-    }
+    check_wm_transient_for(c_win);
+    check_window_type(c_win);
 
     /////// MAP THE NEW CLIENT ////////
     qDebug() << "Mapping window type:" << frame_type.at(0);
@@ -571,34 +478,11 @@ void Antico::create_frame(Window c_win, Dockbar *dock, Desk *desk) // create new
     }
     else
     {
-        XMapRaised(QX11Info::display(), c_win);
+        XMapRaised(QX11Info::QX11Info::display(), c_win);
     }
-
-    if (frame_type.at(0) != "Dialog" && frame_type.at(0) != "Splash") // no Dockbar for Dialog/Splash frames
-        dock->add_dockicon(frm); // add frame to dockbar
 
     frame_type.clear(); // clear the window type list
     qDebug() << "Mapping clients num:" << mapping_clients.size() << "Mapping frames num:" << mapping_frames.size();
-}
-
-bool Antico::check_net_sys_tray_for(Window c_win) const
-{
-    Atom type_ret = None;
-    unsigned char *data = 0;
-    int format = 0;
-    unsigned long n = 0;
-    unsigned long extra = 0;
-
-    if (XGetWindowProperty(QX11Info::display(), c_win, _kde_net_wm_system_tray_window_for, 0, 100, False,
-                           AnyPropertyType, &type_ret, &format, &n, &extra, (unsigned char **)&data) == Success && data)
-    {
-        qDebug() << "_KDE_NET_WM_SYSTEM_TRAY_WINDOW_FOR: WINDOW ADD TO SYSTEM TRAY";
-        dock->system_tray()->add_embed(c_win); // add to Systray
-        XFree(data);
-        return true;
-    }
-    XFree(data);
-    return false;
 }
 
 void Antico::check_window_type(Window c_win) // chech the window type before mapping
@@ -610,29 +494,29 @@ void Antico::check_window_type(Window c_win) // chech the window type before map
     unsigned long n = 0;
     unsigned long extra = 0;
 
-    if (XGetWindowProperty(QX11Info::display(), c_win, _net_wm_window_type, 0, 100, False,
+    if (XGetWindowProperty(QX11Info::QX11Info::display(), c_win, ATOM(_NET_WM_WINDOW_TYPE), 0, 100, False,
                            AnyPropertyType, &type_ret, &format, &n, &extra, (unsigned char **) &data) == Success && data)
     {
         win_type = (Atom *)data;
 
         for (unsigned i = 0; i < n; i++)
         {
-            if (win_type[i] == _net_wm_window_type_normal)
+            if (win_type[i] == ATOM(_NET_WM_WINDOW_TYPE_NORMAL))
             {
                 frame_type << "Normal";
                 qDebug() << "Window type: NORMAL TYPE";
             }
-            else if (win_type[i] == _net_wm_window_type_dialog)
+            else if (win_type[i] == ATOM(_NET_WM_WINDOW_TYPE_DIALOG))
             {
                 frame_type << "Dialog";
                 qDebug() << "Window type: DIALOG TYPE";
             }
-            else if (win_type[i] == _net_wm_window_type_splash)
+            else if (win_type[i] == ATOM(_NET_WM_WINDOW_TYPE_SPLASH))
             {
                 frame_type << "Splash";
                 qDebug() << "Window type: SPLASH TYPE";
             }
-            else if (win_type[i] == _net_wm_window_type_desktop)
+            else if (win_type[i] == ATOM(_NET_WM_WINDOW_TYPE_DESKTOP))
             {
                 frame_type << "Desktop";
                 qDebug() << "Window type: DESKTOP TYPE";
@@ -661,12 +545,12 @@ void Antico::check_wm_transient_for(Window c_win)
     unsigned long n = 0;
     unsigned long extra = 0;
 
-    if (XGetWindowProperty(QX11Info::display(), c_win, wm_transient_for, 0, 100, False,
+    if (XGetWindowProperty(QX11Info::QX11Info::display(), c_win, ATOM(WM_TRANSIENT_FOR), 0, 100, False,
                            AnyPropertyType, &type_ret, &format, &n, &extra, (unsigned char **)&data) == Success && data)
     {
         qDebug() << "Window type: WM_TRANSIENT_FOR. Set as DIALOG";
 
-        if (XGetTransientForHint(QX11Info::display(), c_win, &prop_window_return))
+        if (XGetTransientForHint(QX11Info::QX11Info::display(), c_win, &prop_window_return))
         {
             qDebug() << "Window return:" << prop_window_return;
             frame_type << "Dialog";
@@ -678,14 +562,14 @@ void Antico::check_wm_transient_for(Window c_win)
 void Antico::print_window_prop(Window c_win) // print the window properties
 {
     int num_prop_ret = 0;
-    Atom *list_prop = XListProperties(QX11Info::display(), c_win, &num_prop_ret);
+    Atom *list_prop = XListProperties(QX11Info::QX11Info::display(), c_win, &num_prop_ret);
     qDebug() << "Properties num:" << num_prop_ret;
 
     qDebug() << "---------------------------------------------";
 
     for (int i = 0; i < num_prop_ret; i++)
     {
-        char *name = XGetAtomName(QX11Info::display(), list_prop[i]);
+        char *name = XGetAtomName(QX11Info::QX11Info::display(), list_prop[i]);
         qDebug() << i << "- Window Property:" << name;
         XFree(name);
     }
@@ -730,12 +614,12 @@ void Antico::send_configurenotify(Frame *frm)
 
 void Antico::create_gui()
 {
-    cat_menu = new Categorymenu();
-    cat_menu->update_menu();
+    //cat_menu = new Categorymenu();
+    //cat_menu->update_menu();
     //create desk
-    dsk = new Desk(this);
+    //dsk = new Desk(this);
     // create dockbar
-    dock = new Dockbar(this);
+    //dock = new Dockbar(this);
 }
 
 Desk * Antico::get_desktop()

@@ -35,6 +35,8 @@ struct InternalAtoms
 		_NET_WM_NAME,
 		_NET_WM_ICON,
 
+		_NET_WM_USER_TIME,
+
 		WM_DELETE_WINDOW,
 		WM_PROTOCOLS,
 		WM_STATE,

@@ -27,13 +27,6 @@ int main(int argc, char **argv)
     _createAtomList();
 
     Antico::self()->init();
-
-    XSelectInput(QX11Info::display(), QX11Info::appRootWindow(QX11Info::appScreen()), KeyPressMask | KeyReleaseMask | ButtonPressMask | ButtonReleaseMask |
-                 KeymapStateMask | ButtonMotionMask | PointerMotionMask | EnterWindowMask | LeaveWindowMask | FocusChangeMask | VisibilityChangeMask |
-                 ExposureMask | StructureNotifyMask | SubstructureRedirectMask | SubstructureNotifyMask);
-
-    XClearWindow(QX11Info::display(), QX11Info::appRootWindow(QX11Info::appScreen()));
-    XSync(QX11Info::display(), False);
     
     QTranslator translator;
     qDebug() << "Language:" << QLocale::system().name();

@@ -36,7 +36,7 @@ public:
     static Antico *self();
 
     Antico();
-    ~Antico();
+
     void init();
     void create_frame(WId, Dockbar *, Desk *);
     void raise_next_frame();
@@ -46,7 +46,6 @@ public:
     void run_app_at_startup();
     void get_atoms();
     void create_gui();
-    void send_supported_hints();
     void check_window_type(WId);
     void print_window_prop(WId);
     bool check_net_sys_tray_for(WId) const;
@@ -63,28 +62,6 @@ private:
     QStringList frame_type;
     int servershapes; // server supports shapes
     int ShapeEventBase; // event base for shape extension
-    // get WM protocols required by ICCCM
-    Atom wm_transient_for;
-    // XDND Protocol
-    Atom xdnd_aware;
-    Atom xdnd_position;
-    Atom xdnd_enter;
-    Atom xdnd_finished;
-    Atom xdnd_status;
-    // Extensions
-    Atom _net_wm_name;
-    Atom _net_wm_icon;
-    Atom _net_supported;
-    Atom _net_wm_user_time;
-    Atom _net_wm_state;
-    Atom _net_wm_window_type;
-    Atom _net_wm_window_type_normal;
-    Atom _net_wm_window_type_desktop;
-    Atom _net_wm_window_type_dialog;
-    Atom _net_wm_window_type_splash;
-    Atom _net_wm_window_type_dnd;
-    Atom _kde_net_wm_system_tray_window_for;
-    //////////////
     QSettings *antico;
     Dockbar *dock;
     Desk *dsk;

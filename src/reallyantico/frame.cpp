@@ -315,7 +315,7 @@ void Frame::withdrawn_it()
 {
     if (frame_type != "Dialog")
     {
-        dockbar->remove_dockicon(this); // remove Dockicon from Dockbar
+//        dockbar->remove_dockicon(this); // remove Dockicon from Dockbar
     }
     XUnmapWindow(QX11Info::display(), winId()); // only the frame, the client is already unmapped...
     set_state(0);
@@ -338,9 +338,9 @@ void Frame::iconify_it()
         state = "IconicState";
         qDebug() << "Frame iconify:" << winId() << "Name:" << wm_name << "Client:" << c_win << "State:" << state;
 
-        if(no_hide_iconify != "yes") {
-            dockbar->remove_dockicon(this);  // remove Dockicon from Dockbar
-        }
+	//      if(no_hide_iconify != "yes") {
+//            dockbar->remove_dockicon(this);  // remove Dockicon from Dockbar
+//        }
     }
 }
 
@@ -357,7 +357,7 @@ void Frame::raise_it()
 {
     if (frame_type != "Dialog")
     {
-        dockbar->add_dockicon(this);  // add frame to Dockbar
+//        dockbar->add_dockicon(this);  // add frame to Dockbar
     }
     XMapRaised(QX11Info::display(), winId());
     XMapRaised(QX11Info::display(), c_win);
@@ -449,7 +449,7 @@ void Frame::get_wm_name()  // get WM_NAME
 void Frame::update_name()
 {
     tm_bdr->update_name(wm_name); // update header name
-    dockbar->update_dockicon_name(wm_name, this); // update Dockicon name
+//    dockbar->update_dockicon_name(wm_name, this); // update Dockicon name
 }
 
 void Frame::get_wm_protocols()
@@ -680,8 +680,8 @@ void Frame::move_top_mid(QMouseEvent *event)
 {
     QPoint p(event->globalPos()-mousepos);
 
-    if(desktop->geometry().contains(p, true))
-        move(p.x(), p.y());
+//    if(desktop->geometry().contains(p, true))
+           move(p.x(), p.y());
 }
 
 ////////// BOTTOM LEFT RESIZE //////////////
