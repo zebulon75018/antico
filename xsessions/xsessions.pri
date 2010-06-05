@@ -1,4 +1,4 @@
-XSESSION_FILES = ../xsessions/*.in
+XSESSION_FILES = ../../xsessions/*.in
 
 desktop_compiler.name = Desktop_Compiler files ${QMAKE_FILE_BASE}
 desktop_compiler.CONFIG += no_link target_predeps

@@ -31,7 +31,7 @@ translations.output = ${QMAKE_FILE_BASE}.qm
 translations.clean = ${QMAKE_FILE_BASE}.qm
 QMAKE_EXTRA_COMPILERS += translations
 
-include(../xsessions/xsessions.pri)
+include(../../xsessions/xsessions.pri)
 
 SOURCES = \
  main.cpp \
