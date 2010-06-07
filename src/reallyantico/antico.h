@@ -43,16 +43,11 @@ public:
     void set_active_frame(Frame *);
     void send_configurenotify(Frame *);
     void set_settings();
-    void run_app_at_startup();
     void get_atoms();
-    void create_gui();
     void check_window_type(WId);
     void print_window_prop(WId);
     bool check_net_sys_tray_for(WId) const;
     void check_wm_transient_for(WId);
-    Desk * get_desktop();
-    Dockbar * get_dockbar();
-    Categorymenu * get_category_menu();
     bool x11EventFilter(void *message, long *result);
    
 private:
@@ -63,9 +58,6 @@ private:
     int servershapes; // server supports shapes
     int ShapeEventBase; // event base for shape extension
     QSettings *antico;
-    Dockbar *dock;
-    Desk *dsk;
     Frame *frm;
-    Categorymenu *cat_menu;
 };
 #endif

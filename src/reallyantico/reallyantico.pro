@@ -38,17 +38,7 @@ SOURCES = \
  antico.cpp \
  frame.cpp \
  border.cpp \
- dockbar.cpp \
- launcher.cpp \
- dockicon.cpp \
- desk.cpp \
  titlebar.cpp \
- systray.cpp \
- dateclock.cpp \
- sysicon.cpp \
- utils.cpp \
- dockapp.cpp \
- dockmenu.cpp \
  debug.cpp \
  atoms.cpp \
  client.cpp
@@ -57,17 +47,7 @@ HEADERS = \
  antico.h \
  frame.h \
  border.h \
- dockbar.h \
- launcher.h \
- dockicon.h \
- desk.h \
  titlebar.hpp \
- systray.h \
- dateclock.h \
- sysicon.h \
- utils.h \
- dockapp.h \
- dockmenu.h \
  debug.hpp \
  atoms.hpp \
  client.hpp

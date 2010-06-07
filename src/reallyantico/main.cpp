@@ -23,6 +23,7 @@ bool _x11EventFilter(void *message, long *result)
 int main(int argc, char **argv)
 {
     QApplication a(argc, argv);
+    a.setQuitOnLastWindowClosed(false);
 
     _createAtomList();
 
@@ -32,9 +33,6 @@ int main(int argc, char **argv)
     qDebug() << "Language:" << QLocale::system().name();
     translator.load(QLocale::system().name(), QCoreApplication::applicationDirPath() + "/../share/antico/language/");
     a.installTranslator(&translator);
-    
-    qDebug() << "GUI creation...";
-    Antico::self()->create_gui();
 
     a.setEventFilter(_x11EventFilter);
 

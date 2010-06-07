@@ -15,8 +15,6 @@
 #include "frame.h"
 #include "border.h"
 #include "titlebar.hpp"
-#include "dockbar.h"
-#include "desk.h"
 
 #include <X11/Xatom.h>
 #include <X11/extensions/shape.h>

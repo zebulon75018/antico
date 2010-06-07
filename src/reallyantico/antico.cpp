@@ -14,13 +14,9 @@
 #include <QDir>
 
 #include "antico.h"
-#include "dockbar.h"
-#include "frame.h"
-#include "systray.h"
-#include "desk.h"
-#include "utils.h"
 #include "debug.hpp"
 #include "atoms.hpp"
+#include "frame.h"
 
 #include <X11/extensions/shape.h>
 
@@ -125,7 +121,7 @@ bool Antico::x11EventFilter(void *message, long *result)
         else
         {
             qDebug() << "--> MapRequest for new Client:" << event->xmaprequest.window;
-            create_frame(event->xmaprequest.window, dock, dsk); // create new Frame for Client
+            create_frame(event->xmaprequest.window, NULL, NULL); // create new Frame for Client
         }
         return false;
         break;
@@ -472,7 +468,7 @@ void Antico::create_frame(Window c_win, Dockbar *dock, Desk *desk) // create new
 
     if (frame_type.at(0) != "Splash")
     {
-        frm = new Frame(c_win, frame_type.at(0), dock, desk); // select always the first type in list (preferred)
+        frm = new Frame(c_win, frame_type.at(0), NULL, NULL); // select always the first type in list (preferred)
         mapping_clients.insert(c_win, frm); // save the client winId/frame
         mapping_frames.insert(frm->winId(), frm); // save the frame winId/frame
     }
@@ -610,31 +606,6 @@ void Antico::send_configurenotify(Frame *frm)
     ce.border_width = 0;
     ce.override_redirect = 0;
     XSendEvent(QX11Info::display(), ce.window, False, StructureNotifyMask, (XEvent *)&ce);
-}
-
-void Antico::create_gui()
-{
-    //cat_menu = new Categorymenu();
-    //cat_menu->update_menu();
-    //create desk
-    //dsk = new Desk(this);
-    // create dockbar
-    //dock = new Dockbar(this);
-}
-
-Desk * Antico::get_desktop()
-{
-    return dsk;
-}
-
-Dockbar * Antico::get_dockbar()
-{
-    return dock;
-}
-
-Categorymenu * Antico::get_category_menu()
-{
-    return cat_menu;
 }
 
 void Antico::set_settings()
