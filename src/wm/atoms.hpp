@@ -15,10 +15,13 @@ struct InternalAtoms
 
 		_NET_WM_WINDOW_TYPE,
 		_NET_WM_WINDOW_TYPE_DESKTOP,
+		_NET_WM_WINDOW_TYPE_TOOLBAR,
 		_NET_WM_WINDOW_TYPE_DOCK,
 		_NET_WM_WINDOW_TYPE_SPLASH,
 		_NET_WM_WINDOW_TYPE_NORMAL,
         _NET_WM_WINDOW_TYPE_DIALOG,
+        _NET_WM_WINDOW_TYPE_MENU,
+        _NET_WM_WINDOW_TYPE_UTILITY,
 
 		_NET_WM_STATE,
 		_NET_WM_STATE_STICKY,
@@ -31,6 +34,8 @@ struct InternalAtoms
 
 		_NET_WM_NAME,
 		_NET_WM_ICON,
+
+		_NET_WM_USER_TIME,
 
 		WM_DELETE_WINDOW,
 		WM_PROTOCOLS,
@@ -57,7 +62,7 @@ struct InternalAtoms
 	Atom atoms[NAtoms];
 };
 
-void _createAtomList();
+void createAtomList();
 
 #define ATOM(x) atomList->atoms[InternalAtoms::x]
 

@@ -1,36 +1,30 @@
-#ifndef _X11MANAGEMENT_HPP
-#define _X11MANAGEMENT_HPP
+#ifndef _WINDOWMANAGER_HPP
+#define _WINDOWMANAGER_HPP
 
-#include <QApplication>
-#include <QStringList>
-#include <QHash>
-#include <QX11Info>
+#include <QObject>
 #include <QMap>
 
 class Client;
 
+union _XEvent; // avoid X11 include
+
 class WindowManager: public QObject
 {
-    Q_OBJECT
-
 public:
-    WindowManager(QObject *parent = 0);
+    WindowManager();
 
     void init();
-    bool x11EventFilter(void *message, long *result);
+
+    bool x11EventFilter(_XEvent *e);
 
     static WindowManager *self();
 
 private:
-    Display *display() const;
-
-    bool handleMapRequest(Qt::HANDLE window);
-
-    void manageClient(Qt::HANDLE window);
+    Client *createClient(Qt::HANDLE winId);
+    inline Client *findClient(Qt::HANDLE winId) { return _clients.value(winId); }
 
 private:
-    Qt::HANDLE m_wmWindow;
-    QMap<Qt::HANDLE, Client *> m_clients;
+    QMap<Qt::HANDLE, Client *> _clients;
 };
 
-#endif // _X11MANAGEMENT_HPP
+#endif

@@ -17,14 +17,14 @@
 #include <QApplication>
 #include <QStringList>
 #include <QHash>
+#include <QMap>
 
 class Dockbar;
 class Frame;
 class Desk;
 class Categorymenu;
 class QSettings;
-
-#include <X11/Xutil.h>
+class Client;
 
 ////////////////////////////////////////
 
@@ -38,26 +38,18 @@ public:
     Antico();
 
     void init();
-    void create_frame(WId, Dockbar *, Desk *);
-    void raise_next_frame();
-    void set_active_frame(Frame *);
-    void send_configurenotify(Frame *);
-    void set_settings();
-    void get_atoms();
-    void check_window_type(WId);
-    void print_window_prop(WId);
-    bool check_net_sys_tray_for(WId) const;
-    void check_wm_transient_for(WId);
+    void set_settings(); // TODO
     bool x11EventFilter(void *message, long *result);
-   
+
 private:
-    QHash<int, Frame *> mapping_clients; // mapping client and frame (key=client_win_id value=frame)
-    QHash<int, Frame *> mapping_frames; // mapping frame with their winId (key=frame_win_id value=frame)
-    QList<Frame *> frm_list;
-    QStringList frame_type;
-    int servershapes; // server supports shapes
-    int ShapeEventBase; // event base for shape extension
-    QSettings *antico;
-    Frame *frm;
+    void addClient(Client *c);
+    Client *createClient(Qt::HANDLE window, bool isMapped = false);
+    Client *findClient(Qt::HANDLE window) const;
+    Frame *findClientFrame(Qt::HANDLE window) const;
+
+private:
+    QMap<Qt::HANDLE, Client *> m_clients;
+
+    QSettings *antico; // TODO
 };
 #endif

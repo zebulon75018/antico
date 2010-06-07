@@ -1,46 +1,59 @@
+#include "client.hpp"
+#include "anticodecoration.hpp"
+
 #include <QX11Info>
 
-#include "client.hpp"
-#include "decoratedframe.hpp"
+#include <X11/Xutil.h>
 
-#include <X11/Xlib.h>
-
-static Display *display()
+Client::Client(Qt::HANDLE winId, QObject *parent)
+    : QObject(parent)
+    , _winId(winId)
 {
-    return QX11Info::display();
+    XWindowAttributes attr;
+    XGetWindowAttributes(QX11Info::display(), _winId, &attr);
+
+    _geometry.setX(attr.x);
+    _geometry.setY(attr.y);
+    _geometry.setWidth(attr.width);
+    _geometry.setHeight(attr.height);
+
+    _decoration = new AnticoDecoration(this);
+
+    XSetWindowBorderWidth(QX11Info::display(), _winId, 0);
+    XSetWindowBorderWidth(QX11Info::display(), _decoration->winId(), 0);
+    XReparentWindow(QX11Info::display(), _winId, _decoration->winId(),
+                    _decoration->borderSize().left(), _decoration->borderSize().top());
+    XAddToSaveSet(QX11Info::display(), _winId);
+
+    _decoration->setGeometry(_geometry.x(), _geometry.y(),
+                             _geometry.width() + _decoration->borderSize().measuredWidth(),
+                             _geometry.height() + _decoration->borderSize().measuredHeight());
+
+    XSelectInput(QX11Info::display(), _decoration->winId(),
+                 KeyPressMask | KeyReleaseMask |
+                 ButtonPressMask | ButtonReleaseMask |
+                 KeymapStateMask | ButtonMotionMask |
+                 PointerMotionMask | EnterWindowMask |
+                 LeaveWindowMask | FocusChangeMask |
+                 ExposureMask |StructureNotifyMask |
+                 SubstructureRedirectMask | SubstructureNotifyMask);
+
+    XSetWindowAttributes sattr;
+    sattr.event_mask = ColormapChangeMask | PropertyChangeMask;
+    XChangeWindowAttributes(QX11Info::display(), _winId, CWEventMask, &sattr);
+
+    map();
 }
 
-Client::Client(Qt::HANDLE window, QObject *parent):
-    QObject(parent)
+Client::~Client()
 {
-    m_decoratedFrame = new DecoratedFrame;
+    _decoration->close();
+    _decoration->deleteLater();
+}
 
-    XGrabServer(display());
-
-    XSetWindowBorderWidth(display(), window, 0);
-    XSetWindowBorderWidth(display(), m_decoratedFrame->winId(), 0);
-
-    // TODO: Make border width and height dynamic
-    XReparentWindow(display(), window, m_decoratedFrame->winId(), 2, 20);
-
-    XSetWindowAttributes attrib;
-    attrib.event_mask = ButtonPressMask | ButtonReleaseMask |
-        KeymapStateMask | ButtonMotionMask | PointerMotionMask|
-        EnterWindowMask | LeaveWindowMask | FocusChangeMask|
-        ExposureMask | StructureNotifyMask | SubstructureRedirectMask | SubstructureNotifyMask;
-    XChangeWindowAttributes(display(), m_decoratedFrame->winId(), CWEventMask, &attrib);
-
-    attrib.event_mask = ColormapChangeMask | PropertyChangeMask | StructureNotifyMask | FocusChangeMask;
-    XChangeWindowAttributes(display(), window, CWEventMask, &attrib);
-
-    XAddToSaveSet(display(), window);
-
-    // TODO
-
-    m_decoratedFrame->show();
-
-    XMapWindow(display(), window);
-    XSync(display(), False);
-
-    XUngrabServer(display());
+void Client::map()
+{
+    _decoration->show();
+    XMapWindow(QX11Info::display(), _winId);
+    XSync(QX11Info::display(), False);
 }

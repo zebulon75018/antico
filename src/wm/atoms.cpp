@@ -9,10 +9,13 @@ static const char *atomNames = {
 
 	"_NET_WM_WINDOW_TYPE\0"
 	"_NET_WM_WINDOW_TYPE_DESKTOP\0"
+	"_NET_WM_WINDOW_TYPE_TOOLBAR\0"
 	"_NET_WM_WINDOW_TYPE_DOCK\0"
 	"_NET_WM_WINDOW_TYPE_SPLASH\0"
 	"_NET_WM_WINDOW_TYPE_NORMAL\0"
     "_NET_WM_WINDOW_TYPE_DIALOG\0"
+    "_NET_WM_WINDOW_TYPE_MENU\0"
+    "_NET_WM_WINDOW_TYPE_UTILITY\0"
 
 	"_NET_WM_STATE\0"
 	"_NET_WM_STATE_STICKY\0"
@@ -25,6 +28,8 @@ static const char *atomNames = {
 
 	"_NET_WM_NAME\0"
 	"_NET_WM_ICON\0"
+
+	"_NET_WM_USER_TIME\0"
 
 	"WM_DELETE_WINDOW\0"
 	"WM_PROTOCOLS\0"
@@ -48,7 +53,7 @@ static const char *atomNames = {
 
 InternalAtoms *atomList = 0;
 
-void _createAtomList()
+void createAtomList()
 {
 	atomList = new InternalAtoms;
 

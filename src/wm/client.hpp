@@ -2,19 +2,22 @@
 #define _CLIENT_HPP
 
 #include <QObject>
-#include <QX11Info>
+#include <QRect>
 
-class DecoratedFrame;
+class Decoration;
 
 class Client: public QObject
 {
-    Q_OBJECT
-
 public:
-    Client(Qt::HANDLE window, QObject *parent = 0);
+    Client(Qt::HANDLE winId, QObject *parent);
+    ~Client();
+
+    void map();
 
 private:
-    DecoratedFrame *m_decoratedFrame;
+    Qt::HANDLE _winId;
+    Decoration *_decoration;
+    QRect _geometry;
 };
 
-#endif // _CLIENT_HPP
+#endif

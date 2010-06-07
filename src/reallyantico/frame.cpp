@@ -28,11 +28,11 @@ Frame::Frame(Qt::HANDLE w, const QString &type, Dockbar *dock, Desk *desk, QWidg
     frame_type = type;
     c_win = w;
     read_settings();
-    init();
+//    init();
     setFrameStyle(QFrame::Panel|QFrame::Raised);
     setAttribute(Qt::WA_AlwaysShowToolTips);
     setAcceptDrops(true);
-    set_active(); // set header active
+//    set_active(); // set header active
 }
 
 Frame::~Frame()

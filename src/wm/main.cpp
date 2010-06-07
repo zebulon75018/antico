@@ -1,25 +1,20 @@
-#include <QDebug>
 #include "windowmanager.hpp"
-#include "atoms.hpp"
 
-#include <QX11Info>
+#include <QApplication>
 
-#include <X11/Xlib.h>
-
-static bool _x11EventFilter(void *message, long *result)
+bool x11EventFilter(void *message, long *result)
 {
-    return WindowManager::self()->x11EventFilter(message, result);
+    return WindowManager::self()->x11EventFilter(reinterpret_cast<XEvent *>(message));
 }
 
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
-
-    app.setEventFilter(_x11EventFilter);
-
-    _createAtomList();
+    app.setQuitOnLastWindowClosed(false);
 
     WindowManager::self()->init();
+
+    app.setEventFilter(x11EventFilter);
 
     return app.exec();
 }
