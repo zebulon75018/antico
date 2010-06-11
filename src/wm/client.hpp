@@ -12,8 +12,16 @@ public:
     Client(Qt::HANDLE winId, QObject *parent);
     ~Client();
 
-    void map();
+    // These methods are interesting if you want to create a custom decoration     
     void move(const QPoint &p);
+    void minimize();
+    void maximize();
+    void close();
+
+protected:
+    friend class WindowManager;
+
+    void map();
 
 private:
     Qt::HANDLE _winId;

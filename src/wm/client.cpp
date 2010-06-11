@@ -52,16 +52,28 @@ Client::~Client()
     _decoration->deleteLater();
 }
 
-void Client::map()
-{
-    _decoration->show();
-    XMapWindow(QX11Info::display(), _winId);
-    XSync(QX11Info::display(), False);
-}
-
 void Client::move(const QPoint &p)
 {
     _decoration->setGeometry(p.x(), p.y(),
 			     _decoration->geometry().width(),
 			     _decoration->geometry().height());    
+}
+
+void Client::minimize()
+{
+}
+
+void Client::maximize()
+{    
+}
+
+void Client::close()
+{
+}
+
+void Client::map()
+{
+    _decoration->show();
+    XMapWindow(QX11Info::display(), _winId);
+    XSync(QX11Info::display(), False);
 }
