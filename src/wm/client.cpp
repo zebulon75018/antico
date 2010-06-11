@@ -1,5 +1,6 @@
 #include "client.hpp"
 #include "anticodecoration.hpp"
+#include "decorations/ubuntu/ubuntudecoration.hpp"
 
 #include <QX11Info>
 #include <QDebug>
@@ -24,7 +25,7 @@ Client::Client(Qt::HANDLE winId, QObject *parent)
       Once compiled it will not be possible to change the decoration unless the decoration be a engine (like KWin)
     */
 
-    _decoration = new AnticoDecoration(this);
+    _decoration = new UbuntuDecoration(this);
 
     XSetWindowBorderWidth(QX11Info::display(), _winId, 0);
     XSetWindowBorderWidth(QX11Info::display(), _decoration->winId(), 0);
