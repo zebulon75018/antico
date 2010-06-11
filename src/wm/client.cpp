@@ -18,6 +18,12 @@ Client::Client(Qt::HANDLE winId, QObject *parent)
     _geometry.setWidth(attr.width);
     _geometry.setHeight(attr.height);
 
+    /*
+      If you have a custom decoration, pass the pointer to it.
+      Yes. I know it is ugly but there are no plans to add support for dynamic plugins (the custom decoration would be a dynamic library).
+      Once compiled it will not be possible to change the decoration unless the decoration be a engine (like KWin)
+    */
+
     _decoration = new AnticoDecoration(this);
 
     XSetWindowBorderWidth(QX11Info::display(), _winId, 0);
