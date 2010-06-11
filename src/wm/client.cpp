@@ -2,6 +2,7 @@
 #include "anticodecoration.hpp"
 
 #include <QX11Info>
+#include <QDebug>
 
 #include <X11/Xutil.h>
 
@@ -56,4 +57,11 @@ void Client::map()
     _decoration->show();
     XMapWindow(QX11Info::display(), _winId);
     XSync(QX11Info::display(), False);
+}
+
+void Client::move(const QPoint &p)
+{
+    _decoration->setGeometry(p.x(), p.y(),
+			     _decoration->geometry().width(),
+			     _decoration->geometry().height());    
 }

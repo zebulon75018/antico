@@ -13,6 +13,7 @@ public:
     ~Client();
 
     void map();
+    void move(const QPoint &p);
 
 private:
     Qt::HANDLE _winId;
