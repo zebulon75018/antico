@@ -77,22 +77,8 @@ bool WindowManager::x11EventFilter(_XEvent *e)
             return false;
         }
 
-        case EnterNotify:
-        case ColormapNotify:
-        case PropertyNotify:
-            return false;
-
-        case ConfigureNotify:
-            if (e->xconfigure.event != e->xconfigure.window)
-                return true;
-            return false;
-
-        case ReparentNotify:
-        case ClientMessage:
-            return true;
-
         case ConfigureRequest:
-            return false;
+            return true;
 
         case MapRequest:
         {
