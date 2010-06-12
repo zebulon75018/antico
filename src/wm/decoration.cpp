@@ -18,10 +18,14 @@ void Decoration::mousePressEvent(QMouseEvent *e)
 void Decoration::mouseReleaseEvent(QMouseEvent *e)
 {
     setMoveOffset(QPoint(0, 0)); // Clear offset
+    setCursor(Qt::ArrowCursor);
 }
 
 void Decoration::mouseMoveEvent(QMouseEvent *e)
 {
     if (e->buttons() & Qt::LeftButton && !moveOffset().isNull())
+    {
+	setCursor(Qt::ClosedHandCursor);
 	client()->move(mapToGlobal(e->pos()) - moveOffset());
+    }
 }
