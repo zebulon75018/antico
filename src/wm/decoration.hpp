@@ -18,6 +18,7 @@ public:
 
 protected:
     virtual void mousePressEvent(QMouseEvent *e);
+    virtual void mouseReleaseEvent(QMouseEvent *e);
     virtual void mouseMoveEvent(QMouseEvent *e);
 
     inline QPoint moveOffset() const { return _moveOffset; }
