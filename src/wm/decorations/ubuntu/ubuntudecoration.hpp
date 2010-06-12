@@ -3,17 +3,10 @@
 
 #include "decoration.hpp"
 
-class UbuntuDecoration: public Decoration
-{
-    class TitleBar: public QWidget
-    {
-    public:
-	TitleBar(UbuntuDecoration *d);
+class TitleBar;
 
-    protected:
-	virtual void paintEvent(QPaintEvent *e);
-    };
-	
+class UbuntuDecoration: public Decoration
+{	
 public:
     UbuntuDecoration(Client *c);
 
