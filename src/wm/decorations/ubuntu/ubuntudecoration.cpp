@@ -12,12 +12,12 @@ UbuntuDecoration::UbuntuDecoration(Client *c)
     : Decoration(c)
 {
     _titleBar = new TitleBar(this);
-    _titleBar->setFixedHeight(borderSize().top());
+    _titleBar->setFixedHeight(borderSize().titleBarHeight());
     connect(_titleBar, SIGNAL(buttonClicked(UbuntuDecoration::ButtonType)),
             SLOT(buttonClicked(UbuntuDecoration::ButtonType)));
 
     QVBoxLayout *layout = new QVBoxLayout(this);
-    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setContentsMargins(borderSize().left(), borderSize().top(), borderSize().right(), borderSize().bottom());
     layout->addWidget(_titleBar);
     layout->addStretch();
 
