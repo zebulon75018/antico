@@ -17,20 +17,35 @@ UbuntuDecoration::UbuntuDecoration(Client *c)
             SLOT(buttonClicked(UbuntuDecoration::ButtonType)));
 
     QVBoxLayout *layout = new QVBoxLayout(this);
-    layout->setContentsMargins(borderSize().left(), borderSize().top(), borderSize().right(), borderSize().bottom());
+    layout->setContentsMargins(borderSize().left() - 2, // expand 2px
+                               borderSize().top(),
+                               borderSize().right() - 2, // expand 2px
+                               borderSize().bottom());
     layout->addWidget(_titleBar);
     layout->addStretch();
 
     setLayout(layout);
-    
-    QPalette pal = palette();
-    pal.setColor(QPalette::Window, QColor(135, 122, 98));
-    setPalette(pal);
 }
 
 BorderSize UbuntuDecoration::borderSize() const
 {
-    return BorderSize(1, 1, 1, 1, 32);
+    return BorderSize(1, 3, 3, 3, 32);
+}
+
+void UbuntuDecoration::paintEvent(QPaintEvent *e)
+{
+    QPainter painter(this);
+
+    painter.setPen(QColor(60, 59, 55));
+
+    // top-left to bottom-left
+    painter.drawLine(QPoint(0, 0), QPoint(0, rect().height()));
+    // bottom-left to bottom-right
+    painter.drawLine(QPoint(0, rect().height() - 1), QPoint(rect().width(), rect().height() - 1));
+    // bottom-right to top-right
+    painter.drawLine(QPoint(rect().width() - 1, rect().height() - 1), QPoint(rect().width() - 1, 0));
+    // top-right to top-left
+    painter.drawLine(QPoint(rect().width() - 1, 0), QPoint(0, 0));
 }
 
 void UbuntuDecoration::buttonClicked(UbuntuDecoration::ButtonType button)

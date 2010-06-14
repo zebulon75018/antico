@@ -21,6 +21,9 @@ public:
 
     BorderSize borderSize() const;
 
+protected:
+    virtual void paintEvent(QPaintEvent *e);
+
 private slots:
     void buttonClicked(UbuntuDecoration::ButtonType button);
 
