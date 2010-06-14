@@ -1,20 +1,20 @@
 #include "titlebarbutton.hpp"
 
-TitleBarButton::TitleBarButton(TitleBar::ButtonType type, QWidget *parent)
+TitleBarButton::TitleBarButton(UbuntuDecoration::ButtonType type, QWidget *parent)
     : QLabel(parent)
     , _type(type)
 {
     switch (type)
     {
-        case TitleBar::CloseButton:
+        case UbuntuDecoration::CloseButton:
             setPixmap(QPixmap(":/decorations/ubuntu/images/close.png"));
             setToolTip(trUtf8("Close"));
             break;
-        case TitleBar::MinimizeButton:
+        case UbuntuDecoration::MinimizeButton:
             setPixmap(QPixmap(":/decorations/ubuntu/images/minimize.png"));
             setToolTip(trUtf8("Minimize"));
             break;
-        case TitleBar::MaximizeButton:
+        case UbuntuDecoration::MaximizeButton:
             setPixmap(QPixmap(":/decorations/ubuntu/images/maximize.png"));
             setToolTip(trUtf8("Maximize"));
             break;

@@ -3,6 +3,8 @@
 
 #include <QFrame>
 
+#include "ubuntudecoration.hpp"
+
 class ButtonContainer;
 
 class TitleBar: public QWidget
@@ -10,13 +12,6 @@ class TitleBar: public QWidget
     Q_OBJECT
 
 public:
-    enum ButtonType
-    {
-        CloseButton,
-        MinimizeButton,
-        MaximizeButton
-    };
-
     TitleBar(QWidget *parent = 0);
 
 protected:
@@ -24,6 +19,9 @@ protected:
 
 private:
     ButtonContainer *_buttonContainer;
+
+signals:
+    void buttonClicked(UbuntuDecoration::ButtonType);
 };
 
 #endif

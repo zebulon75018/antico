@@ -17,6 +17,8 @@ TitleBar::TitleBar(QWidget *parent):
     layout->setContentsMargins(10, 2, 2, 2);
 
     _buttonContainer = new ButtonContainer(this);
+    connect(_buttonContainer, SIGNAL(clicked(UbuntuDecoration::ButtonType)),
+            SIGNAL(buttonClicked(UbuntuDecoration::ButtonType)));
 
     QFont f(font());
     f.setBold(true);

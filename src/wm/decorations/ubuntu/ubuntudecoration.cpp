@@ -1,5 +1,6 @@
 #include "ubuntudecoration.hpp"
 #include "titlebar.hpp"
+#include "client.hpp"
 
 #include <QHBoxLayout>
 #include <QPalette>
@@ -12,6 +13,8 @@ UbuntuDecoration::UbuntuDecoration(Client *c)
 {
     _titleBar = new TitleBar(this);
     _titleBar->setFixedHeight(borderSize().top());
+    connect(_titleBar, SIGNAL(buttonClicked(UbuntuDecoration::ButtonType)),
+            SLOT(buttonClicked(UbuntuDecoration::ButtonType)));
 
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
@@ -29,3 +32,22 @@ BorderSize UbuntuDecoration::borderSize() const
 {
     return BorderSize(32, 2, 2, 2);
 }
+
+void UbuntuDecoration::buttonClicked(UbuntuDecoration::ButtonType button)
+{
+    switch (button)
+    {
+        case CloseButton:
+            client()->close();
+            break;
+
+        case MinimizeButton:
+            client()->minimize();
+            break;
+
+        case MaximizeButton:
+            client()->maximize();
+            break;
+    }
+}
+

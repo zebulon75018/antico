@@ -3,22 +3,22 @@
 
 #include <QLabel>
 
-#include "titlebar.hpp"
+#include "ubuntudecoration.hpp"
 
 class TitleBarButton: public QLabel
 {
     Q_OBJECT
 
 public:
-    TitleBarButton(TitleBar::ButtonType type, QWidget *parent);
+    TitleBarButton(UbuntuDecoration::ButtonType type, QWidget *parent);
 
-    inline TitleBar::ButtonType type() const { return _type; }
+    inline UbuntuDecoration::ButtonType type() const { return _type; }
 
 protected:
     virtual void mousePressEvent(QMouseEvent *event);
 
 private:
-    TitleBar::ButtonType _type;
+    UbuntuDecoration::ButtonType _type;
 
 signals:
     void clicked();

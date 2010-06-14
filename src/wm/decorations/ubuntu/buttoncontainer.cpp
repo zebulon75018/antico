@@ -17,13 +17,13 @@ ButtonContainer::ButtonContainer(QWidget *parent):
     _signalMapper = new QSignalMapper(this);
     connect(_signalMapper, SIGNAL(mapped(int)), SLOT(buttonClicked(int)));
 
-    addButton(TitleBar::CloseButton);
-    addButton(TitleBar::MinimizeButton);
-    addButton(TitleBar::MaximizeButton);
+    addButton(UbuntuDecoration::CloseButton);
+    addButton(UbuntuDecoration::MinimizeButton);
+    addButton(UbuntuDecoration::MaximizeButton);
 
-    layout->addWidget(button(TitleBar::CloseButton));
-    layout->addWidget(button(TitleBar::MinimizeButton));
-    layout->addWidget(button(TitleBar::MaximizeButton));
+    layout->addWidget(button(UbuntuDecoration::CloseButton));
+    layout->addWidget(button(UbuntuDecoration::MinimizeButton));
+    layout->addWidget(button(UbuntuDecoration::MaximizeButton));
 
     setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 }
@@ -42,7 +42,7 @@ void ButtonContainer::paintEvent(QPaintEvent *event)
     painter.drawRoundedRect(rect(), 10, 10);
 }
 
-void ButtonContainer::addButton(TitleBar::ButtonType type)
+void ButtonContainer::addButton(UbuntuDecoration::ButtonType type)
 {
     TitleBarButton *button = new TitleBarButton(type, this);
     connect(button, SIGNAL(clicked()), _signalMapper, SLOT(map()));
@@ -52,6 +52,6 @@ void ButtonContainer::addButton(TitleBar::ButtonType type)
 
 void ButtonContainer::buttonClicked(int button)
 {
-    TitleBar::ButtonType type = static_cast<TitleBar::ButtonType>(button);
+    UbuntuDecoration::ButtonType type = static_cast<UbuntuDecoration::ButtonType>(button);
     emit clicked(type);
 }

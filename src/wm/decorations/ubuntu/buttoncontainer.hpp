@@ -1,10 +1,10 @@
 #ifndef _BUTTONCONTAINER_HPP
 #define _BUTTONCONTAINER_HPP
 
-#include <QWidget>
+#include <QFrame>
 #include <QMap>
 
-#include "titlebar.hpp"
+#include "ubuntudecoration.hpp"
 
 class QSignalMapper;
 class TitleBarButton;
@@ -20,18 +20,18 @@ protected:
     virtual void paintEvent(QPaintEvent *event);
 
 private:
-    void addButton(TitleBar::ButtonType type);
-    inline TitleBarButton *button(TitleBar::ButtonType type) { return _buttons.value(type); }
+    void addButton(UbuntuDecoration::ButtonType type);
+    inline TitleBarButton *button(UbuntuDecoration::ButtonType type) { return _buttons.value(type); }
 
 private slots:
     void buttonClicked(int button);
 
 private:
-    QMap<TitleBar::ButtonType, TitleBarButton *> _buttons;
+    QMap<UbuntuDecoration::ButtonType, TitleBarButton *> _buttons;
     QSignalMapper *_signalMapper;
 
 signals:
-    void clicked(TitleBar::ButtonType);
+    void clicked(UbuntuDecoration::ButtonType);
 };
 
 #endif
