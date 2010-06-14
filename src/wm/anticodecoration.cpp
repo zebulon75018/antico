@@ -8,7 +8,7 @@ AnticoDecoration::AnticoDecoration(Client *c)
 
 BorderSize AnticoDecoration::borderSize() const
 {
-    return BorderSize(20, 2, 2, 2);
+    return BorderSize(2, 2, 2, 2, 20);
 }
 
 void AnticoDecoration::readSettings()

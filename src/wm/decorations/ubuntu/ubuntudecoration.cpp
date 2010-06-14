@@ -30,7 +30,7 @@ UbuntuDecoration::UbuntuDecoration(Client *c)
 
 BorderSize UbuntuDecoration::borderSize() const
 {
-    return BorderSize(32, 2, 2, 2);
+    return BorderSize(2, 2, 2, 2, 32);
 }
 
 void UbuntuDecoration::buttonClicked(UbuntuDecoration::ButtonType button)
