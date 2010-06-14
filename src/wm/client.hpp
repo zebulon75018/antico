@@ -18,6 +18,8 @@ public:
     void maximize();
     void close();
 
+    inline QRect geometry() const { return _geometry; }
+
 protected:
     friend class WindowManager;
 
