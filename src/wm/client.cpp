@@ -30,7 +30,8 @@ Client::Client(Qt::HANDLE winId, QObject *parent)
     XSetWindowBorderWidth(QX11Info::display(), _winId, 0);
     XSetWindowBorderWidth(QX11Info::display(), _decoration->winId(), 0);
     XReparentWindow(QX11Info::display(), _winId, _decoration->winId(),
-                    _decoration->borderSize().left(), _decoration->borderSize().top());
+                    _decoration->borderSize().left(),
+                    _decoration->borderSize().top() + _decoration->borderSize().titleBarHeight());
     XAddToSaveSet(QX11Info::display(), _winId);
 
     _decoration->setGeometry(_geometry.x(), _geometry.y(),
