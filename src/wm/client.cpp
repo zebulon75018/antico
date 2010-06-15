@@ -1,10 +1,13 @@
 #include "client.hpp"
 #include "anticodecoration.hpp"
 #include "decorations/ubuntu/ubuntudecoration.hpp"
+#include "atoms.hpp"
+#include "fixx11h.h"
 
 #include <QX11Info>
 #include <QDebug>
 
+#include <X11/Xlib.h>
 #include <X11/Xutil.h>
 
 Client::Client(Qt::HANDLE winId, QObject *parent)
@@ -51,6 +54,9 @@ Client::Client(Qt::HANDLE winId, QObject *parent)
     sattr.event_mask = ColormapChangeMask | PropertyChangeMask;
     XChangeWindowAttributes(QX11Info::display(), _winId, CWEventMask, &sattr);
 
+    updateTitle();
+    _decoration->setTitle(_title);
+
     map();
 }
 
@@ -62,6 +68,18 @@ Client::~Client()
 
 bool Client::x11EventFilter(_XEvent *e)
 {
+    switch (e->type)
+    {
+    case PropertyNotify:
+	// Name has updated
+	if (e->xproperty.atom == ATOM(WM_NAME) || e->xproperty.atom == ATOM(_NET_WM_NAME))
+	{
+	    updateTitle();
+	    _decoration->setTitle(_title);
+	    return true;
+	}
+    }
+
     return false;
 }
 
@@ -93,4 +111,38 @@ void Client::map()
     _decoration->show();
     XMapWindow(QX11Info::display(), _winId);
     XSync(QX11Info::display(), False);
+}
+
+void Client::updateTitle()
+{
+    char *name = NULL;
+
+    Atom typeReturn;
+    int formatReturn;
+    unsigned long count, unused;
+    unsigned char *data = NULL;
+
+    if ((XGetWindowProperty(QX11Info::display(), _winId, ATOM(_NET_WM_NAME), 0, 1024,
+			    False, AnyPropertyType, &typeReturn,
+			    &formatReturn, &count, &unused, &data))
+	== Success && data)
+    {    
+        _title = QString::fromUtf8((char *)data);
+        XFree(data);
+    }
+    else if (XFetchName(QX11Info::display(), _winId, &name) && name != NULL)
+    {
+	_title = name;
+        XFree(name);
+    }
+    else  // use class hints
+    {
+        XClassHint hint;
+        if (XGetClassHint(QX11Info::display(), _winId, &hint))
+        {
+	    _title = hint.res_name;
+            XFree(hint.res_name);
+            XFree(hint.res_class);
+        }
+    }    
 }

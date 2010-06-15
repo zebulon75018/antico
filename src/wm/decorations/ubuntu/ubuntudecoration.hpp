@@ -21,6 +21,8 @@ public:
 
     BorderSize borderSize() const;
 
+    void setTitle(const QString &title);
+
 protected:
     virtual void paintEvent(QPaintEvent *e);
 

@@ -32,6 +32,11 @@ BorderSize UbuntuDecoration::borderSize() const
     return BorderSize(1, 3, 3, 3, 28);
 }
 
+void UbuntuDecoration::setTitle(const QString &title)
+{
+    _titleBar->setTitle(title);
+}
+
 void UbuntuDecoration::paintEvent(QPaintEvent *e)
 {
     QPainter painter(this);

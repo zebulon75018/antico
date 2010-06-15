@@ -32,8 +32,12 @@ protected:
     void map();
 
 private:
+    void updateTitle();
+
+private:
     Qt::HANDLE _winId;
     Decoration *_decoration;
+    QString _title;
     QRect _geometry;
 };
 

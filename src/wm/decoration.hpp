@@ -10,12 +10,16 @@ union _XEvent;
 
 class Decoration: public QWidget
 {
+    Q_OBJECT
+
 public:
     Decoration(Client *c);
 
     virtual bool x11EventFilter(_XEvent *e);
 
     virtual BorderSize borderSize() const = 0;
+
+    virtual void setTitle(const QString &title) = 0;
 
     inline Client *client() const { return _client; }
 

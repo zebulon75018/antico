@@ -5,6 +5,7 @@
 
 #include "ubuntudecoration.hpp"
 
+class QLabel;
 class ButtonContainer;
 
 class TitleBar: public QWidget
@@ -14,11 +15,14 @@ class TitleBar: public QWidget
 public:
     TitleBar(QWidget *parent = 0);
 
+    void setTitle(const QString &title);
+
 protected:
     virtual void paintEvent(QPaintEvent *event);
 
 private:
     ButtonContainer *_buttonContainer;
+    QLabel *_title;
 
 signals:
     void buttonClicked(UbuntuDecoration::ButtonType);

@@ -29,14 +29,19 @@ TitleBar::TitleBar(QWidget *parent):
     QPalette pal(palette());
     pal.setColor(QPalette::WindowText, QColor(223, 223, 223));
 
-    QLabel *title = new QLabel("Test Window");
-    title->setMouseTracking(true);
-    title->setFont(f);
-    title->setPalette(pal);
-    title->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    _title = new QLabel(this);
+    _title->setMouseTracking(true);
+    _title->setFont(f);
+    _title->setPalette(pal);
+    _title->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
 
     layout->addWidget(_buttonContainer);
-    layout->addWidget(title);
+    layout->addWidget(_title);
+}
+
+void TitleBar::setTitle(const QString &title)
+{
+    _title->setText(title);
 }
 
 void TitleBar::paintEvent(QPaintEvent *event)
