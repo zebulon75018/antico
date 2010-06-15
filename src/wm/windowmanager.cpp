@@ -78,9 +78,6 @@ bool WindowManager::x11EventFilter(_XEvent *e)
             return false;
         }
 
-        case ConfigureRequest:
-            return true;
-
         case MapRequest:
         {
             Client *c = findClient(e->xmaprequest.window);
