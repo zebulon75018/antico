@@ -29,7 +29,7 @@ UbuntuDecoration::UbuntuDecoration(Client *c)
 
 BorderSize UbuntuDecoration::borderSize() const
 {
-    return BorderSize(1, 3, 3, 3, 32);
+    return BorderSize(1, 3, 3, 3, 28);
 }
 
 void UbuntuDecoration::paintEvent(QPaintEvent *e)

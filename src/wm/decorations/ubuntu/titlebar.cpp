@@ -24,7 +24,7 @@ TitleBar::TitleBar(QWidget *parent):
 
     QFont f(font());
     f.setBold(true);
-    f.setPointSize(9);
+    f.setPixelSize(12);
 
     QPalette pal(palette());
     pal.setColor(QPalette::WindowText, QColor(223, 223, 223));
