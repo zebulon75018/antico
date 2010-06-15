@@ -5,12 +5,15 @@
 #include <QRect>
 
 class Decoration;
+union _XEvent;
 
 class Client: public QObject
 {
 public:
     Client(Qt::HANDLE winId, QObject *parent);
     ~Client();
+
+    bool x11EventFilter(_XEvent *e);
 
     // These methods are interesting if you want to create a custom decoration
     void move(const QPoint &p);

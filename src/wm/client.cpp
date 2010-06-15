@@ -60,6 +60,11 @@ Client::~Client()
     _decoration->deleteLater();
 }
 
+bool Client::x11EventFilter(_XEvent *e)
+{
+    return false;
+}
+
 void Client::move(const QPoint &p)
 {
     _decoration->setGeometry(p.x(), p.y(),

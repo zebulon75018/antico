@@ -95,14 +95,17 @@ bool WindowManager::x11EventFilter(_XEvent *e)
 
             return true;
         }
+    }
 
-        case LeaveNotify:
-            foreach(Client *c, _clients)
-            {
-                if (c->decoration()->winId() == e->xcrossing.window)
-                    return c->decoration()->x11EventFilter(e);
-            }
-            break;
+    if (Client *c = findClient(e->xany.window))
+    {
+	if (c->x11EventFilter(e))
+	    return true;
+    }
+    else if (Client *c = findClientByDecorationWindow(e->xany.window))
+    {
+	if (c->decoration()->x11EventFilter(e))
+	    return true;
     }
 
     return false;
@@ -111,6 +114,17 @@ bool WindowManager::x11EventFilter(_XEvent *e)
 Client *WindowManager::createClient(Qt::HANDLE winId)
 {
     return new Client(winId, this);
+}
+
+Client *WindowManager::findClientByDecorationWindow(Qt::HANDLE winId) const
+{
+    foreach (Client *c, _clients)
+    {
+	if (c->decoration()->winId() == winId)
+	    return c;
+    }
+
+    return NULL;
 }
 
 WindowManager *WindowManager::self()

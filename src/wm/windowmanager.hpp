@@ -21,6 +21,7 @@ public:
 
 private:
     Client *createClient(Qt::HANDLE winId);
+    Client *findClientByDecorationWindow(Qt::HANDLE winId) const;
     inline Client *findClient(Qt::HANDLE winId) { return _clients.value(winId); }
 
 private:
