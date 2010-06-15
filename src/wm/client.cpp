@@ -51,7 +51,7 @@ Client::Client(Qt::HANDLE winId, QObject *parent)
                  SubstructureRedirectMask | SubstructureNotifyMask);
 
     XSetWindowAttributes sattr;
-    sattr.event_mask = ColormapChangeMask | PropertyChangeMask;
+    sattr.event_mask = ColormapChangeMask | PropertyChangeMask | StructureNotifyMask;
     XChangeWindowAttributes(QX11Info::display(), _winId, CWEventMask, &sattr);
 
     updateTitle();
@@ -97,9 +97,22 @@ bool Client::x11EventFilter(_XEvent *e)
 
 void Client::move(const QPoint &p)
 {
-    _decoration->setGeometry(p.x(), p.y(),
-			     _decoration->geometry().width(),
-			     _decoration->geometry().height());    
+    _decoration->move(p.x(), p.y());
+
+    XConfigureEvent e;
+    e.type = ConfigureNotify;
+    e.send_event = True;
+    e.event = _winId;
+    e.window = _winId;
+    e.x = p.x();
+    e.y = p.y();
+    e.width = _geometry.width();
+    e.height = _geometry.height();
+    e.border_width = 0;
+    e.above = None;
+    e.override_redirect = 0;
+    XSendEvent(QX11Info::display(), e.event, true, StructureNotifyMask, (XEvent *)&e);
+    XSync(QX11Info::display(), False);
 }
 
 void Client::resize(const QSize &size)
