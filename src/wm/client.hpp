@@ -18,6 +18,8 @@ public:
     void maximize();
     void close();
 
+    inline Decoration *decoration() const { return _decoration; }
+
     inline QRect geometry() const { return _geometry; }
 
 protected:

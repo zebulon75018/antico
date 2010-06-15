@@ -10,6 +10,11 @@ Decoration::Decoration(Client *c)
     setMouseTracking(true);
 }
 
+bool Decoration::x11EventFilter(_XEvent *e)
+{
+    return false;
+}
+
 void Decoration::mousePressEvent(QMouseEvent *e)
 {
     setMoveOffset(e->pos());

@@ -1,4 +1,5 @@
 #include "windowmanager.hpp"
+#include "decoration.hpp"
 #include "client.hpp"
 #include "atoms.hpp"
 #include "debug.hpp"
@@ -91,7 +92,17 @@ bool WindowManager::x11EventFilter(_XEvent *e)
 
             if ((c = createClient(e->xmaprequest.window)))
                 _clients.insert(e->xmaprequest.window, c);
+
+            return true;
         }
+
+        case MotionNotify:
+            foreach(Client *c, _clients)
+            {
+                if (c->decoration()->winId() == e->xmotion.window)
+                    return c->decoration()->x11EventFilter(e);
+            }
+            break;
     }
 
     return false;

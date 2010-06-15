@@ -6,11 +6,14 @@
 #include <QWidget>
 
 class Client;
+union _XEvent;
 
 class Decoration: public QWidget
 {
 public:
     Decoration(Client *c);
+
+    virtual bool x11EventFilter(_XEvent *e);
 
     virtual BorderSize borderSize() const = 0;
 
