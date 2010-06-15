@@ -78,6 +78,18 @@ bool Client::x11EventFilter(_XEvent *e)
 	    _decoration->setTitle(_title);
 	    return true;
 	}
+
+	break;
+
+    case ConfigureNotify:
+	_geometry.setX(e->xconfigure.x);
+	_geometry.setY(e->xconfigure.y);
+	_geometry.setWidth(e->xconfigure.width);
+	_geometry.setHeight(e->xconfigure.height);
+
+	qDebug() << _geometry;
+
+	break;
     }
 
     return false;
