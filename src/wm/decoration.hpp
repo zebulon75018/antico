@@ -30,6 +30,7 @@ protected:
 private:
     Client *_client;
     QPoint _moveOffset;
+    bool _hoverResizeArea;
 };
 
 #endif

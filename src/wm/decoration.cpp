@@ -8,6 +8,7 @@
 Decoration::Decoration(Client *c)
     : QWidget()
     , _client(c)
+    , _hoverResizeArea(false)
 {
     setMouseTracking(true);
 }
@@ -38,14 +39,20 @@ void Decoration::mouseMoveEvent(QMouseEvent *e)
 {
     if (e->buttons() & Qt::LeftButton && !moveOffset().isNull())
     {
-	setCursor(Qt::ClosedHandCursor);
-	client()->move(mapToGlobal(e->pos()) - moveOffset());
+        if (!_hoverResizeArea)
+        {
+            setCursor(Qt::ClosedHandCursor);
+            client()->move(mapToGlobal(e->pos()) - moveOffset());
+        }
     }
     else
     {
         QPoint pos = e->pos();
         BorderSize border = borderSize();
         QRect rect = client()->geometry();
+
+        // Always assumes that the pointer is over an resizable area
+        _hoverResizeArea = true;
 
         // top-left
         if (pos.x() <= border.left() + 10 && pos.y() <= border.top() + 10)
@@ -71,6 +78,9 @@ void Decoration::mouseMoveEvent(QMouseEvent *e)
             setCursor(Qt::SizeFDiagCursor);
         }
         else
+        {
             setCursor(Qt::ArrowCursor);
+            _hoverResizeArea = false; // not
+        }
     }
 }
