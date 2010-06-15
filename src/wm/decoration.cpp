@@ -3,6 +3,8 @@
 
 #include <QMouseEvent>
 
+#include <X11/Xlib.h>
+
 Decoration::Decoration(Client *c)
     : QWidget()
     , _client(c)
@@ -12,6 +14,12 @@ Decoration::Decoration(Client *c)
 
 bool Decoration::x11EventFilter(_XEvent *e)
 {
+    if (e->type == LeaveNotify)
+    {
+        setCursor(Qt::ArrowCursor);
+        return true;
+    }
+
     return false;
 }
 
@@ -32,5 +40,37 @@ void Decoration::mouseMoveEvent(QMouseEvent *e)
     {
 	setCursor(Qt::ClosedHandCursor);
 	client()->move(mapToGlobal(e->pos()) - moveOffset());
+    }
+    else
+    {
+        QPoint pos = e->pos();
+        BorderSize border = borderSize();
+        QRect rect = client()->geometry();
+
+        // top-left
+        if (pos.x() <= border.left() + 10 && pos.y() <= border.top() + 10)
+        {
+            setCursor(Qt::SizeFDiagCursor);
+        }
+        // top-right
+        else if(pos.x() >= (rect.width() + border.measuredWidth()) - 10 &&
+                pos.y() <= border.top() + 10)
+        {
+            setCursor(Qt::SizeBDiagCursor);
+        }
+        // bottom-left
+        else if(pos.x() <= border.left() + 10 &&
+                pos.y() >= (rect.height() + border.measuredHeight()) - border.bottom() - 10)
+        {
+            setCursor(Qt::SizeBDiagCursor);
+        }
+        // bottom-right
+        else if(pos.x() >= (rect.width() + border.measuredWidth()) - 10 &&
+                pos.y() >= (rect.height() + border.measuredHeight()) - border.bottom() - 10)
+        {
+            setCursor(Qt::SizeFDiagCursor);
+        }
+        else
+            setCursor(Qt::ArrowCursor);
     }
 }

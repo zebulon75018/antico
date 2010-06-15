@@ -96,10 +96,10 @@ bool WindowManager::x11EventFilter(_XEvent *e)
             return true;
         }
 
-        case MotionNotify:
+        case LeaveNotify:
             foreach(Client *c, _clients)
             {
-                if (c->decoration()->winId() == e->xmotion.window)
+                if (c->decoration()->winId() == e->xcrossing.window)
                     return c->decoration()->x11EventFilter(e);
             }
             break;

@@ -12,6 +12,8 @@
 TitleBar::TitleBar(QWidget *parent):
     QWidget(parent)
 {
+    setMouseTracking(true);
+
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setSpacing(20);
     layout->setContentsMargins(10, 2, 2, 2);
@@ -28,6 +30,7 @@ TitleBar::TitleBar(QWidget *parent):
     pal.setColor(QPalette::WindowText, QColor(223, 223, 223));
 
     QLabel *title = new QLabel("Test Window");
+    title->setMouseTracking(true);
     title->setFont(f);
     title->setPalette(pal);
     title->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
