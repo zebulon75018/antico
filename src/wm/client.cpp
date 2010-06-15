@@ -115,8 +115,54 @@ void Client::move(const QPoint &p)
     XSync(QX11Info::display(), False);
 }
 
-void Client::resize(const QSize &size)
+void Client::resize(const QSize &size, int gravity)
 {
+    int width, height;
+    QSize currentSize = _decoration->size();
+    int x = _decoration->x();
+    int y = _decoration->y();
+
+    switch (gravity)
+    {
+        case NorthWestGravity:
+        {
+            x += currentSize.width() - size.width();
+            y += currentSize.height() - size.height();
+            break;
+        }
+        
+        case NorthEastGravity:
+        {
+            y += currentSize.height() - size.height();
+            break;
+        }
+        
+        case SouthWestGravity:
+        {
+            x += currentSize.width() - size.width();
+            break;
+        }
+        
+        case SouthEastGravity:
+            break;
+    }
+
+	XSetWindowAttributes a;
+	a.win_gravity = StaticGravity;
+	XChangeWindowAttributes(QX11Info::display(), _winId, CWWinGravity, &a);
+
+    XMoveResizeWindow(QX11Info::display(), _winId, x, y, size.width(), size.height());
+    _decoration->resize(size);
+
+    qDebug() << QPoint(x, y);
+//    qDebug() << "deco" << _decoration->size();
+//    qDebug() << "param" << size;
+
+
+//    _decoration->resize(size);
+//    qDebug() << "deco" << _decoration->geometry();
+
+//    XResizeWindow(QX11Info::display(), _winId, size.width(), size.height());
 }
 
 void Client::minimize()

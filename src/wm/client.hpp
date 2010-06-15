@@ -17,7 +17,7 @@ public:
 
     // These methods are interesting if you want to create a custom decoration
     void move(const QPoint &p);
-    void resize(const QSize &size);
+    void resize(const QSize &size, int gravity);
     void minimize();
     void maximize();
     void close();

@@ -2,6 +2,7 @@
 #include "client.hpp"
 
 #include <QMouseEvent>
+#include <QDebug>
 
 #include <X11/Xlib.h>
 
@@ -9,6 +10,7 @@ Decoration::Decoration(Client *c)
     : QWidget()
     , _client(c)
     , _hoverResizeArea(false)
+    , _resizeGravity(ForgetGravity)
 {
     setMouseTracking(true);
 }
@@ -27,11 +29,13 @@ bool Decoration::x11EventFilter(_XEvent *e)
 void Decoration::mousePressEvent(QMouseEvent *e)
 {
     setMoveOffset(e->pos());
+    _resizeGravity = pointGravity(e->pos());
 }
 
 void Decoration::mouseReleaseEvent(QMouseEvent *e)
 {
     setMoveOffset(QPoint(0, 0)); // Clear offset
+    _resizeGravity = ForgetGravity;
     setCursor(Qt::ArrowCursor);
 }
 
@@ -47,10 +51,40 @@ void Decoration::mouseMoveEvent(QMouseEvent *e)
         }
         else // Resizing the window
         {
-            QPoint pos = e->pos() - moveOffset();
             QRect rect = geometry();
-            QSize size(rect.width() + pos.x(), rect.height() + pos.y());
-            client()->resize(size);
+            QPoint pos = e->pos() - moveOffset();
+            int width, height = 0;
+
+            switch (_resizeGravity)
+            {
+                case NorthWestGravity:
+                {
+                    width = rect.width() - pos.x();
+                    height = rect.height() - pos.y();
+                    break;
+                }
+                    
+                case NorthEastGravity:
+                {
+                    width = rect.width() - (pos.x() * -1);
+                    height = rect.height() - pos.y();
+                    break;
+                }
+                    
+                case SouthWestGravity:
+                {
+                    width = rect.width() - pos.x();
+                    height = rect.height() - (pos.y() * -1);
+                    break;
+                }
+                    
+                case SouthEastGravity:
+                    width = rect.width() - (pos.x() * -1);
+                    height = rect.height() - (pos.y() * -1);
+                    break;
+            }
+
+            client()->resize(QSize(width, height), _resizeGravity);
         }
     }
     else
