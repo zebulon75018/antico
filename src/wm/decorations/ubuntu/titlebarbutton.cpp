@@ -4,6 +4,8 @@ TitleBarButton::TitleBarButton(UbuntuDecoration::ButtonType type, QWidget *paren
     : QLabel(parent)
     , _type(type)
 {
+    setMouseTracking(true);
+
     switch (type)
     {
         case UbuntuDecoration::CloseButton:

@@ -10,6 +10,8 @@
 ButtonContainer::ButtonContainer(QWidget *parent):
     QFrame(parent)
 {
+    setMouseTracking(true);
+
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setSpacing(1);
     layout->setContentsMargins(0, 3, 0, 1);
