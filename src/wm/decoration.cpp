@@ -39,10 +39,18 @@ void Decoration::mouseMoveEvent(QMouseEvent *e)
 {
     if (e->buttons() & Qt::LeftButton && !moveOffset().isNull())
     {
+        // Moving the window
         if (!_hoverResizeArea)
         {
             setCursor(Qt::ClosedHandCursor);
             client()->move(mapToGlobal(e->pos()) - moveOffset());
+        }
+        else // Resizing the window
+        {
+            QPoint pos = e->pos() - moveOffset();
+            QRect rect = client()->geometry();
+            QSize size(rect.width() + pos.x(), rect.height() + pos.y());
+            client()->resize(size);
         }
     }
     else

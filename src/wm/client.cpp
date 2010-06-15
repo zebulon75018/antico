@@ -67,6 +67,10 @@ void Client::move(const QPoint &p)
 			     _decoration->geometry().height());    
 }
 
+void Client::resize(const QSize &size)
+{
+}
+
 void Client::minimize()
 {
 }

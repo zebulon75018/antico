@@ -12,8 +12,9 @@ public:
     Client(Qt::HANDLE winId, QObject *parent);
     ~Client();
 
-    // These methods are interesting if you want to create a custom decoration     
+    // These methods are interesting if you want to create a custom decoration
     void move(const QPoint &p);
+    void resize(const QSize &size);
     void minimize();
     void maximize();
     void close();
