@@ -22,6 +22,8 @@ Client::Client(Qt::HANDLE winId, QObject *parent)
     _geometry.setWidth(attr.width);
     _geometry.setHeight(attr.height);
 
+    qDebug() << __PRETTY_FUNCTION__ << "Client window geometry" << _geometry;
+
     /*
       If you have a custom decoration, pass the pointer to it.
       Yes. I know it is ugly but there are no plans to add support for dynamic plugins (the custom decoration would be a dynamic library).
@@ -40,6 +42,8 @@ Client::Client(Qt::HANDLE winId, QObject *parent)
     _decoration->setGeometry(_geometry.x(), _geometry.y(),
                              _geometry.width() + _decoration->borderSize().measuredWidth(),
                              _geometry.height() + _decoration->borderSize().measuredHeight());
+
+    qDebug() << __PRETTY_FUNCTION__ << "Decoration window geometry" << _decoration->geometry();
 
     XSelectInput(QX11Info::display(), _decoration->winId(),
                  KeyPressMask | KeyReleaseMask |
@@ -87,7 +91,7 @@ bool Client::x11EventFilter(_XEvent *e)
 	_geometry.setWidth(e->xconfigure.width);
 	_geometry.setHeight(e->xconfigure.height);
 
-	qDebug() << _geometry;
+	qDebug() << __PRETTY_FUNCTION__ << "ConfigureNotify: received geometry" << _geometry;
 
 	break;
     }
@@ -97,6 +101,8 @@ bool Client::x11EventFilter(_XEvent *e)
 
 void Client::move(const QPoint &p)
 {
+    qDebug() << __PRETTY_FUNCTION__ << "Move to" << p;
+
     _decoration->move(p.x(), p.y());
 
     XConfigureEvent e;
@@ -117,6 +123,8 @@ void Client::move(const QPoint &p)
 
 void Client::resize(const QSize &size, int gravity)
 {
+    qDebug() << __PRETTY_FUNCTION__ << "resize to" << size;
+
     QSize currentSize = _decoration->size();
     int x = _decoration->x();
     int y = _decoration->y();

@@ -33,7 +33,8 @@ void WindowManager::init()
 
 bool WindowManager::x11EventFilter(_XEvent *e)
 {
-    qDebug() << __PRETTY_FUNCTION__ << "got event" << ::eventName(e->type);
+    static int debugs = 0;
+    qDebug() << ++debugs << __PRETTY_FUNCTION__ << "got event" << ::eventName(e->type);
 
     switch (e->type)
     {
