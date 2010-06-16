@@ -147,22 +147,16 @@ void Client::resize(const QSize &size, int gravity)
             break;
     }
 
+    BorderSize border = _decoration->borderSize();
+
 	XSetWindowAttributes a;
 	a.win_gravity = StaticGravity;
 	XChangeWindowAttributes(QX11Info::display(), _winId, CWWinGravity, &a);
 
-    XMoveResizeWindow(QX11Info::display(), _winId, x, y, size.width(), size.height());
-    _decoration->resize(size);
-
-    qDebug() << QPoint(x, y);
-//    qDebug() << "deco" << _decoration->size();
-//    qDebug() << "param" << size;
-
-
-//    _decoration->resize(size);
-//    qDebug() << "deco" << _decoration->geometry();
-
-//    XResizeWindow(QX11Info::display(), _winId, size.width(), size.height());
+    XMoveResizeWindow(QX11Info::display(), _winId,
+                      border.left(), border.measuredHeight() - border.bottom(),
+                      size.width() - border.measuredWidth(), size.height() - border.measuredHeight());
+    _decoration->setGeometry(x, y, size.width(), size.height());
 }
 
 void Client::minimize()

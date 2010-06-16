@@ -68,6 +68,7 @@ void Decoration::mouseMoveEvent(QMouseEvent *e)
                 {
                     width = rect.width() - (pos.x() * -1);
                     height = rect.height() - pos.y();
+                    setMoveOffset(QPoint(width, 0));
                     break;
                 }
                     
@@ -75,12 +76,14 @@ void Decoration::mouseMoveEvent(QMouseEvent *e)
                 {
                     width = rect.width() - pos.x();
                     height = rect.height() - (pos.y() * -1);
+                    setMoveOffset(QPoint(0, height));
                     break;
                 }
                     
                 case SouthEastGravity:
                     width = rect.width() - (pos.x() * -1);
                     height = rect.height() - (pos.y() * -1);
+                    setMoveOffset(QPoint(width, height));
                     break;
             }
 
