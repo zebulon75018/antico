@@ -117,19 +117,13 @@ void Decoration::mouseMoveEvent(QMouseEvent *e)
                 break;
 
             case NorthWestGravity:
+            case SouthEastGravity:
                 setCursor(Qt::SizeFDiagCursor);
                 break;
 
             case NorthEastGravity:
-                setCursor(Qt::SizeBDiagCursor);
-                break;
-
             case SouthWestGravity:
                 setCursor(Qt::SizeBDiagCursor);
-                break;
-
-            case SouthEastGravity:
-                setCursor(Qt::SizeFDiagCursor);
                 break;
 
             default:

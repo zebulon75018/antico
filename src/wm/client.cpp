@@ -117,7 +117,6 @@ void Client::move(const QPoint &p)
 
 void Client::resize(const QSize &size, int gravity)
 {
-    int width, height;
     QSize currentSize = _decoration->size();
     int x = _decoration->x();
     int y = _decoration->y();
@@ -150,18 +149,15 @@ void Client::resize(const QSize &size, int gravity)
             x += currentSize.width() - size.width();
             break;
         }
-        
-        case SouthEastGravity:
-            break;
     }
-
-    BorderSize border = _decoration->borderSize();
 
 	XSetWindowAttributes a;
 	a.win_gravity = StaticGravity;
 	XChangeWindowAttributes(QX11Info::display(), _winId, CWWinGravity, &a);
 
     _decoration->setGeometry(x, y, size.width(), size.height());
+
+    BorderSize border = _decoration->borderSize();
     XMoveResizeWindow(QX11Info::display(), _winId,
                       border.left(), border.measuredHeight() - border.bottom(),
                       size.width() - border.measuredWidth(), size.height() - border.measuredHeight());
