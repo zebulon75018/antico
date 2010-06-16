@@ -27,6 +27,8 @@ void WindowManager::init()
                  StructureNotifyMask | ButtonPressMask | PropertyChangeMask|
                  KeyPressMask | ColormapChangeMask |EnterWindowMask);
     XSync(QX11Info::display(), False);
+
+    XDefineCursor(QX11Info::display(), QX11Info::appRootWindow(), QCursor(Qt::ArrowCursor).handle());
 }
 
 bool WindowManager::x11EventFilter(_XEvent *e)
