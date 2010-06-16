@@ -161,10 +161,10 @@ void Client::resize(const QSize &size, int gravity)
 	a.win_gravity = StaticGravity;
 	XChangeWindowAttributes(QX11Info::display(), _winId, CWWinGravity, &a);
 
+    _decoration->setGeometry(x, y, size.width(), size.height());
     XMoveResizeWindow(QX11Info::display(), _winId,
                       border.left(), border.measuredHeight() - border.bottom(),
                       size.width() - border.measuredWidth(), size.height() - border.measuredHeight());
-    _decoration->setGeometry(x, y, size.width(), size.height());
 }
 
 void Client::minimize()
