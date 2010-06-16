@@ -1,6 +1,7 @@
 #include "client.hpp"
 #include "anticodecoration.hpp"
 #include "decorations/ubuntu/ubuntudecoration.hpp"
+#include "decorations/panther/pantherdecoration.hpp"
 #include "atoms.hpp"
 #include "fixx11h.h"
 
