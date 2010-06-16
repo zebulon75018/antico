@@ -124,12 +124,20 @@ void Client::resize(const QSize &size, int gravity)
 
     switch (gravity)
     {
+        case NorthGravity:
+            y += currentSize.height() - size.height();
+            break;
+
         case NorthWestGravity:
         {
             x += currentSize.width() - size.width();
             y += currentSize.height() - size.height();
             break;
         }
+
+        case WestGravity:
+            x += currentSize.width() - size.width();
+            break;
         
         case NorthEastGravity:
         {

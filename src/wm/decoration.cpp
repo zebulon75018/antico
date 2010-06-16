@@ -53,16 +53,25 @@ void Decoration::mouseMoveEvent(QMouseEvent *e)
         {
             QRect rect = geometry();
             QPoint pos = e->pos() - moveOffset();
-            int width, height = 0;
+            int width = rect.width();
+            int height = rect.height();
 
             switch (_resizeGravity)
             {
+                case NorthGravity:
+                    height = rect.height() - pos.y();
+                    break;
+
                 case NorthWestGravity:
                 {
                     width = rect.width() - pos.x();
                     height = rect.height() - pos.y();
                     break;
                 }
+
+                case WestGravity:
+                    width = rect.width() - pos.x();
+                    break;
                     
                 case NorthEastGravity:
                 {
@@ -97,6 +106,16 @@ void Decoration::mouseMoveEvent(QMouseEvent *e)
 
         switch (pointGravity(e->pos()))
         {
+            case NorthGravity:
+            case SouthGravity:
+                setCursor(Qt::SizeVerCursor);
+                break;
+
+            case WestGravity:
+            case EastGravity:
+                setCursor(Qt::SizeHorCursor);
+                break;
+
             case NorthWestGravity:
                 setCursor(Qt::SizeFDiagCursor);
                 break;
@@ -147,6 +166,22 @@ int Decoration::pointGravity(const QPoint &p)
             p.y() >= (rect.height() + border.measuredHeight()) - border.bottom() - 10)
     {
         return SouthEastGravity;
+    }
+    else if (p.y() <= border.top() + 10)
+    {
+        return NorthGravity;
+    }
+    else if (p.y() >= (rect.height() + border.measuredHeight()) - border.bottom() - 10)
+    {
+        return SouthGravity;
+    }
+    else if (p.x() <= border.left() + 10)
+    {
+        return WestGravity;
+    }
+    else if (p.x() >= (rect.width() + border.measuredWidth()) - 10)
+    {
+        return EastGravity;
     }
 
     return ForgetGravity;
