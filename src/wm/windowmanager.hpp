@@ -17,6 +17,8 @@ public:
 
     bool x11EventFilter(_XEvent *e);
 
+    void setActiveClient(Client *client);
+
     static WindowManager *self();
 
 private:

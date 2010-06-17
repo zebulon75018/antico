@@ -111,6 +111,17 @@ bool WindowManager::x11EventFilter(_XEvent *e)
     return false;
 }
 
+void WindowManager::setActiveClient(Client *client)
+{
+    foreach (Client *c, _clients)
+    {
+	if (c == client)
+	    c->setActive();
+	else
+	    c->setInactive();
+    }
+}
+
 Client *WindowManager::createClient(Qt::HANDLE winId)
 {
     return new Client(winId, this);

@@ -1,4 +1,5 @@
 #include "client.hpp"
+#include "windowmanager.hpp"
 #include "anticodecoration.hpp"
 #include "decorations/ubuntu/ubuntudecoration.hpp"
 #include "decorations/panther/pantherdecoration.hpp"
@@ -82,6 +83,10 @@ bool Client::x11EventFilter(_XEvent *e)
 	    updateTitle();
 	    _decoration->setTitle(_title);
 	    return true;
+	}
+	else if (e->xproperty.atom == ATOM(_NET_WM_USER_TIME))
+	{
+	    WindowManager::self()->setActiveClient(this);
 	}
 
 	break;
@@ -182,6 +187,18 @@ void Client::maximize()
 
 void Client::close()
 {
+}
+
+void Client::setActive()
+{
+    _decoration->setActive();
+    _decoration->update();
+}
+
+void Client::setInactive()
+{
+    _decoration->setInactive();
+    _decoration->update();
 }
 
 void Client::map()

@@ -22,6 +22,9 @@ public:
     void maximize();
     void close();
 
+    void setActive();
+    void setInactive();
+
     inline Decoration *decoration() const { return _decoration; }
 
     inline QRect geometry() const { return _geometry; }

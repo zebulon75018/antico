@@ -20,6 +20,10 @@ public:
     virtual BorderSize borderSize() const = 0;
     virtual void setTitle(const QString &title) = 0;
 
+    virtual inline void setActive() { _active = true; }
+    virtual inline void setInactive() { _active = false; }
+    inline bool isActive() const { return _active; }
+
     inline Client *client() const { return _client; }
 
 protected:
@@ -37,6 +41,7 @@ private:
     QPoint _moveOffset;
     bool _hoverResizeArea;
     int _resizeGravity;
+    bool _active;
 };
 
 #endif
