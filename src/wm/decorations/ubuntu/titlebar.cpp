@@ -46,6 +46,19 @@ void TitleBar::setTitle(const QString &title)
 
 void TitleBar::setActive(bool active)
 {
+    if (active)
+    {
+        QPalette pal(palette());
+        pal.setColor(QPalette::WindowText, QColor(223, 223, 223));
+        _title->setPalette(pal);
+    }
+    else
+    {
+        QPalette pal(palette());
+        pal.setColor(QPalette::WindowText, QColor(153, 149, 139));
+        _title->setPalette(pal);
+    }
+
     _buttonContainer->setActive(active);
 }
 
