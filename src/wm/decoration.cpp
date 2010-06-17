@@ -4,6 +4,7 @@
 
 #include <QMouseEvent>
 #include <QDebug>
+#include <QApplication>
 
 #include <X11/Xlib.h>
 
@@ -18,12 +19,6 @@ Decoration::Decoration(Client *c)
 
 bool Decoration::x11EventFilter(_XEvent *e)
 {
-    if (e->type == LeaveNotify)
-    {
-        setCursor(Qt::ArrowCursor);
-        return true;
-    }
-
     return false;
 }
 
@@ -39,7 +34,11 @@ void Decoration::mouseReleaseEvent(QMouseEvent *e)
 {
     setMoveOffset(QPoint(0, 0)); // Clear offset
     _resizeGravity = ForgetGravity;
-    setCursor(Qt::ArrowCursor);
+
+    if (pointGravity(e->pos()) == ForgetGravity)
+    {
+        QApplication::setOverrideCursor(Qt::ArrowCursor);
+    }
 }
 
 void Decoration::mouseMoveEvent(QMouseEvent *e)
@@ -49,7 +48,7 @@ void Decoration::mouseMoveEvent(QMouseEvent *e)
         // Moving the window
         if (!_hoverResizeArea)
         {
-            setCursor(Qt::ClosedHandCursor);
+            QApplication::setOverrideCursor(Qt::ClosedHandCursor);
             client()->move(mapToGlobal(e->pos()) - moveOffset());
         }
         else // Resizing the window
@@ -111,26 +110,26 @@ void Decoration::mouseMoveEvent(QMouseEvent *e)
         {
             case NorthGravity:
             case SouthGravity:
-                setCursor(Qt::SizeVerCursor);
+                QApplication::setOverrideCursor(Qt::SizeVerCursor);
                 break;
 
             case WestGravity:
             case EastGravity:
-                setCursor(Qt::SizeHorCursor);
+                QApplication::setOverrideCursor(Qt::SizeHorCursor);
                 break;
 
             case NorthWestGravity:
             case SouthEastGravity:
-                setCursor(Qt::SizeFDiagCursor);
+                QApplication::setOverrideCursor(Qt::SizeFDiagCursor);
                 break;
 
             case NorthEastGravity:
             case SouthWestGravity:
-                setCursor(Qt::SizeBDiagCursor);
+                QApplication::setOverrideCursor(Qt::SizeBDiagCursor);
                 break;
 
             default:
-                setCursor(Qt::ArrowCursor);
+                QApplication::setOverrideCursor(Qt::ArrowCursor);
                 _hoverResizeArea = false; // not
         }
     }
