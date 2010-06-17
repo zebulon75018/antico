@@ -1,5 +1,6 @@
 #include "decoration.hpp"
 #include "client.hpp"
+#include "windowmanager.hpp"
 
 #include <QMouseEvent>
 #include <QDebug>
@@ -28,6 +29,8 @@ bool Decoration::x11EventFilter(_XEvent *e)
 
 void Decoration::mousePressEvent(QMouseEvent *e)
 {
+    WindowManager::self()->setActiveClient(client());
+
     setMoveOffset(e->pos());
     _resizeGravity = pointGravity(e->pos());
 }

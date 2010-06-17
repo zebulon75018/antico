@@ -27,6 +27,7 @@ public:
 
     inline Decoration *decoration() const { return _decoration; }
 
+    inline Qt::HANDLE winId() const { return _winId; }
     inline QRect geometry() const { return _geometry; }
 
 protected:

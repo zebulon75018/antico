@@ -115,8 +115,12 @@ void WindowManager::setActiveClient(Client *client)
 {
     foreach (Client *c, _clients)
     {
-	if (c == client)
+    if (c == client)
+    {
+        XRaiseWindow(QX11Info::display(), client->decoration()->winId());
+
 	    c->setActive();
+    }
 	else
 	    c->setInactive();
     }

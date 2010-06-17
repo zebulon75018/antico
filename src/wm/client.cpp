@@ -41,6 +41,10 @@ Client::Client(Qt::HANDLE winId, QObject *parent)
                     _decoration->borderSize().top() + _decoration->borderSize().titleBarHeight());
     XAddToSaveSet(QX11Info::display(), _winId);
 
+    XGrabButton(QX11Info::display(), Button1, AnyModifier, _winId, False,
+                ButtonPressMask | ButtonReleaseMask,
+                GrabModeSync, GrabModeAsync, None, None);
+
     _decoration->setGeometry(_geometry.x(), _geometry.y(),
                              _geometry.width() + _decoration->borderSize().measuredWidth(),
                              _geometry.height() + _decoration->borderSize().measuredHeight());
@@ -84,10 +88,6 @@ bool Client::x11EventFilter(_XEvent *e)
 	    _decoration->setTitle(_title);
 	    return true;
 	}
-	else if (e->xproperty.atom == ATOM(_NET_WM_USER_TIME))
-	{
-	    WindowManager::self()->setActiveClient(this);
-	}
 
 	break;
 
@@ -100,6 +100,12 @@ bool Client::x11EventFilter(_XEvent *e)
 	qDebug() << __PRETTY_FUNCTION__ << "ConfigureNotify: received geometry" << _geometry;
 
 	break;
+
+        case ButtonPress:
+            WindowManager::self()->setActiveClient(this);
+            // Replay the event...
+            XAllowEvents(QX11Info::display(), ReplayPointer, CurrentTime);
+            return true;
     }
 
     return false;
