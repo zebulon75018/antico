@@ -44,6 +44,11 @@ void TitleBar::setTitle(const QString &title)
     _title->setText(title);
 }
 
+void TitleBar::setActive(bool active)
+{
+    _buttonContainer->setActive(active);
+}
+
 void TitleBar::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);

@@ -12,6 +12,8 @@ class TitleBarButton: public QLabel
 public:
     TitleBarButton(UbuntuDecoration::ButtonType type, QWidget *parent);
 
+    void setActive(bool active);
+
     inline UbuntuDecoration::ButtonType type() const { return _type; }
 
 protected:

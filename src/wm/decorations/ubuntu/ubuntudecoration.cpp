@@ -37,6 +37,16 @@ void UbuntuDecoration::setTitle(const QString &title)
     _titleBar->setTitle(title);
 }
 
+void UbuntuDecoration::setActive()
+{
+    _titleBar->setActive(true);
+}
+
+void UbuntuDecoration::setInactive()
+{
+    _titleBar->setActive(false);
+}
+
 void UbuntuDecoration::paintEvent(QPaintEvent *e)
 {
     QPainter painter(this);

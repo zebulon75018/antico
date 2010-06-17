@@ -23,6 +23,9 @@ public:
 
     void setTitle(const QString &title);
 
+    void setActive();
+    void setInactive();
+
 protected:
     virtual void paintEvent(QPaintEvent *e);
 

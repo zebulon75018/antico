@@ -30,6 +30,12 @@ ButtonContainer::ButtonContainer(QWidget *parent):
     setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 }
 
+void ButtonContainer::setActive(bool active)
+{
+    foreach (TitleBarButton *button, _buttons)
+	button->setActive(active);
+}
+
 void ButtonContainer::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);

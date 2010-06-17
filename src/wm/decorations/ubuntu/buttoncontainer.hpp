@@ -16,6 +16,8 @@ class ButtonContainer: public QFrame
 public:
     ButtonContainer(QWidget *parent);
 
+    void setActive(bool active);
+
 protected:
     virtual void paintEvent(QPaintEvent *event);
 
